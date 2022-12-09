@@ -12,7 +12,11 @@ public class Client
     public int Id = 1;
     public TCP Tcp { get; private set; }
 
-    
+
+    private delegate void PacketHandler(Packet packet);
+
+    private static Dictionary<int, PacketHandler> packetHandlers;
+
     public void Start()
     {
         Tcp = new TCP();
@@ -20,6 +24,7 @@ public class Client
 
     public void ConnectToServer()
     {
+        InitializeData();
         Tcp.Conncet();
         
     }
@@ -27,7 +32,7 @@ public class Client
     public class TCP
     {
         public TcpClient socket { get; private set; }
- 
+        private Packet receivedData;
         private NetworkStream stream;
         private byte[] receiveBuffer;
 
@@ -54,6 +59,8 @@ public class Client
 
             stream = socket.GetStream();
 
+            receivedData = new Packet();
+            
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
 
@@ -70,7 +77,10 @@ public class Client
 
                 var data = new byte[byteLength];
                 Array.Copy(receiveBuffer, data, byteLength);
-                Console.WriteLine(Encoding.UTF8.GetString(data));
+                
+                //to handle splited packets we dont need always reset packet
+                receivedData.Reset(HandleData(data));
+                
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             }
             catch
@@ -78,5 +88,70 @@ public class Client
                 //todo: dissconnect
             }
         }
+
+        public void SendData(Packet packet)
+        {
+            try
+            {
+                if (socket != null)
+                    stream.BeginWrite(packet.ToArray(), 0, packet.Length, null, null);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        private bool HandleData(byte[] data)
+        {
+            var packetLength = 0;
+            
+            receivedData.SetBytes(data);
+
+            if (receivedData.UnreadLength >= 4)
+            {
+                packetLength = receivedData.ReadInt();
+                if (packetLength <= 0)
+                    return true;
+            }
+
+            while (0 < packetLength && packetLength <= receivedData.UnreadLength)
+            {
+                var packetsBytes = receivedData.ReadBytes(packetLength);
+                using var packet = new Packet(packetsBytes);
+                var packetType = packet.ReadInt();
+
+                packetHandlers[packetType](packet);
+
+                packetLength = 0;
+                if (receivedData.UnreadLength >= 4)
+                {
+                    packetLength = receivedData.ReadInt();
+                    if (packetLength <= 0)
+                        return true;
+                }
+            }
+
+            if (packetLength <= 1)
+                return true;
+
+            return false;
+        }
     }
+
+    public static void InitializeData()
+    {
+        packetHandlers = new Dictionary<int, PacketHandler>()
+            { { (int)ServerPackets.Welcome, ClientHandle.MakeHandshake } };
+    }
+}
+
+public enum ServerPackets
+{
+    Welcome = 1
+}
+
+public enum ClientPackets
+{
+    WelcomeReceived = 1
 }
