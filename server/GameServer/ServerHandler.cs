@@ -8,10 +8,6 @@ public class ServerHandler
         Console.WriteLine($"{Server.Clients[fromClient].Tcp.socket.Client.RemoteEndPoint} has successfully connected and is now player {fromClient} (nickname: {username})");
 
         if(fromClient != clientIdCheck)
-        {
             Console.WriteLine($"Player {username}(ID: {fromClient} is accusing to have wrong Client ID {clientIdCheck}");
-        }
-
-        Server.Clients[fromClient].SendIntoGame(username);
     }
 }

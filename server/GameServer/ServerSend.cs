@@ -26,7 +26,7 @@ public class ServerSend
         }
     }
 
-    public static void Welcome(int toClient, string message)
+    public static void MakeHandshake(int toClient, string message)
     {
         using var packet = new Packet((int)ServerPackets.Welcome);
         packet.Write(message);

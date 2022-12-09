@@ -42,16 +42,16 @@ public class Client
 
             stream.BeginRead(receiveBuffer, 0, DataBufferSize, ReceiveCallback, null);
 
-            ServerSend.Welcome(id, "Welcome to the Server!");
+            ServerSend.MakeHandshake(id, "Welcome to the Server!");
         }
 
-        public void SendData(Packet _packet)
+        public void SendData(Packet packet)
         {
             try
             {
                 if(socket != null)
                 {
-                    stream.BeginWrite(_packet.ToArray(),0,_packet.Length, null, null);
+                    stream.BeginWrite(packet.ToArray(),0,packet.Length, null, null);
                 }
             }
             catch (Exception e)
@@ -67,6 +67,7 @@ public class Client
                 int _byteLength = stream.EndRead(_result);
                 if( _byteLength <= 0)
                 {
+                    Disconnect();
                     return;
                 }
 
@@ -79,65 +80,50 @@ public class Client
             catch (Exception e)
             {
                 Console.WriteLine($"Error receiving TCP data: {e.ToString()}");
-                //TODO: disconnect
+                Disconnect();
             }
         }
 
         private bool HandleData(byte[] _data)
         {
-            var _packetLength = 0;
+            var packetLength = 0;
 
             receivedData.SetBytes(_data);
             if (receivedData.UnreadLength >= 4)
             {
-                _packetLength = receivedData.ReadInt();
-                if (_packetLength <= 0)
+                packetLength = receivedData.ReadInt();
+                if (packetLength <= 0)
                 {
                     return true;
                 }
             }
 
-            while (_packetLength > 0 && _packetLength <= receivedData.UnreadLength)
+            while (0 < packetLength && packetLength <= receivedData.UnreadLength)
             {
-                var _packetBytes = receivedData.ReadBytes(_packetLength);
+                var packetsBytes = receivedData.ReadBytes(packetLength);
+                using var packet = new Packet(packetsBytes);
+                var packetType = packet.ReadInt();
 
-                _packetLength = 0;
+                Server.packetHandlers[packetType](id, packet);
+
+                packetLength = 0;
                 if (receivedData.UnreadLength >= 4)
                 {
-                    _packetLength = receivedData.ReadInt();
-                    if (_packetLength <= 0)
-                    {
+                    packetLength = receivedData.ReadInt();
+                    if (packetLength <= 0)
                         return true;
-                    }
                 }
             }
 
-            if (_packetLength < 1) return true;
+
+            if (packetLength < 1) return true;
             return false;
         }
-    }
-
-    public void SendIntoGame(string _playerName)
-    {
-        player = new Player(Id, _playerName);
-
-        foreach(var _client in Server.Clients.Values)
+        
+        private void Disconnect()
         {
-            if(_client.player != null)
-            {
-                if(_client.Id != Id)
-                {
-                    ServerSend.SpawnPlayer(Id,_client.player);
-                }
-            }
-        }
-
-        foreach (var _client in Server.Clients.Values)
-        {
-            if (_client.player != null)
-            {
-                ServerSend.SpawnPlayer(_client.Id, player);
-            }
+            socket.Close();
+            socket = null!;
         }
     }
 }
