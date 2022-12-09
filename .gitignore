@@ -655,8 +655,10 @@ fabric.properties
 # Windows Installer files from build outputs
 
 # JetBrains Rider
+.idea/
 
 ### VisualStudio Patch ###
 # Additional files built by Visual Studio
+.vs/
 
 # End of https://www.toptal.com/developers/gitignore/api/csharp,visualstudio,rider
