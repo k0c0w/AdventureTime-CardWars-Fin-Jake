@@ -18,7 +18,6 @@ public class ServerSend
     }
     public static void SendTCPDataToAll(int exceptClient, Packet packet)
     {
-        //writes packetLength;
         packet.WriteLength();
         for (var i = 1; i <= Server.MaxPlayers; i++)
         {
@@ -26,20 +25,11 @@ public class ServerSend
         }
     }
 
-    public static void Welcome(int toClient, string message)
+    public static void MakeHandshake(int toClient, string message)
     {
-        using var packet = new Packet((int)ServerPackets.Welcome);
-        packet.Write(message);
+        using var packet = new Packet((int)PacketId.ServerPacket, (int)ServerPacket.Welcome);
         packet.Write(toClient);
+        packet.Write(message);
         SendTCPData(toClient, packet);
-    }
-
-    public static void SpawnPlayer(int toClient, Player player)
-    {
-        using var packet = new Packet((int)ServerPackets.SpawnPlayer);
-        packet.Write(player.Id);
-        packet.Write(player.Username);
-
-        SendTCPData(toClient,packet);
     }
 }

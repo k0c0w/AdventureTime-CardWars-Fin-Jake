@@ -1,15 +1,27 @@
 ﻿namespace GameServer;
 
 /// <summary>Sent from server to client.</summary>
-public enum ServerPackets
+public enum ServerPacket
 {
-    Welcome = 1,
-    SpawnPlayer,
+    Welcome,
+    GoodBye,
 }
 
 /// <summary>Sent from client to server.</summary>
-public enum ClientPackets
+public enum ClientPacket
 {
-    WelcomeReceived = 1,
-    PlayerMovement
+    WelcomeReceived = 0,
+    ReadyForGame
+}
+
+public enum GameActionPacket
+{
+    GameStart
+}
+
+public enum PacketId
+{
+    ServerPacket = 0,
+    ClientPacket,
+    GameActionPacket
 }

@@ -7,137 +7,117 @@ public class Client
 {
     public const int DataBufferSize = 4096;
     public int Id { get;}
-    public Player player;
+    
+    public Player? Player;
     public TCP Tcp { get; }
 
-    public Client(int _clientId)
+    public bool IsWaitingForGame => Player != null;
+
+    public Client(int clientId)
     {
-        Id = _clientId;
+        Id = clientId;
         Tcp = new TCP(Id);
     }
     public class TCP
     {
-        public TcpClient socket;
+        public TcpClient Socket { get; private set; }
 
-        private readonly int id;
-        private NetworkStream stream;
-        private Packet receivedData;
-        private byte[] receiveBuffer;
+        private readonly int _id;
+        private NetworkStream _stream;
+        private Packet _receivedData;
+        private byte[] _receiveBuffer;
 
-        public TCP(int _id)
+        public TCP(int id) => _id = id;
+
+        public void Connect(TcpClient socket)
         {
-            id = _id;
+            Socket = socket;
+            Socket.ReceiveBufferSize = DataBufferSize;
+            Socket.SendBufferSize = DataBufferSize;
+
+            _stream = Socket.GetStream();
+
+            _receivedData = new Packet();
+            _receiveBuffer = new byte[DataBufferSize];
+
+            _stream.BeginRead(_receiveBuffer, 0, DataBufferSize, ReceiveCallback, null);
+
+            ServerSend.MakeHandshake(_id, "Welcome to the Server!");
         }
 
-        public void Connect(TcpClient _socket)
-        {
-            socket = _socket;
-            socket.ReceiveBufferSize = DataBufferSize;
-            socket.SendBufferSize = DataBufferSize;
-
-            stream = socket.GetStream();
-
-            receivedData = new Packet();
-            receiveBuffer = new byte[DataBufferSize];
-
-            stream.BeginRead(receiveBuffer, 0, DataBufferSize, ReceiveCallback, null);
-
-            ServerSend.Welcome(id, "Welcome to the Server!");
-        }
-
-        public void SendData(Packet _packet)
+        public void SendData(Packet packet)
         {
             try
             {
-                if(socket != null)
-                {
-                    stream.BeginWrite(_packet.ToArray(),0,_packet.Length, null, null);
-                }
+                if(Socket != null)
+                    _stream.BeginWrite(packet.ToArray(),0,packet.Length, null, null);
             }
             catch (Exception e)
             {
-                 Console.WriteLine($"Error sending data to player {id} via TCP: {e.ToString()}");
+                 Console.WriteLine($"Error sending data to player {_id} via TCP: {e.ToString()}");
             }
         }
 
-        private void ReceiveCallback(IAsyncResult _result)
+        private void ReceiveCallback(IAsyncResult result)
         {
             try
             {
-                int _byteLength = stream.EndRead(_result);
-                if( _byteLength <= 0)
+                var byteLength = _stream.EndRead(result);
+                if( byteLength <= 0)
                 {
+                    Disconnect();
                     return;
                 }
 
-                var _data = new byte[_byteLength];
-                Array.Copy(receiveBuffer, _data, _byteLength);
+                var data = new byte[byteLength];
+                Array.Copy(_receiveBuffer, data, byteLength);
 
-                receivedData.Reset(HandleData(_data));
-                stream.BeginRead(receiveBuffer,0,DataBufferSize, ReceiveCallback, null);
+                _receivedData.Reset(HandleData(data));
+                _stream.BeginRead(_receiveBuffer,0,DataBufferSize, ReceiveCallback, null);
             }
             catch (Exception e)
             {
                 Console.WriteLine($"Error receiving TCP data: {e.ToString()}");
-                //TODO: disconnect
+                Disconnect();
             }
         }
-
-        private bool HandleData(byte[] _data)
+        
+        private bool HandleData(byte[] data)
         {
-            var _packetLength = 0;
+            var packetLength = 0;
 
-            receivedData.SetBytes(_data);
-            if (receivedData.UnreadLength >= 4)
+            _receivedData.SetBytes(data);
+            if (_receivedData.UnreadLength >= 4)
             {
-                _packetLength = receivedData.ReadInt();
-                if (_packetLength <= 0)
-                {
+                packetLength = _receivedData.ReadInt();
+                if (packetLength <= 0)
                     return true;
-                }
             }
 
-            while (_packetLength > 0 && _packetLength <= receivedData.UnreadLength)
+            while (0 < packetLength && packetLength <= _receivedData.UnreadLength)
             {
-                var _packetBytes = receivedData.ReadBytes(_packetLength);
-
-                _packetLength = 0;
-                if (receivedData.UnreadLength >= 4)
+                var packetsBytes = _receivedData.ReadBytes(packetLength);
+                using var packet = new Packet(packetsBytes);
+                var packetId = packet.ReadInt();
+                var packetSubId = packet.ReadInt();
+                Server.PacketHandlers[(PacketId)packetId][packetSubId](_id, packet);
+                packetLength = 0;
+                if (_receivedData.UnreadLength >= 4)
                 {
-                    _packetLength = receivedData.ReadInt();
-                    if (_packetLength <= 0)
-                    {
+                    packetLength = _receivedData.ReadInt();
+                    if (packetLength <= 0)
                         return true;
-                    }
                 }
             }
-
-            if (_packetLength < 1) return true;
-            return false;
+            
+            return packetLength < 1;
         }
-    }
-
-    public void SendIntoGame(string _playerName)
-    {
-        player = new Player(Id, _playerName);
-
-        foreach(var _client in Server.Clients.Values)
+        
+        private void Disconnect()
         {
-            if(_client.player != null)
-            {
-                if(_client.Id != Id)
-                {
-                    ServerSend.SpawnPlayer(Id,_client.player);
-                }
-            }
-        }
-
-        foreach (var _client in Server.Clients.Values)
-        {
-            if (_client.player != null)
-            {
-                ServerSend.SpawnPlayer(_client.Id, player);
-            }
+            Server.Clients[_id].Player = null;
+            Socket.Close();
+            Socket = null!;
         }
     }
 }
