@@ -22,6 +22,8 @@ public class Packet : IDisposable
 
         Write(_id);
     }
+    
+    public Packet(int id, int subId) : this(id) => Write(subId);
 
     public Packet(byte[] _data)
     {

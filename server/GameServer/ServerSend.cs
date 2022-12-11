@@ -28,18 +28,18 @@ public class ServerSend
 
     public static void MakeHandshake(int toClient, string message)
     {
-        using var packet = new Packet((int)ServerPackets.Welcome);
-        packet.Write(message);
+        using var packet = new Packet((int)PacketId.ServerPacket, (int)ServerPacket.Welcome);
         packet.Write(toClient);
+        packet.Write(message);
         SendTCPData(toClient, packet);
     }
 
-    public static void SpawnPlayer(int toClient, Player player)
+    /*public static void SpawnPlayer(int toClient, Player player)
     {
         using var packet = new Packet((int)ServerPackets.SpawnPlayer);
         packet.Write(player.Id);
         packet.Write(player.Username);
 
         SendTCPData(toClient,packet);
-    }
+    }*/
 }
