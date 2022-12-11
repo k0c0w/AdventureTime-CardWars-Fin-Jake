@@ -35,7 +35,7 @@ public class Client
             Socket.ReceiveBufferSize = DataBufferSize;
             Socket.SendBufferSize = DataBufferSize;
 
-            _stream = this.Socket.GetStream();
+            _stream = Socket.GetStream();
 
             _receivedData = new Packet();
             _receiveBuffer = new byte[DataBufferSize];
@@ -50,9 +50,7 @@ public class Client
             try
             {
                 if(Socket != null)
-                {
                     _stream.BeginWrite(packet.ToArray(),0,packet.Length, null, null);
-                }
             }
             catch (Exception e)
             {
@@ -64,7 +62,7 @@ public class Client
         {
             try
             {
-                int byteLength = _stream.EndRead(result);
+                var byteLength = _stream.EndRead(result);
                 if( byteLength <= 0)
                 {
                     Disconnect();
