@@ -15,7 +15,7 @@ public class Client
 
     private delegate void PacketHandler(Packet packet);
 
-    private static Dictionary<int, PacketHandler> packetHandlers;
+    private static Dictionary<PacketId, Dictionary<int, PacketHandler>> packetHandlers;
 
     public void Start()
     {
@@ -26,7 +26,6 @@ public class Client
     {
         InitializeData();
         Tcp.Conncet();
-        
     }
     
     public class TCP
@@ -119,17 +118,22 @@ public class Client
             {
                 var packetsBytes = receivedData.ReadBytes(packetLength);
                 using var packet = new Packet(packetsBytes);
-                var packetType = packet.ReadInt();
-
-                packetHandlers[packetType](packet);
-
-                packetLength = 0;
-                if (receivedData.UnreadLength >= 4)
+                var packetId = packet.ReadInt();
+                if (packetId == (int)PacketId.ServerPacket)
                 {
-                    packetLength = receivedData.ReadInt();
-                    if (packetLength <= 0)
-                        return true;
+                    var packetSubId = packet.ReadInt();
+                    packetHandlers[PacketId.ServerPacket][packetSubId](packet);
+
+                    packetLength = 0;
+                    if (receivedData.UnreadLength >= 4)
+                    {
+                        packetLength = receivedData.ReadInt();
+                        if (packetLength <= 0)
+                            return true;
+                    }
                 }
+
+                throw new ArgumentException($"Unsupported packet {packetId}");
             }
 
             if (packetLength <= 1)
@@ -141,17 +145,35 @@ public class Client
 
     public static void InitializeData()
     {
-        packetHandlers = new Dictionary<int, PacketHandler>()
-            { { (int)ServerPackets.Welcome, ClientHandle.MakeHandshake } };
+        packetHandlers = new Dictionary<PacketId, Dictionary<int, PacketHandler>>()
+        {
+            { 
+                PacketId.ServerPacket, new Dictionary<int, PacketHandler>()
+                { { (int)ServerPacket.Welcome, ClientHandle.MakeHandshake } }
+            }
+        };
     }
 }
 
-public enum ServerPackets
+public enum ServerPacket
 {
-    Welcome = 1
+    Welcome
 }
 
-public enum ClientPackets
+public enum ClientPacket
 {
-    WelcomeReceived = 1
+    WelcomeReceived,
+    ReadyForGame
+}
+
+public enum GameActionPacket
+{
+    GameStart
+}
+
+public enum PacketId
+{
+    ServerPacket = 0,
+    ClientPacket,
+    GameActionPacket
 }

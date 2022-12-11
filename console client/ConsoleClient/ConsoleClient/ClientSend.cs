@@ -10,10 +10,11 @@ public class ClientSend
 
     public static void WelcomeReceived()
     {
-        using var packet = new Packet((int)ClientPackets.WelcomeReceived);
+        using var packet = new Packet((int)PacketId.ClientPacket);
+        packet.Write((int)ClientPacket.WelcomeReceived);
         packet.Write(Client.Instance.Id);
         //todo: additional info ex Username
-        
+        packet.Write("fdfsf");
         SendTCPData(packet);
     }
 }
