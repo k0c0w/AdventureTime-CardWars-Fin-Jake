@@ -1,37 +1,58 @@
 ﻿namespace GameObjects;
 
-public class Creature : GameInstance, ICreature
+public abstract class Creature : GameInstance
 {
-    public int HP { get; private set; }
+    public int Line { get; set; }
     
-    public int Damage { get; private set; }
+    public bool IsAttacking{ get; protected set; }
+    
+    public bool IsDead => HP < 0;
+    
+    public int HP => _cretureHP + _buffDamage;
 
-    private bool _isFlipped;
-
+    public int Damage => _initialDamage + _buffDamage;
+    
     private int _buffDamage = 0;
+    private int _buffHP = 0;
+    private int _cretureHP;
+    private readonly int _initialDamage;
 
 
-    public Creature(IPlayer owner, LandType land, int cost, int healthPoints, int damage) : base(owner, land, cost)
+    public Creature(int line, Player owner, LandType land, int cost, int healthPoints, int damage) : base(owner, land, cost)
     {
         if (healthPoints <= 0 || damage <= 0)
             throw new ArgumentException($"The {nameof(healthPoints)} or {nameof(damage)} must be > 0.");
-        HP = healthPoints;
-        Damage = damage;
+        _initialDamage = damage;
+        _cretureHP = healthPoints;
+        //todo: валидировать что действительно там есть создание
+        Line = line;
     }
-    
-    public bool IsFlipped() => _isFlipped;
 
-    public bool IsDead() => HP <= 0;
-    
-    public void Flip() => _isFlipped = !_isFlipped;
-
-    public void RegisterBuff(int buff) => _buffDamage += buff;
-
-    public void Attack(ICreature enemy)
+    public void RegisterBonus(Bonus buff)
     {
-        enemy.TakeDamage(Damage + _buffDamage);
-        _buffDamage = 0;
+        _buffHP += buff.DefenceBonus;
+        _buffDamage += buff.AttackBonus;
     }
 
-    public void TakeDamage(int damage) => HP -= damage;
+    public void Attack(Creature enemy) 
+    {
+        enemy.TakeDamage(Damage);
+    }
+
+    public void TakeDamage(int damage) => _cretureHP -= damage;
+    
+
+    protected Creature? ReplaceCreature()
+    {
+        var old = Owner.Creatures[Line];
+        Owner.Creatures[Line] = this;
+        return old;
+    }
+
+    public void Reset()
+    {
+        IsAttacking = true;
+        _buffDamage = 0;
+        _buffHP = 0;
+    }
 }

@@ -1,21 +1,28 @@
-﻿namespace GameObjects;
+﻿using GameObjects.Buildings;
+using GameObjects.Creatures;
+
+namespace GameObjects;
 
 //todo: player : Idisposable => ссылки на gameInstance убрать
-public class Player
+public class Player : IDisposable
 {
+    //todo: поменять лиюо на game либо добавить инит
+    public Player Opponent;
+    
     public int Id { get; }
     
     public List<GameInstance> Hand { get; }
     
     public Land[] Lands { get; }
     
-    public Creature[] Creatures { get; }
+    public Creature?[] Creatures { get; }
     
-    public Building[] Buildings { get; }
+    public Building?[] Buildings { get; }
 
+    //todo: validate args
     public Player(int id, Land[] lands)
     {
-        //todo: validate args
+        //todo: здесь должно быть не GameInstance, а enum карточки
         Hand = new List<GameInstance>();
         Creatures = new Creature[4];
         Buildings = new Building[4];
@@ -45,9 +52,18 @@ public class Player
 
     public void TakeDamage(int damage)
     {
+        //todo: уведомить игру
         //if(damage < 0) throw new ArgumentException();
         HP -= damage;
     }
 
+    public int ControlledLands(LandType land) => Lands.Count(x => !x.IsTurnedOver && x.LandType == land);
+
     public bool IsDead => HP <= 0;
+    public void Dispose()
+    {
+        Opponent = null;
+    }
+
+    ~Player() => Dispose();
 }
