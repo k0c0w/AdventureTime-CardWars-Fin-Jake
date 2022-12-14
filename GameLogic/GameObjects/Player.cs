@@ -1,16 +1,20 @@
-﻿using GameObjects.Buildings;
-using GameObjects.Creatures;
+﻿using GameKernel;
+using GameKernel.temp;
 
 namespace GameObjects;
 
 //todo: player : Idisposable => ссылки на gameInstance убрать
-public class Player : IDisposable
+public class Player
 {
-    //todo: поменять лиюо на game либо добавить инит
-    public Player Opponent;
+    //todo: исправить deck
+    public Deck Deck { get; }
     
-    public int Id { get; }
+    public int Id { get;}
+
+    public Player Opponent => CurrentGame.Players.Values.First(x => x.Id != Id);
     
+    private Game CurrentGame { get; }
+
     public List<GameInstance> Hand { get; }
     
     public Land[] Lands { get; }
@@ -20,19 +24,21 @@ public class Player : IDisposable
     public Building?[] Buildings { get; }
 
     //todo: validate args
-    public Player(int id, Land[] lands)
+    public Player(int userId, Game game, Land[] lands, Deck deck)
     {
         //todo: здесь должно быть не GameInstance, а enum карточки
         Hand = new List<GameInstance>();
         Creatures = new Creature[4];
         Buildings = new Building[4];
         Lands = lands;
+        CurrentGame = game;
+        Deck = deck;
         HP = 25;
-        Id = id;
     }
 
     public void TakeCard(GameInstance card)
     {
+        //todo: добавить deck и из нее грабать карту и уведомлять игру здесь 
         Hand.Add(card);
     }
 
@@ -60,10 +66,4 @@ public class Player : IDisposable
     public int ControlledLands(LandType land) => Lands.Count(x => !x.IsTurnedOver && x.LandType == land);
 
     public bool IsDead => HP <= 0;
-    public void Dispose()
-    {
-        Opponent = null;
-    }
-
-    ~Player() => Dispose();
 }
