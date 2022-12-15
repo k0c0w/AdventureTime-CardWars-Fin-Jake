@@ -7,7 +7,7 @@ namespace GameObjects;
 public class Player
 {
     //todo: исправить deck
-    public Deck Deck { get; }
+    public Deck Deck { get; internal set; }
     
     public int Id { get;}
 
@@ -17,22 +17,20 @@ public class Player
 
     public List<GameInstance> Hand { get; }
     
-    public Land[] Lands { get; }
+    public Land[] Lands { get; internal set; }
     
     public Creature?[] Creatures { get; }
     
     public Building?[] Buildings { get; }
 
     //todo: validate args
-    public Player(int userId, Game game, Land[] lands, Deck deck)
+    public Player(int userId, Game game)
     {
         //todo: здесь должно быть не GameInstance, а enum карточки
         Hand = new List<GameInstance>();
         Creatures = new Creature[4];
         Buildings = new Building[4];
-        Lands = lands;
         CurrentGame = game;
-        Deck = deck;
         HP = 25;
     }
 

@@ -18,6 +18,6 @@ public class DeckChooseGameState : IGameState
 
     public void ChangeState()
     {
-        CurrentGame.GameState = new UserChooseDeck();
+        CurrentGame.GameState = new UserChooseDeck(CurrentGame);
     }
 }

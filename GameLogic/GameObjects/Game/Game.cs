@@ -13,24 +13,31 @@ public class Game
     internal (DeckTypes, DeckTypes) AllowedDecks { get; }
     internal DecksAndLandsHolder _holder;
 
-    private Creature?[][] PlayersCreatures { get; set; }
+    private Dictionary<int, Creature?[]> PlayersCreatures { get; }
     
-    private Building?[][] PlayersBuildings { get; set; }
+    private Dictionary<int, Building?[]> PlayersBuildings { get; }
     
-    private List<GameInstance>[] PlayersHand { get; set; }
+    private Dictionary<int, List<GameInstance>> PlayersHand { get; }
     
     
     private readonly Queue<GameAction> _gameActions = new Queue<GameAction>();
 
-    //todo: аргументы: ввести игроков (которые соединения)
-    public Game(GameSetting gameSetting)
+    public Game(GameSetting gameSetting, int player1Id, int player2Id)
     {
-        Players = new Dictionary<int, Player>();
+        //todo: ограничить id игроков - только 1 и 2
+        if (player1Id == -1 || player2Id == -1)
+            throw new ArgumentException("Id -1 is reserved by game");
+        var player1 = new Player(player1Id, this);
+        var player2 = new Player(player2Id, this);
+        Players = new Dictionary<int, Player>() { { player1Id, player1 }, { player2Id, player2 } };
         _holder = LandsFactory.PrepareLandsAndDecks((dynamic)gameSetting);
         AllowedDecks = gameSetting.Decks;
-        PlayersCreatures = new Creature?[][2];
-        PlayersBuildings = new Building?[][2];
-        PlayersHand = new List<GameInstance>[2];
+        PlayersCreatures = new Dictionary<int, Creature?[]>()
+            { { player1Id, player1.Creatures }, { player2Id, player2.Creatures } };
+        PlayersBuildings = new Dictionary<int, Building?[]>()
+            { { player1Id, player1.Buildings }, { player2Id, player2.Buildings } };
+        PlayersHand =  new Dictionary<int, List<GameInstance>>()
+            { { player1Id, player1.Hand }, { player2Id, player2.Hand } };
     }
     
     public IEnumerable<GameAction> ApplyGameActions(GameAction action)
