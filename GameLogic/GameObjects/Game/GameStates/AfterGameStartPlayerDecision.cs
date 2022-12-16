@@ -1,23 +1,35 @@
 ﻿namespace GameKernel.GameStates;
 
-public class AfterGameStartPlayerDecision : IGameState
+public class AfterGameStartPlayerDecision : PlayerDecision, IGameState
 {
-    public AfterGameStartPlayerDecision(Game game) => CurrentGame = game;
+    public AfterGameStartPlayerDecision(Game game) : base(1, game) { }
+
+
+    public new bool IsValidAction(GameAction action)
+        => IsValidUserId(action) && action is UserPutCard put && IsValidPutCardAction(put);
+
+    public new void Execute(GameAction action)
+    {
+        if (!IsValidAction(action))
+        {
+            CurrentGame.RegisterAction(Game.BadRequestAction);
+            return;
+        }
+
+        var put = (UserPutCard)action;
+        if(CurrentGame.TryPlayCard(CurrentGame.Players[1], (int)put.IndexInHand!, put.Line))
+        {
+            EnergyLeft -= CurrentGame.PlayersCreatures[1][put.Line]!.SummonCost;
+            CurrentGame.RegisterAction(put with {IndexInHand = null});
+        }
+        else
+            CurrentGame.RegisterAction(Game.BadRequestAction);
+        if(EnergyLeft <= 0)
+            ChangeState();
+    }
     
-    public Game CurrentGame { get; }
-    public bool IsValidAction(GameAction action)
+    public new void ChangeState()
     {
-        //return action.UserId && //todo:
-        throw new NotImplementedException();
-    }
-
-    public void Execute(GameAction action)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void ChangeState()
-    {
-        throw new NotImplementedException();
+        CurrentGame.GameState = new PlayerDecision(2, CurrentGame);
     }
 }

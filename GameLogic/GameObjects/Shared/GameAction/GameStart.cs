@@ -1,6 +1,6 @@
 ﻿namespace GameKernel;
 
-public record GameStart : GameAction
+public record GameStart : GameAction, IBothUserInfo
 {
     public GameStart()
     {

@@ -1,6 +1,6 @@
 ﻿namespace GameObjects;
 
-public abstract class GameInstance
+public abstract class GameObject
 {
     //todo: как индетефицировать сущность в пакете?? 
     //public Guid SessionInstanceId { get; init; } = Guid.NewGuid() ???
@@ -10,7 +10,7 @@ public abstract class GameInstance
 
     public int SummonCost { get; }
 
-    public GameInstance(Player owner, LandType land, int cost)
+    public GameObject(Player owner, LandType land, int cost)
     {
         if (owner == null)
             throw new ArgumentNullException($"The given {nameof(owner)} was null.");

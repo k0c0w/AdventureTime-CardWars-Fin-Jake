@@ -2,7 +2,7 @@
 
 namespace GameKernel;
 
-public record class UserChoseDeck : GameAction
+public record class UserChoseDeck : GameAction, IBothUserInfo
 {
     public DeckTypes DeckType { get; }
     

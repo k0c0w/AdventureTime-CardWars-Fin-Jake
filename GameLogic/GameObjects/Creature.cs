@@ -1,6 +1,6 @@
 ﻿namespace GameObjects;
 
-public abstract class Creature : GameInstance
+public abstract class Creature : GameObject
 {
     public int Line { get; set; }
     

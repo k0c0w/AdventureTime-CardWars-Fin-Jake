@@ -2,6 +2,7 @@
 using GameObjects;
 using GameKernel.GameStates;
 using GameKernel.temp;
+using GameObjects.Shared.Enums;
 
 namespace GameKernel;
 
@@ -13,14 +14,15 @@ public class Game
     internal (DeckTypes, DeckTypes) AllowedDecks { get; }
     internal DecksAndLandsHolder _holder;
 
-    private Dictionary<int, Creature?[]> PlayersCreatures { get; }
+    internal Dictionary<int, Creature?[]> PlayersCreatures { get; }
     
-    private Dictionary<int, Building?[]> PlayersBuildings { get; }
+    internal Dictionary<int, Building?[]> PlayersBuildings { get; }
     
-    private Dictionary<int, List<GameInstance>> PlayersHand { get; }
+    internal Dictionary<int, List<AllCards>> PlayersHand { get; }
     
     
     private readonly Queue<GameAction> _gameActions = new Queue<GameAction>();
+    private int _creatureIndex = 0;
 
     public Game(GameSetting gameSetting, int player1Id, int player2Id)
     {
@@ -36,7 +38,7 @@ public class Game
             { { player1Id, player1.Creatures }, { player2Id, player2.Creatures } };
         PlayersBuildings = new Dictionary<int, Building?[]>()
             { { player1Id, player1.Buildings }, { player2Id, player2.Buildings } };
-        PlayersHand =  new Dictionary<int, List<GameInstance>>()
+        PlayersHand =  new Dictionary<int, List<AllCards>>()
             { { player1Id, player1.Hand }, { player2Id, player2.Hand } };
     }
     
@@ -53,16 +55,24 @@ public class Game
     //todo: ассинхронная операция
     internal void RegisterAction(GameAction action) => _gameActions.Enqueue(action);
 
-    internal void RegisterPlayer(Player player)
+    internal bool TryPlayCard(Player player, int cardIndex, int line = -1)
     {
-        //todo: assign deck и сброс
-        var id = player.Id;
-        Players.Add(id, player);
-        PlayersCreatures[id] = player.Creatures;
-        PlayersHand[id] = player.Hand;
-        PlayersBuildings[id] = player.Buildings; 
+        //todo: dispatch whether it is spell, building or creature and call that method
+        
+        
+        try
+        {
+            player.MoveCreatureToLand(cardIndex, line);
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return false;
+        }
     }
 
+    internal static GameAction BadRequestAction { get; } = new BadRequest();
     private IEnumerable<GameAction> BadRequest()
     {
         throw new NotImplementedException();

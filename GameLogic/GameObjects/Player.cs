@@ -1,5 +1,6 @@
 ﻿using GameKernel;
 using GameKernel.temp;
+using GameObjects.Shared.Enums;
 
 namespace GameObjects;
 
@@ -15,7 +16,7 @@ public class Player
     
     private Game CurrentGame { get; }
 
-    public List<GameInstance> Hand { get; }
+    public List<AllCards> Hand { get; }
     
     public Land[] Lands { get; internal set; }
     
@@ -27,14 +28,14 @@ public class Player
     public Player(int userId, Game game)
     {
         //todo: здесь должно быть не GameInstance, а enum карточки
-        Hand = new List<GameInstance>();
+        Hand = new List<AllCards>();
         Creatures = new Creature[4];
         Buildings = new Building[4];
         CurrentGame = game;
         HP = 25;
     }
 
-    public void TakeCard(GameInstance card)
+    public void TakeCard(AllCards card)
     {
         //todo: добавить deck и из нее грабать карту и уведомлять игру здесь 
         Hand.Add(card);
@@ -46,8 +47,7 @@ public class Player
     {
         var card = Hand[creatureIndex];
         Hand.RemoveAt(creatureIndex);
-        //todo: бросать кастомную ошибку, чтобы в логике потом catch через multipledispatch и возвращать BadRequest
-        Creatures[landIndex] = (Creature)card;
+        Creatures[landIndex] = CreatureFactory.Summon(this, card, landIndex);
     }
 
     //повторяющиеся методы - вынести в интерфейс?

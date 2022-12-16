@@ -9,8 +9,8 @@ public class CobsLegion : Creature
         {
             //todo: подумать куда положить replace creature или везде протягивать их?
             var creature = ReplaceCreature();
-            if (creature != null)
-                Owner.Hand.Add(creature);
+            //if (creature != null)
+                //Owner.Hand.Add(creature);
         }
     }
 
