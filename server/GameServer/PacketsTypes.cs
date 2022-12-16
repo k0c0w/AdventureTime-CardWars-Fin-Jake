@@ -5,6 +5,7 @@ public enum ServerPacket
 {
     Welcome,
     GoodBye,
+    ServerError
 }
 
 /// <summary>Sent from client to server.</summary>
@@ -16,7 +17,14 @@ public enum ClientPacket
 
 public enum GameActionPacket
 {
-    GameStart
+    GameStart,
+    Winner,
+    BadRequest,
+    PossibleDecks,
+    UserChoseDeck,
+    UserDecisionEnd,
+    UserPutCard,
+    GameEnd,
 }
 
 public enum PacketId

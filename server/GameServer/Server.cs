@@ -1,10 +1,12 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using GameKernel;
 
 namespace GameServer
 {
     internal class Server
     {
+        public static Game CurrentGame { get; set; }
         public static int MaxPlayers { get; private set; }
         public static int Port { get; private set; }
 
@@ -63,8 +65,13 @@ namespace GameServer
                         { (int)ClientPacket.WelcomeReceived, ServerHandler.WelcomeReceived },
                         { (int)ClientPacket.ReadyForGame, ServerHandler.ChangeUserReadiness },
                     }
-                }
+                },
+                { PacketId.GameActionPacket, new Dictionary<int, PacketHandler>() },
             };
+            var handler = new PacketHandler(GameActionHandler.ApplyToGame);
+            var gameActions = PacketHandlers[PacketId.GameActionPacket];
+            for(var action = 0; action <= (int)GameActionPacket.GameEnd; action++)
+                gameActions.Add(action, handler);
 
             Console.WriteLine("Initialized packets.");
         }

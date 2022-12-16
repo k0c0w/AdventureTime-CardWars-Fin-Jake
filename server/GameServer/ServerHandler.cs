@@ -1,5 +1,8 @@
-﻿namespace GameServer;
-public class ServerHandler
+﻿using GameKernel;
+using GameKernel.Deck;
+
+namespace GameServer;
+internal class ServerHandler
 {
     private delegate void AfterReadinessChanged();
     private static event AfterReadinessChanged UserReadinessChanged;
@@ -25,17 +28,27 @@ public class ServerHandler
         Task.Run(() => UserReadinessChanged());
         Console.WriteLine($"User {player.Username} is ready: {player.IsReady}");
     }
-
+    
     private static void TryStartGame()
     {
-        if (Server.Clients.Values.Any(x => x.Player == null || !x.Player.IsReady))
-            return;
-        
-        //todo: здесь должно быть создание игры
-        Console.WriteLine("Игра началась!");
+        lock (Server.Clients)
+        {
+            if (Server.Clients.Values.Any(x => x.Player == null || !x.Player.IsReady))
+                return;
+        }
 
+        Server.CurrentGame = new Game(new FinnVSJake(), 1, 2);
+        using var decks = GetEncodedDecks(Server.CurrentGame);
         using var packet = new Packet((int)PacketId.GameActionPacket, (int)GameActionPacket.GameStart);
+        //todo: убрать это
         packet.Write("test");
         ServerSend.SendTCPDataToAll(packet);
+        ServerSend.SendTCPDataToAll(decks);
+    }
+
+    private static Packet GetEncodedDecks(Game gameIsInStartState)
+    {
+        var decks = gameIsInStartState.ApplyGameActions(new GameStart());
+        return PacketEncoder.EncodeGameAction(decks.First());
     }
 }
