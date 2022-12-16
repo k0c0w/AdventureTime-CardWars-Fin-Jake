@@ -35,7 +35,7 @@ public class ServerHandler
         Console.WriteLine("Игра началась!");
 
         using var packet = new Packet((int)PacketId.GameActionPacket, (int)GameActionPacket.GameStart);
-        packet.WriteLength();
+        packet.Write("test");
         ServerSend.SendTCPDataToAll(packet);
     }
 }
