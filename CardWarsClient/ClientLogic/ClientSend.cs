@@ -1,4 +1,6 @@
-﻿namespace CardWarsClient;
+﻿using Shared.Packets;
+
+namespace CardWarsClient;
 
 public class ClientSend
 {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Media.Animation;
+using Shared.Packets;
 
 namespace CardWarsClient;
 
@@ -21,5 +22,11 @@ public class ClientHandle
             await Shell.Current.GoToAsync("GamePage");
         });
         //Client.Instance.IsServerReady = true;
+    }
+
+    public static void ChooseDeck(Packet packet)
+    {
+        var action = PacketEncoder.DecodeGameAction(packet);
+        throw new NotImplementedException();
     }
 }

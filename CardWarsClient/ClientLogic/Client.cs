@@ -1,5 +1,5 @@
 ﻿using System.Net.Sockets;
-using System.Text;
+using Shared.Packets;
 
 namespace CardWarsClient;
 
@@ -147,9 +147,9 @@ public class Client
                 } 
                 else if(packetId == (int)PacketId.GameActionPacket)
                 {
-                    var packetSubId = packet.ReadInt();
+                    //PacketEncoder внутри считывает SubId, поэтому не двигаем указатель, 
+                    var packetSubId = packet.ReadInt(false);
                     packetHandlers[PacketId.GameActionPacket][packetSubId](packet);
-
                     packetLength = 0;
                     if (receivedData.UnreadLength >= 4)
                     {
@@ -158,6 +158,15 @@ public class Client
                             return true;
                     }
                 }
+                
+                //todo: вынести сюда этот блок. поидее должно работать
+                /*packetLength = 0;
+                if (receivedData.UnreadLength >= 4)
+                {
+                    packetLength = receivedData.ReadInt();
+                    if (packetLength <= 0)
+                        return true;
+                }*/
 
                 //throw new ArgumentException($"Unsupported packet {packetId}");
                 return true;
@@ -180,7 +189,10 @@ public class Client
             },
             {
                 PacketId.GameActionPacket, new Dictionary<int, PacketHandler>()
-                { { (int)GameActionPacket.GameStart, ClientHandle.SendToGame } }
+                {
+                    { (int)GameActionPacket.GameStart, ClientHandle.SendToGame }, 
+                    { (int)GameActionPacket.UserChoseDeck, ClientHandle.ChooseDeck }
+                }
             }
         };
     }
@@ -189,27 +201,4 @@ public class Client
     {
         if (isServerReady) await Shell.Current.GoToAsync("GamePage");
     }
-}
-
-public enum ServerPacket
-{
-    Welcome
-}
-
-public enum ClientPacket
-{
-    WelcomeReceived,
-    ReadyForGame
-}
-
-public enum GameActionPacket
-{
-    GameStart
-}
-
-public enum PacketId
-{
-    ServerPacket = 0,
-    ClientPacket = 1,
-    GameActionPacket = 2
 }
