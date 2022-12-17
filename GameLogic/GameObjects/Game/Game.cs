@@ -49,7 +49,8 @@ public class Game
         if (!GameState.IsValidAction(action))
             return BadRequest();
         GameState.Execute(action);
-        var actions = _gameActions;
+        var actions = new GameAction[_gameActions.Count];
+        _gameActions.CopyTo(actions, 0);
         _gameActions.Clear();
         return actions;
     }
