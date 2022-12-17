@@ -78,9 +78,9 @@ public class PacketEncoder
 
     public static GameAction DecodeGameAction(Packet packet)
     {
-        var packetType = (PacketId)packet.ReadInt();
+        /*var packetType = (PacketId)packet.ReadInt();
         if (packetType != PacketId.GameActionPacket)
-            throw new InvalidOperationException($"Incorrect packet type {packetType}.");
+            throw new InvalidOperationException($"Incorrect packet type {packetType}.");*/
         var action = (GameActionPacket)packet.ReadInt();
         return action switch
         {
