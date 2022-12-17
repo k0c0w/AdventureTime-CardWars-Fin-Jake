@@ -1,6 +1,6 @@
 ﻿using GameObjects;
 using GameObjects.Creatures;
-using GameObjects.Shared.Enums;
+using Shared.PossibleCards;
 
 namespace GameKernel;
 
@@ -10,8 +10,8 @@ public static class CreatureFactory
     {
         return card switch
         {
-            AllCards.ArcherDan => new ArcherDan(toLine, owner),
-            AllCards.CobsLegion => new CobsLegion(toLine, owner),
+            AllCards.CornRonin => new CornRonin(toLine, owner),
+            AllCards.SpiritSolder => new SpiritSolder(toLine, owner),
             _ => throw new InvalidOperationException("Can not summon that card"),
         };
     }

@@ -1,6 +1,6 @@
-﻿using GameKernel.Deck;
+﻿using Shared.Decks;
 
-namespace GameKernel;
+namespace Shared.GameActions;
 
 public record PossibleDecks : GameAction, IBothUserInfo
 {

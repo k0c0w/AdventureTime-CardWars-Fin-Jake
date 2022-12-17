@@ -1,4 +1,5 @@
-﻿using GameKernel.Deck;
+﻿using Shared.Decks;
+using Shared.GameActions;
 
 namespace GameKernel.GameStates;
 
@@ -8,7 +9,7 @@ public class DeckChooseGameState : IGameState
 
     public DeckChooseGameState(Game game) => CurrentGame = game;
 
-    public bool IsValidAction(GameAction action) => false;
+    public bool IsValidAction(GameAction action) => true;
 
     public void Execute(GameAction action)
     {

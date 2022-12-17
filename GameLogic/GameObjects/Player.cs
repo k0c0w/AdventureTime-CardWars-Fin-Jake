@@ -1,6 +1,5 @@
 ﻿using GameKernel;
-using GameKernel.temp;
-using GameObjects.Shared.Enums;
+using Shared.PossibleCards;
 
 namespace GameObjects;
 

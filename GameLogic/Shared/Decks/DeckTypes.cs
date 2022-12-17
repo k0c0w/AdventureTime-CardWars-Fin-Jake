@@ -1,4 +1,4 @@
-﻿namespace GameKernel.Deck;
+﻿namespace Shared.Decks;
 
 public enum DeckTypes
 {

@@ -1,4 +1,6 @@
-﻿namespace GameKernel.GameStates;
+﻿using Shared.GameActions;
+
+namespace GameKernel.GameStates;
 
 public interface IGameState
 {
