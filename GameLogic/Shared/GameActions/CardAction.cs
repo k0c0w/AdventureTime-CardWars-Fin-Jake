@@ -1,6 +1,6 @@
-﻿using GameObjects.Shared.Enums;
+﻿using Shared.PossibleCards;
 
-namespace GameKernel;
+namespace Shared.GameActions;
 
 public record CardAction : GameAction
 {

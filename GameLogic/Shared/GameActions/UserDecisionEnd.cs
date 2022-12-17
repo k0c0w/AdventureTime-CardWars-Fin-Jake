@@ -1,5 +1,4 @@
-﻿namespace GameKernel;
-
+﻿namespace Shared.GameActions;
 public record UserDecisionEnd : GameAction
 {
     

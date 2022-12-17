@@ -9,7 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Folder Include="Shared" />
       <Folder Include="Spells" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Shared\Shared.csproj" />
     </ItemGroup>
 
 </Project>

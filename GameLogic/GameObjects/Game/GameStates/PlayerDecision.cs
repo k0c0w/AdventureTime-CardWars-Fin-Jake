@@ -1,4 +1,5 @@
-﻿using GameObjects;
+﻿using Shared.GameActions;
+using GameObjects;
 
 namespace GameKernel.GameStates;
 
@@ -47,6 +48,7 @@ public class PlayerDecision : IGameState
 
     public bool IsValidAction(GameAction action)
     {
+        if (action is UserDecisionEnd) return true;
         return action.UserId == _playerId 
                && ((action is UserPutCard put && IsValidPutCardAction(put))
                    || action is UserFlupCard flup && IsValidFlupAction(flup));

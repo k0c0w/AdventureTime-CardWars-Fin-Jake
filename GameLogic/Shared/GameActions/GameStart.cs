@@ -1,4 +1,4 @@
-﻿namespace GameKernel;
+﻿namespace Shared.GameActions;
 
 public record GameStart : GameAction, IBothUserInfo
 {

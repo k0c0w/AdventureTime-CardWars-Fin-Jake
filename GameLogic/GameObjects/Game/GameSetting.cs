@@ -1,4 +1,4 @@
-﻿using GameKernel.Deck;
+﻿using Shared.Decks;
 
 namespace GameKernel;
 

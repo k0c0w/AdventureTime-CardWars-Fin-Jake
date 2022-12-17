@@ -1,6 +1,6 @@
 ﻿using GameObjects;
 using GameObjects.Creatures;
-using GameObjects.Shared.Enums;
+using Shared.PossibleCards;
 
 namespace GameKernel;
 

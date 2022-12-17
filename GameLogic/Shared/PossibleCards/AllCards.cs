@@ -1,4 +1,4 @@
-﻿namespace GameObjects.Shared.Enums;
+﻿namespace Shared.PossibleCards;
 
 public enum AllCards
 {
