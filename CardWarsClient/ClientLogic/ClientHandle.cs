@@ -1,4 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Media.Animation;
+using Shared.Decks;
+using Shared.GameActions;
 using Shared.Packets;
 
 namespace CardWarsClient;
@@ -16,7 +18,7 @@ public class ClientHandle
 
     public static void SendToGame(Packet packet)
     {
-        packet.ReadString();
+        packet.ReadInt();
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             await Shell.Current.GoToAsync("GamePage");
@@ -24,9 +26,26 @@ public class ClientHandle
         //Client.Instance.IsServerReady = true;
     }
 
-    public static void ChooseDeck(Packet packet)
+    public static void Dispatch(Packet packet)
     {
         var action = PacketEncoder.DecodeGameAction(packet);
-        throw new NotImplementedException();
+        Handle((dynamic)action);
+    }
+
+    private static void Handle(PossibleDecks decks)
+    {
+        MainThread.BeginInvokeOnMainThread(async () => {
+            var action = await Shell.Current.DisplayActionSheet("decks", "Отмена", "Удалить", decks.First.ToString(), decks.Second.ToString());
+            var chosen = (DeckTypes)Enum.Parse(typeof(Shared.Decks.DeckTypes), action);
+            ClientSend.ChooseDeck(chosen);
+        }) ;
+    }
+
+    private static void Handle(GameAction action)
+    {
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            await Shell.Current.DisplayAlert("Уведомление", action.ToString(), "ОK");
+        });
     }
 }

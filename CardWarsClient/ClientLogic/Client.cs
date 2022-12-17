@@ -130,43 +130,27 @@ public class Client
             while (0 < packetLength && packetLength <= receivedData.UnreadLength)
             {
                 var packetsBytes = receivedData.ReadBytes(packetLength);
-                using var packet = new Packet(packetsBytes);
+                var packet = new Packet(packetsBytes);
                 var packetId = packet.ReadInt();
                 if (packetId == (int)PacketId.ServerPacket)
                 {
                     var packetSubId = packet.ReadInt();
                     packetHandlers[PacketId.ServerPacket][packetSubId](packet);
-
-                    packetLength = 0;
-                    if (receivedData.UnreadLength >= 4)
-                    {
-                        packetLength = receivedData.ReadInt();
-                        if (packetLength <= 0)
-                            return true;
-                    }
                 } 
                 else if(packetId == (int)PacketId.GameActionPacket)
                 {
                     //PacketEncoder внутри считывает SubId, поэтому не двигаем указатель, 
                     var packetSubId = packet.ReadInt(false);
-                    packetHandlers[PacketId.GameActionPacket][packetSubId](packet);
-                    packetLength = 0;
-                    if (receivedData.UnreadLength >= 4)
-                    {
-                        packetLength = receivedData.ReadInt();
-                        if (packetLength <= 0)
-                            return true;
-                    }
+                    packetHandlers[PacketId.GameActionPacket][packetSubId](packet);        
                 }
-                
-                //todo: вынести сюда этот блок. поидее должно работать
-                /*packetLength = 0;
+
+                packetLength = 0;
                 if (receivedData.UnreadLength >= 4)
                 {
                     packetLength = receivedData.ReadInt();
                     if (packetLength <= 0)
                         return true;
-                }*/
+                }
 
                 //throw new ArgumentException($"Unsupported packet {packetId}");
                 return true;
@@ -191,10 +175,16 @@ public class Client
                 PacketId.GameActionPacket, new Dictionary<int, PacketHandler>()
                 {
                     { (int)GameActionPacket.GameStart, ClientHandle.SendToGame }, 
-                    { (int)GameActionPacket.UserChoseDeck, ClientHandle.ChooseDeck }
                 }
             }
         };
+        var multipleDispatch = new PacketHandler(ClientHandle.Dispatch);
+        var gameActionHandlers = packetHandlers[PacketId.GameActionPacket];
+        for(var i = 1; i < (int)GameActionPacket.GameEnd; i++)
+        {
+            gameActionHandlers.Add(i, multipleDispatch);
+        }
+
     }
 
     private async void OnChangedServerReadiness()

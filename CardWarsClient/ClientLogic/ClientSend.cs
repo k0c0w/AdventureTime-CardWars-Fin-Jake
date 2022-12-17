@@ -4,6 +4,7 @@ namespace CardWarsClient;
 
 public class ClientSend
 {
+
     private static void SendTCPData(Packet packet)
     {
         packet.WriteLength();
@@ -26,5 +27,13 @@ public class ClientSend
         packet.Write((int)ClientPacket.ReadyForGame);
         packet.Write(isReady);
         SendTCPData(packet);
+    }
+
+    public static void ChooseDeck(Shared.Decks.DeckTypes deck)
+    {
+        var action = new Shared.GameActions.UserChoseDeck(Client.Instance.Id, deck);
+
+        var r = PacketEncoder.EncodeGameAction(action);
+        SendTCPData(r);
     }
 }
