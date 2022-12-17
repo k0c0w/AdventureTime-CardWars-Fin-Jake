@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using Shared.Packets;
 
 namespace GameServer;
 
@@ -99,8 +100,16 @@ public class Client
                 var packetsBytes = _receivedData.ReadBytes(packetLength);
                 using var packet = new Packet(packetsBytes);
                 var packetId = packet.ReadInt();
-                var packetSubId = packet.ReadInt();
-                Server.PacketHandlers[(PacketId)packetId][packetSubId](_id, packet);
+                if ((PacketId)packetId == PacketId.GameActionPacket)
+                {
+                    var subId = packet.ReadInt(false);
+                    Server.PacketHandlers[PacketId.GameActionPacket][subId](_id, packet);
+                }
+                else
+                {
+                    var packetSubId = packet.ReadInt();
+                    Server.PacketHandlers[(PacketId)packetId][packetSubId](_id, packet);
+                }
                 packetLength = 0;
                 if (_receivedData.UnreadLength >= 4)
                 {

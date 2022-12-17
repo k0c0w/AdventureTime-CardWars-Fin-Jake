@@ -1,5 +1,6 @@
 ﻿using GameKernel;
-using GameKernel.Deck;
+using Shared.GameActions;
+using Shared.Packets;
 
 namespace GameServer;
 internal class ServerHandler
@@ -31,19 +32,15 @@ internal class ServerHandler
     
     private static void TryStartGame()
     {
-        lock (Server.Clients)
-        {
-            if (Server.Clients.Values.Any(x => x.Player == null || !x.Player.IsReady))
+        if (Server.Clients.Values.Any(x => x.Player == null || !x.Player.IsReady) || Server.CurrentGame != null)
                 return;
-        }
 
         Server.CurrentGame = new Game(new FinnVSJake(), 1, 2);
         using var decks = GetEncodedDecks(Server.CurrentGame);
         using var packet = new Packet((int)PacketId.GameActionPacket, (int)GameActionPacket.GameStart);
-        //todo: убрать это
-        packet.Write("test");
         ServerSend.SendTCPDataToAll(packet);
         ServerSend.SendTCPDataToAll(decks);
+        Console.WriteLine("send");
     }
 
     private static Packet GetEncodedDecks(Game gameIsInStartState)

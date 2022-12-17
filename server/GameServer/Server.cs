@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 using GameKernel;
+using Shared.Packets;
 
 namespace GameServer
 {

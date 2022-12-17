@@ -1,4 +1,6 @@
-﻿namespace GameServer;
+﻿using Shared.Packets;
+
+namespace GameServer;
 
 public class ServerSend
 {

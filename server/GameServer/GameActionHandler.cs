@@ -1,4 +1,6 @@
 ﻿using GameKernel;
+using Shared.GameActions;
+using Shared.Packets;
 
 namespace GameServer;
 
