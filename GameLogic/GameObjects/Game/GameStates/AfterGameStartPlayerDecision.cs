@@ -19,7 +19,7 @@ public class AfterGameStartPlayerDecision : PlayerDecision, IGameState
         }
 
         var put = (UserPutCard)action;
-        if(CurrentGame.TryPlayCard(CurrentGame.Players[1], (int)put.IndexInHand!, put.Line))
+        if(CurrentGame.TryPlayCreature(CurrentGame.Players[1], (int)put.IndexInHand!, put.Line))
         {
             EnergyLeft -= CurrentGame.PlayersCreatures[1][put.Line]!.SummonCost;
             CurrentGame.RegisterAction(put);

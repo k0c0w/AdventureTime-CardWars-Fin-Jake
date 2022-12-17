@@ -9,7 +9,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Shared" />
       <Folder Include="Spells" />
     </ItemGroup>
 

@@ -2,6 +2,6 @@
 
 public enum AllCards
 {
-    ArcherDan,
-    CobsLegion,
-}
+    CornRonin,
+    SpiritSolder
+} 

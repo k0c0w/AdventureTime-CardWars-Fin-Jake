@@ -67,7 +67,11 @@ public class PlayerDecision : IGameState
             CurrentGame.RegisterAction(Game.BadRequestAction);
         }
 
-
+        if (action is UserPutCard put)
+        {
+            CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.IndexInHand, put.IndexInHand);
+            CurrentGame.RegisterAction(put);
+        }
         //todo: logic
     }
 

@@ -1,7 +1,7 @@
 ﻿using Shared.Decks;
 using GameObjects;
 
-namespace GameKernel.temp;
+namespace GameKernel;
 
 public class DecksAndLandsHolder
 {
@@ -29,11 +29,4 @@ public class DecksAndLandsHolder
 
         throw new InvalidOperationException($"No such deck {deck} left!");
     }
-}
-
-public class Deck
-{
-    public DeckTypes DeckType;
-    
-    public void Shuffle() {}
 }

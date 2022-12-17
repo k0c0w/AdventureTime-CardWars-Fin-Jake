@@ -3,7 +3,6 @@ using Shared.PossibleCards;
 using Shared.GameActions;
 using GameObjects;
 using GameKernel.GameStates;
-using GameKernel.temp;
 
 namespace GameKernel;
 
@@ -21,7 +20,8 @@ public class Game
     
     internal Dictionary<int, List<AllCards>> PlayersHand { get; }
     
-    
+    internal Dictionary<int, Deck> PlayersDeck { get; }
+
     private readonly Queue<GameAction> _gameActions = new Queue<GameAction>();
     private int _creatureIndex = 0;
 
@@ -40,6 +40,7 @@ public class Game
             { { player1Id, player1.Buildings }, { player2Id, player2.Buildings } };
         PlayersHand =  new Dictionary<int, List<AllCards>>()
             { { player1Id, player1.Hand }, { player2Id, player2.Hand } };
+        PlayersDeck = new Dictionary<int, Deck> { { player1Id, player1.Deck }, { player2Id, player2.Deck } };
         GameState = new DeckChooseGameState(this);
     }
     
@@ -56,11 +57,8 @@ public class Game
     //todo: ассинхронная операция
     internal void RegisterAction(GameAction action) => _gameActions.Enqueue(action);
 
-    internal bool TryPlayCard(Player player, int cardIndex, int line = -1)
+    internal bool TryPlayCreature(Player player, int cardIndex, int line = -1)
     {
-        //todo: dispatch whether it is spell, building or creature and call that method
-        
-            
         try
         {
             player.MoveCreatureToLand(cardIndex, line);

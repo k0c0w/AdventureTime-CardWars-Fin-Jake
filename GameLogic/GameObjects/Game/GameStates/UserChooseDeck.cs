@@ -1,4 +1,5 @@
 ﻿using Shared.GameActions;
+using Shared.PossibleCards;
 
 namespace GameKernel.GameStates;
 
@@ -33,15 +34,24 @@ public class UserChooseDeck : IGameState
         player.Lands = dnl.Item2;
         
         CurrentGame.RegisterAction(new UserChoseDeck(player.Id, player.Deck.DeckType));
+        CurrentGame.RegisterAction(new UserTakeDeck(choose.UserId, TakeFiveCards(choose.UserId)));
 
         if (CurrentGame.Players.Values.All(x => x.Deck != null))
             ChangeState();
+    }
+
+    private AllCards[] TakeFiveCards(int userId)
+    {
+        var deck = CurrentGame.PlayersDeck[userId];
+        return Enumerable.Range(0, 5).Select(x => deck.GetCard()).ToArray();
     }
 
     public void ChangeState()
     {
         CurrentGame.RegisterAction(new GameStart());
         CurrentGame._holder = null!;
+        CurrentGame.GameState = new TakeCardsState(1, CurrentGame);
+        CurrentGame.GameState.Execute(null!);
         CurrentGame.GameState = new AfterGameStartPlayerDecision(CurrentGame);
     }
 }
