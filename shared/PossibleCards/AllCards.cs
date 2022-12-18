@@ -2,6 +2,6 @@
 
 public enum AllCards
 {
-    CornRonin,
-    SpiritSolder
+    corn_ronin,
+    spirit_solder
 } 
