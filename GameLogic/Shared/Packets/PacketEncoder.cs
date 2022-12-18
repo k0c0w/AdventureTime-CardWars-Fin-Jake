@@ -71,19 +71,16 @@ public class PacketEncoder
     {
         packet.Write((int)GameActionPacket.UserTakeDeck);
         var cards = request.CardsFromDeck;
-        var lands = request.Lands;
         for(var i = 0; i < 5; i++)
             packet.Write((int)cards[i]);
-        for(var i = 0; i < 4; i++)
-            packet.Write((int)lands[i]);
         return packet;
     }
 
     public static GameAction DecodeGameAction(Packet packet)
     {
-        /*var packetType = (PacketId)packet.ReadInt();
+        var packetType = (PacketId)packet.ReadInt();
         if (packetType != PacketId.GameActionPacket)
-            throw new InvalidOperationException($"Incorrect packet type {packetType}.");*/
+            throw new InvalidOperationException($"Incorrect packet type {packetType}.");
         var action = (GameActionPacket)packet.ReadInt();
         return action switch
         {
@@ -134,12 +131,9 @@ public class PacketEncoder
     {
         var userId = packet.ReadInt();
         var hand = new AllCards[5];
-        var lands = new LandType[4];
         for (var i = 0; i < 5; i++)
             hand[i] = (AllCards)packet.ReadInt();
-        for (var i = 0; i < 4; i++)
-            lands[i] = (LandType)packet.ReadInt();
 
-        return new UserTakeDeck(userId, hand, lands);
+        return new UserTakeDeck(userId, hand);
     }
 }
