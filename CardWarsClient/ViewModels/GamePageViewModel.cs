@@ -18,17 +18,22 @@ namespace CardWarsClient.ViewModels
 
         private CardModel _dragged;
 
+        [ObservableProperty]
+        public string showingImage = null;
+
         public GamePageViewModel()
         {
-            hand.Add(new CardModel { imagePath = "archerdan.png" });
-            hand.Add(new CardModel { imagePath = "cobslegion.png" });
-            hand.Add(new CardModel { imagePath = "archerdan.png" });
-            hand.Add(new CardModel { imagePath = "shybard.png" });
+            hand.Add(new CardModel { imagePath = "archer_dan.png" });
+            hand.Add(new CardModel { imagePath = "cobs_legion.png" });
+            hand.Add(new CardModel { imagePath = "archer_dan.png" });
+            hand.Add(new CardModel { imagePath = "shy_bard.png" });
 
             lands.Add(new LandModel { Id = 0, imagePath = "blue_land.png" });
             lands.Add(new LandModel { Id = 1, imagePath = "blue_land.png" });
             lands.Add(new LandModel { Id = 2, imagePath = "blue_land.png" });
             lands.Add(new LandModel { Id = 3, imagePath = "reversed_land.png" });
+
+            ShowingImage = hand[0].imagePath;
         }
 
         [RelayCommand]
@@ -49,6 +54,12 @@ namespace CardWarsClient.ViewModels
                 lands[slot] = new LandModel { Id = lands[slot].Id, imagePath = lands[slot].imagePath, bindedCard = _dragged }; // костыль
                 _dragged = null;
             }
+        }
+
+        [RelayCommand]
+        public void ChangePreview(string path)
+        {
+            ShowingImage = path;
         }
     }
 }

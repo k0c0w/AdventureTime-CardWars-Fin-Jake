@@ -15,14 +15,16 @@
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Waiting For Players"
+                Text="Ждём игроков"
                 SemanticProperties.HeadingLevel="Level1"
+                FontFamily="Comic"
                 FontSize="32"
                 HorizontalOptions="Center" />
 
             <Button
                 x:Name="ReadyBtn"
-                Text="Ready"
+                Text="Готов"
+                FontFamily="Comic"
                 SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="ReadyClicked"
                 HorizontalOptions="Center" />

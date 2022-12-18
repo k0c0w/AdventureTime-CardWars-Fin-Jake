@@ -57,20 +57,24 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Fonts\ComicFont.otf" />
+	  <None Remove="Resources\Fonts\Hangyaboly-Regular.ttf" />
 	  <None Remove="Resources\Images\bg.jpg" />
-	  <None Remove="Resources\Images\Cards\Finn\shybard.png" />
-	  <None Remove="Resources\Images\Cards\Jake\archerdan.png" />
-	  <None Remove="Resources\Images\Cards\Jake\cobslegion.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\archer_dan.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\cobs_legion.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <None Remove="Resources\Images\Cards\Lands\blue_land.png" />
 	  <None Remove="Resources\Images\Cards\Lands\corn_land.png" />
 	  <None Remove="Resources\Images\Cards\Lands\reversed_land.png" />
+	  <None Remove="Resources\Images\finnavatar.png" />
 	  <None Remove="Resources\Images\house.png" />
+	  <None Remove="Resources\Images\jakeavatar.png" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiImage Include="Resources\Images\Cards\Finn\shybard.png" />
-	  <MauiImage Include="Resources\Images\Cards\Jake\archerdan.png" />
-	  <MauiImage Include="Resources\Images\Cards\Jake\cobslegion.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\archer_dan.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\cobs_legion.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\blue_land.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\corn_land.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\reversed_land.png" />
