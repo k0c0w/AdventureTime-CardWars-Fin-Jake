@@ -12,15 +12,17 @@ public partial class MainPage : ContentPage
         InitializeComponent();
     }
 
-    private void ReadyClicked(object sender, EventArgs e)
+    private async void ReadyClicked(object sender, EventArgs e)
     {
-        var readyPacket = new Packet((int)PacketId.ClientPacket);
+        await Shell.Current.GoToAsync("GamePage");
+        /*var readyPacket = new Packet((int)PacketId.ClientPacket);
         isReady = !isReady;
 
         //todo: ReadyChange(isReady) in ClientSend instead of this...
         ClientSend.ReadyChange(isReady);
         
         ReadyBtn.Text = isReady ? "Unready" : "Ready";
+        */
     }
 
 }

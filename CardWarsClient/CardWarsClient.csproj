@@ -57,7 +57,27 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\bg.jpg" />
+	  <None Remove="Resources\Images\Cards\Finn\shybard.png" />
+	  <None Remove="Resources\Images\Cards\Jake\archerdan.png" />
+	  <None Remove="Resources\Images\Cards\Jake\cobslegion.png" />
+	  <None Remove="Resources\Images\Cards\Lands\blue_land.png" />
+	  <None Remove="Resources\Images\Cards\Lands\corn_land.png" />
+	  <None Remove="Resources\Images\Cards\Lands\reversed_land.png" />
 	  <None Remove="Resources\Images\house.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiImage Include="Resources\Images\Cards\Finn\shybard.png" />
+	  <MauiImage Include="Resources\Images\Cards\Jake\archerdan.png" />
+	  <MauiImage Include="Resources\Images\Cards\Jake\cobslegion.png" />
+	  <MauiImage Include="Resources\Images\Cards\Lands\blue_land.png" />
+	  <MauiImage Include="Resources\Images\Cards\Lands\corn_land.png" />
+	  <MauiImage Include="Resources\Images\Cards\Lands\reversed_land.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
