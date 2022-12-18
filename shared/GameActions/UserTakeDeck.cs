@@ -4,15 +4,18 @@ namespace Shared.GameActions;
 
 public record UserTakeDeck : GameAction, IOneUserInfo
 {
-    public UserTakeDeck(int user, AllCards[] cards)
+    public UserTakeDeck(int user, AllCards[] cards, LandType[] lands)
     {
         if (cards.Length != 5)
             throw new ArgumentException("Player must take 5 cards");
+        if (lands.Length != 4 || lands.Contains(LandType.any))
+            throw new ArgumentException("Invalid Lands");
         UserId = user;
         CardsFromDeck = cards;
+        Lands = lands;
     }
     
-    public UserTakeDeck() {}
+    public AllCards[] CardsFromDeck { get;}
     
-    public AllCards[] CardsFromDeck { get; init; }
+    public LandType[] Lands { get; }
 }

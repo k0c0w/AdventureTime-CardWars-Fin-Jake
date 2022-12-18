@@ -2,7 +2,7 @@
 
 public enum LandType
 {
-    CornFields,
-    BluePlains,
-    Any
+    corn_fields,
+    blue_plains,
+    any
 }
