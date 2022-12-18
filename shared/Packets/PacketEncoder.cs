@@ -74,7 +74,7 @@ public class PacketEncoder
         var lands = request.Lands;
         for(var i = 0; i < 5; i++)
             packet.Write((int)cards[i]);
-        for(var i = 0; i < 5; i++)
+        for(var i = 0; i < 4; i++)
             packet.Write((int)lands[i]);
         return packet;
     }
