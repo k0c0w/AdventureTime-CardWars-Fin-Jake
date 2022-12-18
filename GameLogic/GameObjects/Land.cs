@@ -1,4 +1,6 @@
-﻿namespace GameObjects;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects;
 
 public class Land
 {
@@ -11,7 +13,7 @@ public class Land
 
     public Land(LandType land)
     {
-        if (LandType.Any == land)
+        if (LandType.any == land)
             throw new ArgumentException($"The {nameof(LandType)} must be assigned.");
         LandType = land;
     }

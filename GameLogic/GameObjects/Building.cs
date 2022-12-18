@@ -1,4 +1,6 @@
-﻿namespace GameObjects;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects;
 
 public abstract class Building : GameObject
 {

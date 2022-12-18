@@ -1,8 +1,10 @@
-﻿namespace GameObjects.Creatures;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects.Creatures;
 
 public class ShyBard : Creature, IFlupable
 {
-    public ShyBard(int line, Player owner) : base(line, owner, LandType.BluePlains, 2, 5, 1)
+    public ShyBard(int line, Player owner) : base(line, owner, LandType.blue_plains, 2, 5, 1)
     { }
 
     public override void ExecuteSkill()

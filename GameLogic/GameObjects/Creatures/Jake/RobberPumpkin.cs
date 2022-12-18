@@ -1,4 +1,6 @@
-﻿namespace GameObjects.Creatures;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects.Creatures;
 
 public class RobberPumpkin : Creature, IFlupable
 {
@@ -14,7 +16,7 @@ public class RobberPumpkin : Creature, IFlupable
         if (!_isFlupped) return;
         
         //todo: чеее делать как? как выбрать указзанные существа?
-        var controlledFields = Owner.ControlledLands(LandType.CornFields);
+        var controlledFields = Owner.ControlledLands(LandType.corn_fields);
         var opponentCreatures = Owner.Opponent.Creatures;
         for (var i = 0; i < controlledFields; i++)
             opponentCreatures[i]?.TakeDamage(1);

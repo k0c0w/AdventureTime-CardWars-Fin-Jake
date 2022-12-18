@@ -1,4 +1,6 @@
-﻿namespace GameObjects.Creatures;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects.Creatures;
 
 public class CornKnight : Creature
 {
