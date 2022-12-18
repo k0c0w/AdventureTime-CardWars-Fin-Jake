@@ -1,8 +1,10 @@
-﻿namespace GameObjects.Creatures;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects.Creatures;
 
 public class ArcherDan : Creature, IFlupable
 {
-    public ArcherDan(int line, Player owner) : base(line, owner, LandType.CornFields, 2, 6, 2)
+    public ArcherDan(int line, Player owner) : base(line, owner, LandType.corn_fields, 2, 6, 2)
     {
     }
 

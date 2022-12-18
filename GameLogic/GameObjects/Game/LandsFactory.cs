@@ -10,14 +10,14 @@ internal class LandsFactory
     {
         var finn = new Land[4]
         {
-            new Land(LandType.BluePlains), new Land(LandType.BluePlains), 
-            new Land(LandType.BluePlains), new Land(LandType.BluePlains)
+            new Land(LandType.blue_plains), new Land(LandType.blue_plains), 
+            new Land(LandType.blue_plains), new Land(LandType.blue_plains)
         };
         
         var jake = new Land[4]
         {
-            new Land(LandType.CornFields), new Land(LandType.CornFields), 
-            new Land(LandType.CornFields), new Land(LandType.CornFields)
+            new Land(LandType.corn_fields), new Land(LandType.corn_fields), 
+            new Land(LandType.corn_fields), new Land(LandType.corn_fields)
         };
 
         var finnDeck = CreateFinnDeck();
@@ -33,7 +33,7 @@ internal class LandsFactory
     {
         var cards = new Queue<AllCards>(40);
         for (var i = 0; i < 40; i++)
-            cards.Enqueue(AllCards.SpiritSolder);
+            cards.Enqueue(AllCards.spirit_solder);
 
         return new Deck(DeckTypes.FinnDeck, cards);
     }
@@ -42,7 +42,7 @@ internal class LandsFactory
     {
         var cards = new Queue<AllCards>(40);
         for (var i = 0; i < 40; i++)
-            cards.Enqueue(AllCards.CornRonin);
+            cards.Enqueue(AllCards.corn_ronin);
 
         return new Deck(DeckTypes.JakeDeck, cards);
     }

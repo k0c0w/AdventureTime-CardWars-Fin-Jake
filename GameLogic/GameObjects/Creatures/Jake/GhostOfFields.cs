@@ -1,8 +1,10 @@
-﻿namespace GameObjects.Creatures;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects.Creatures;
 
 public class GhostOfFields : Creature
 {
-    public GhostOfFields(int line, Player owner) : base(line, owner, LandType.CornFields, 1, 10, 1)
+    public GhostOfFields(int line, Player owner) : base(line, owner, LandType.corn_fields, 1, 10, 1)
     {
     }
     

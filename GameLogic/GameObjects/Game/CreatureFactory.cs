@@ -10,8 +10,8 @@ public static class CreatureFactory
     {
         return card switch
         {
-            AllCards.CornRonin => new CornRonin(toLine, owner),
-            AllCards.SpiritSolder => new SpiritSolder(toLine, owner),
+            AllCards.corn_ronin => new CornRonin(toLine, owner),
+            AllCards.spirit_solder => new SpiritSolder(toLine, owner),
             _ => throw new InvalidOperationException("Can not summon that card"),
         };
     }

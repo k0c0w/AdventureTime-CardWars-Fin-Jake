@@ -1,8 +1,10 @@
-﻿namespace GameObjects.Buildings;
+﻿using Shared.PossibleCards;
+
+namespace GameObjects.Buildings;
 
 public class SkyCastle : Building
 {
-    public SkyCastle(int line, Player owner) : base(line, owner, LandType.Any, 1)
+    public SkyCastle(int line, Player owner) : base(line, owner, LandType.any, 1)
     {
     }
 
