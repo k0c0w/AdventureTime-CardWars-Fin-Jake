@@ -32,6 +32,8 @@ public class UserChooseDeck : IGameState
         var player = CurrentGame.Players[choose.UserId];
         player.Deck = dnl.Item1;
         player.Lands = dnl.Item2;
+        //todo: почемуто здфнук id = 0
+        CurrentGame.PlayersDeck[choose.UserId] = player.Deck;
         
         CurrentGame.RegisterAction(new UserChoseDeck(player.Id, player.Deck.DeckType));
         CurrentGame.RegisterAction(new UserTakeDeck(choose.UserId, TakeFiveCards(choose.UserId)));
