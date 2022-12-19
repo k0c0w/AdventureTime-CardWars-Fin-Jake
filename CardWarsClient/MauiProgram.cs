@@ -1,4 +1,4 @@
-﻿using CardWarsClient.Models;
+using CardWarsClient.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Composition;
 using Microsoft.UI.Xaml.Data;

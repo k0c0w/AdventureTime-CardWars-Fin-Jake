@@ -1,4 +1,4 @@
-﻿using Shared.PossibleCards;
+using Shared.PossibleCards;
 
 namespace GameObjects.Creatures;
 

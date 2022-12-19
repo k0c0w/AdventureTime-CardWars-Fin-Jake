@@ -1,15 +1,18 @@
-﻿using Shared.GameActions;
+using Shared.GameActions;
 
 namespace GameKernel.GameStates;
 
 public class TakeCardsState : IGameState
 {
-    private readonly int nextPlayer;
+    private readonly int player;
 
-    public TakeCardsState(int nextPlayer, Game game)
+    private readonly bool _firstTime;
+
+    public TakeCardsState(int player, Game game, bool firstTime = false)
     {
         CurrentGame = game;
-        this.nextPlayer = nextPlayer;
+        this.player = player;
+        _firstTime = firstTime;
     }
     
     public Game CurrentGame { get; }
@@ -23,10 +26,14 @@ public class TakeCardsState : IGameState
         var card = deck.GetCard();
         CurrentGame.Players[action.UserId].TakeCard(card);
         CurrentGame.RegisterAction(new UserTakeCard(action.UserId, card, deck.CardsLeft));
+        if (!_firstTime)
+        {
+            ChangeState();
+        }
     }
 
     public void ChangeState()
     {
-        throw new NotImplementedException();
+        CurrentGame.GameState = new PlayerDecision(player, CurrentGame);
     }
 }

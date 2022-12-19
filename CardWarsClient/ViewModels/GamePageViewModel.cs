@@ -56,7 +56,6 @@ namespace CardWarsClient.ViewModels
         [RelayCommand]
         public void DropCard(int slot)
         {
-
             if(_dragged != null && _actionsCount >= _dragged.Cost)
             {
                 ClientSend.PutCard(_dragged.Name, slot, hand.IndexOf(_dragged));
@@ -69,7 +68,8 @@ namespace CardWarsClient.ViewModels
                 //var _fixedCard = new CardModel { Name=_dragged.Name, Cost= _dragged.Cost, hasDamage = _dragged.hasDamage, imagePath = _dragged.imagePath, isFlupped = _dragged.isFlupped, takenDamage = _dragged.takenDamage };
                 lands[slot] = new LandModel { Id = lands[slot].Id, imagePath = lands[slot].imagePath, bindedCard = _dragged }; // костыль
                 _dragged = null;
-            } else
+            } 
+            else
             {
                 MainThread.BeginInvokeOnMainThread(async () =>
                 {
@@ -83,7 +83,7 @@ namespace CardWarsClient.ViewModels
         {
             ShowingImage = path;
         }
-
+        
         [RelayCommand]
         public void ChangeTurn()
         {

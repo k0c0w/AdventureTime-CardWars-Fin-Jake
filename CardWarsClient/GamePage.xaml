@@ -8,7 +8,6 @@
              x:Class="CardWarsClient.GamePage"
              Title="Game"
              BackgroundImageSource="bg.jpg">
-
     <AbsoluteLayout>
         <StackLayout
             Margin="0,-100,0,0"
