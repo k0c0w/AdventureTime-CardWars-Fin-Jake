@@ -8,6 +8,7 @@ public class GameActionHandler
 {
     public static void ApplyToGame(int fromClient, Packet packet)
     {
+        if(Server.CurrentGame == null) return;
         try
         {
             ResponseToClients(Server.CurrentGame.ApplyGameActions(GetGameAction(fromClient, packet)), fromClient);
@@ -35,7 +36,7 @@ public class GameActionHandler
         foreach (var action in actions)
         {
             var packet = PacketEncoder.EncodeGameAction(action);
-            if (actions is IOneUserInfo)
+            if (action is IOneUserInfo)
                 ServerSend.SendTCPData(requestedClient, packet);
             else
                 ServerSend.SendTCPDataToAll(packet);

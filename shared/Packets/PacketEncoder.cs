@@ -105,6 +105,15 @@ public class PacketEncoder
         packet.Write(state.IsFlooped);
         return packet;
     }
+
+    private static Packet Encode(UserTakeCard request, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.UserTakeCard);
+        packet.Write(request.UserId);
+        packet.Write((int)request.Card);
+        packet.Write(request.CardsInDeckLeft);
+        return packet;
+    }
     
 
     public static GameAction DecodeGameAction(Packet packet)
@@ -123,6 +132,7 @@ public class PacketEncoder
             GameActionPacket.UserDecisionStart => DecodeUserDecisionStart(packet),
             GameActionPacket.UserDecisionEnd => DecodeUserDecisionEnd(packet),
             GameActionPacket.UserTakeDeck => DecodeUserTakeDeck(packet),
+            GameActionPacket.UserTakeCard => DecodeUserTakeCard(packet),
             GameActionPacket.UserTakeDamage => DecodeUserTakeDamage(packet),
             GameActionPacket.CreatureState => DecodeCreatureState(packet),
             GameActionPacket.GameEnd => throw new NotImplementedException(),
@@ -130,6 +140,11 @@ public class PacketEncoder
         };
     }
 
+    private static UserTakeCard DecodeUserTakeCard(Packet packet)
+    {
+        return new UserTakeCard(packet.ReadInt(), (AllCards)packet.ReadInt(), packet.ReadInt());
+    }
+    
     private static UserTakeDamage DecodeUserTakeDamage(Packet packet)
     {
         var user = packet.ReadInt();

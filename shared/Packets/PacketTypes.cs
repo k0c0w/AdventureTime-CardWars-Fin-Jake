@@ -21,6 +21,7 @@ public enum GameActionPacket
     PossibleDecks,
     UserChoseDeck,
     UserTakeDeck,
+    UserTakeCard,
     UserDecisionStart,
     UserDecisionEnd,
     UserPutCard,
