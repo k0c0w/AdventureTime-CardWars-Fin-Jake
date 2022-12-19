@@ -1,4 +1,4 @@
-﻿namespace Shared.GameActions;
+namespace Shared.GameActions;
 
 public record UserTakeDamage : GameAction
 {
