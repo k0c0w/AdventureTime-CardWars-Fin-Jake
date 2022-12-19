@@ -24,8 +24,6 @@ public enum GameActionPacket
     UserDecisionStart,
     UserDecisionEnd,
     UserPutCard,
-    UserTakeDamage,
-    CreatureState,
     GameEnd,
 }
 
