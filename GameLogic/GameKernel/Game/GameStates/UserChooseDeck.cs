@@ -44,9 +44,9 @@ public class UserChooseDeck : IGameState
 
     public void ChangeState()
     {
-        CurrentGame.RegisterAction(new GameStart());
+        CurrentGame.RegisterAction(new UserDecisionStart {UserId = 1});
         CurrentGame._holder = null!;
-        CurrentGame.GameState = new TakeCardsState(1, CurrentGame);
+        CurrentGame.GameState = new TakeCardsState(1, CurrentGame, true);
         CurrentGame.GameState.Execute(new GameAction() {UserId = 1});
         CurrentGame.GameState = new AfterGameStartPlayerDecision(CurrentGame);
     }
