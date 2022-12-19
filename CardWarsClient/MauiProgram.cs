@@ -1,4 +1,10 @@
-﻿namespace CardWarsClient;
+using CardWarsClient.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Microsoft.UI.Composition;
+using Microsoft.UI.Xaml.Data;
+using System.ComponentModel;
+
+namespace CardWarsClient;
 
 public static class MauiProgram
 {

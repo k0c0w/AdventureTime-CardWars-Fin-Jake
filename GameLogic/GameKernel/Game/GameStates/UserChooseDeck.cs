@@ -1,4 +1,4 @@
-﻿using Shared.GameActions;
+using Shared.GameActions;
 using Shared.PossibleCards;
 
 namespace GameKernel.GameStates;

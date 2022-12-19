@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModels="clr-namespace:CardWarsClient.ViewModels"
              xmlns:models="clr-namespace:CardWarsClient.Models"
+             xmlns:drawable="clr-namespace:CardWarsClient"
              x:DataType="viewModels:GamePageViewModel"
              x:Class="CardWarsClient.GamePage"
              Title="Game"
              BackgroundImageSource="bg.jpg">
-    
     <AbsoluteLayout>
         <StackLayout
             Margin="0,-100,0,0"
@@ -98,7 +98,6 @@
                         ItemsSource="{Binding lands}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:LandModel">
-
                                 <Frame
                                     HeightRequest="300"
                                     WidthRequest="200"
@@ -120,6 +119,28 @@
                                             WidthRequest="175"
                                             Aspect="Fill"
                                             ZIndex="4"/>
+                                        <Ellipse
+                                            Fill="Red"
+                                            Stroke="Wheat"
+                                            StrokeThickness="2"
+                                            IsVisible="{Binding bindedCard.hasDamage, FallbackValue=False, Mode=OneWay}"
+                                            WidthRequest="50"
+                                            HeightRequest="50"
+                                            AbsoluteLayout.LayoutBounds="0.5,0.5"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            ZIndex="6"/>
+                                        <Label
+                                            IsVisible="{Binding bindedCard.hasDamage}"
+                                            WidthRequest="50"
+                                            HeightRequest="50"
+                                            FontSize="24"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            Text="{Binding bindedCard.takenDamage}"
+                                            TextColor="White"
+                                            AbsoluteLayout.LayoutBounds="0.5,0.5"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            ZIndex="7"/>
                                     </AbsoluteLayout>
                                     <Frame.GestureRecognizers>
                                         <DropGestureRecognizer 
@@ -143,8 +164,7 @@
                         VerticalOptions="EndAndExpand"
                         ItemsSource="{Binding hand}"
                         ItemsLayout="HorizontalList"
-                        ZIndex="3"
-                        >
+                        ZIndex="3">
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:CardModel">
                     <Frame 
@@ -152,12 +172,14 @@
                             WidthRequest="175"
                             Padding="0"
                             BackgroundColor="Transparent"
-                            BorderColor="Transparent">
+                            BorderColor="Transparent"
+                        Margin="10,0,0,10">
                         <Image
-                                Source="{Binding imagePath}"
-                                HeightRequest="250"
-                                WidthRequest="175"
-                                Aspect="Fill"/>
+                            Source="{Binding imagePath}"
+                            HeightRequest="250"
+                            WidthRequest="175"
+                            Aspect="Fill"
+                            Margin="0,0,0,10"/>
                         <Frame.GestureRecognizers>
                             <DragGestureRecognizer 
                                             DragStartingCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=StartDragCommand}"
@@ -166,6 +188,12 @@
                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
                                 CommandParameter="{Binding imagePath}"/>
                         </Frame.GestureRecognizers>
+                        <Frame.Shadow>
+                            <Shadow Brush="Black"
+                                Offset="20,20"
+                                Radius="40"
+                                Opacity="0.8" />    
+                        </Frame.Shadow>
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
@@ -205,6 +233,10 @@
         <VerticalStackLayout
             AbsoluteLayout.LayoutBounds="30,0.95"
             AbsoluteLayout.LayoutFlags="YProportional">
+            <Label
+                Text="{Binding AvailableActionsPrompt}"
+                FontSize="24"
+                />
             <Frame
                 BackgroundColor="Wheat"
                 Padding="5"
@@ -238,5 +270,12 @@
             Source="{Binding ShowingImage}"
             AbsoluteLayout.LayoutBounds="1,0.5,0.3,0.5"
             AbsoluteLayout.LayoutFlags="All"/>
+        <Button
+            Text="Закончить ход!"
+            IsEnabled="{Binding IsCurrentPlayerTurn}"
+            Command="{Binding ChangeTurnCommand}"
+            FontSize="24"
+            AbsoluteLayout.LayoutBounds="0.95,0.95"
+            AbsoluteLayout.LayoutFlags="PositionProportional"/>
     </AbsoluteLayout>
 </ContentPage>

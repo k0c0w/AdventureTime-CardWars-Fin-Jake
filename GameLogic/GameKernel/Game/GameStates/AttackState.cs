@@ -1,4 +1,4 @@
-﻿using GameObjects;
+using GameObjects;
 using Shared.GameActions;
 
 namespace GameKernel.GameStates;

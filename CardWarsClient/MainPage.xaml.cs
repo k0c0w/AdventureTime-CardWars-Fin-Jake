@@ -17,12 +17,9 @@ public partial class MainPage : ContentPage
         await Shell.Current.GoToAsync("GamePage");
         /*var readyPacket = new Packet((int)PacketId.ClientPacket);
         isReady = !isReady;
-
-        //todo: ReadyChange(isReady) in ClientSend instead of this...
         ClientSend.ReadyChange(isReady);
         
-        ReadyBtn.Text = isReady ? "Unready" : "Ready";
-        */
+        ReadyBtn.Text = isReady ? "Не готов" : "Готов";*/
     }
 
 }
