@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameObjects", "GameObjects\GameObjects.csproj", "{8F55F7B1-F095-4659-9283-CBDB752F224A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameKernel", "GameKernel\GameKernel.csproj", "{8F55F7B1-F095-4659-9283-CBDB752F224A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "..\shared\Shared.csproj", "{AD1F7345-F9EF-4323-9C2D-6FFD4AD46800}"
 EndProject

@@ -22,6 +22,12 @@ public class PacketEncoder
         }
     }
 
+    private static Packet Encode(UserDecisionStart request, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.UserDecisionStart);
+        return packet;
+    }
+    
     private static Packet Encode(BadRequest request, Packet packet)
     {
         packet.Write((int)GameActionPacket.BadRequest);
@@ -79,6 +85,28 @@ public class PacketEncoder
         return packet;
     }
 
+    private static Packet Encode(UserTakeDamage damage, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.UserTakeDamage);
+        packet.Write(damage.UserId);
+        packet.Write(damage.Damage);
+        return packet;
+    }
+
+    private static Packet Encode(CreatureState state, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.CreatureState);
+        packet.Write(state.UserId);
+        packet.Write(state.Owner);
+        packet.Write(state.Line);
+        packet.Write(state.HPBefore);
+        packet.Write(state.HPAfter);
+        packet.Write(state.IsDead);
+        packet.Write(state.IsFlooped);
+        return packet;
+    }
+    
+
     public static GameAction DecodeGameAction(Packet packet)
     {
         /*var packetType = (PacketId)packet.ReadInt();
@@ -92,13 +120,37 @@ public class PacketEncoder
             GameActionPacket.PossibleDecks => DecodePossibleDecks(packet),
             GameActionPacket.UserChoseDeck => DecodeUserChoseDeck(packet),
             GameActionPacket.UserPutCard => DecodeUserPutCard(packet),
+            GameActionPacket.UserDecisionStart => DecodeUserDecisionStart(packet),
             GameActionPacket.UserDecisionEnd => DecodeUserDecisionEnd(packet),
             GameActionPacket.UserTakeDeck => DecodeUserTakeDeck(packet),
+            GameActionPacket.UserTakeDamage => DecodeUserTakeDamage(packet),
+            GameActionPacket.CreatureState => DecodeCreatureState(packet),
             GameActionPacket.GameEnd => throw new NotImplementedException(),
             _ => throw new InvalidOperationException()
         };
     }
 
+    private static UserTakeDamage DecodeUserTakeDamage(Packet packet)
+    {
+        var user = packet.ReadInt();
+        var damage = packet.ReadInt();
+        return new UserTakeDamage(user, damage);
+    }
+
+    private static CreatureState DecodeCreatureState(Packet packet)
+    {
+        //must be -1 only
+        var userId = packet.ReadInt();
+        return new CreatureState(packet.ReadInt(), packet.ReadInt())
+        {
+            HPBefore = packet.ReadInt(),
+            HPAfter = packet.ReadInt(),
+            IsDead = packet.ReadBool(),
+            IsFlooped = packet.ReadBool(),
+            UserId = -1,
+        };
+    }
+    
     private static PossibleDecks DecodePossibleDecks(Packet packet)
     {
         var first = (DeckTypes)packet.ReadInt();
@@ -125,10 +177,11 @@ public class PacketEncoder
         return new UserPutCard(client, line, card, index);
     }
 
-    private static UserDecisionEnd DecodeUserDecisionEnd(Packet packet)
-    {
-        return new UserDecisionEnd { UserId = packet.ReadInt() };
-    }
+    private static UserDecisionStart DecodeUserDecisionStart(Packet packet) =>
+        new UserDecisionStart { UserId = packet.ReadInt() };
+
+    private static UserDecisionEnd DecodeUserDecisionEnd(Packet packet) =>
+        new UserDecisionEnd { UserId = packet.ReadInt() };
 
     private static UserTakeDeck DecodeUserTakeDeck(Packet packet)
     {
