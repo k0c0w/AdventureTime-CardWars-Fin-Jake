@@ -1,4 +1,4 @@
-namespace Shared.PossibleCards;
+﻿namespace Shared.PossibleCards;
 
 public enum AllCards
 {
@@ -18,4 +18,4 @@ public enum AllCards
     king_of_fields,
     robber_pumpkin,
     
-}
+} 
