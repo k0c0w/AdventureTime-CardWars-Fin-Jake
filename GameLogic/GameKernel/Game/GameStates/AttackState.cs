@@ -29,8 +29,13 @@ public class AttackState : IGameState
         var opponent = CurrentGame.OpponentIdTo(_attacking);
         if (CurrentGame.Players[_attacking].IsDead || CurrentGame.Players[opponent].IsDead)
             CurrentGame.GameState = new WinnerState(CurrentGame);
-        else 
-            CurrentGame.GameState = new TakeCardsState(CurrentGame.OpponentIdTo(_attacking), CurrentGame);
+        else
+        {
+            var id = CurrentGame.OpponentIdTo(_attacking);
+            CurrentGame.RegisterAction(new UserDecisionStart {UserId = id });
+            CurrentGame.GameState = new TakeCardsState(id, CurrentGame);
+            CurrentGame.GameState.Execute(new GameAction() {UserId = id});
+        }
     }
 
     private void RegisterBonuses(IEnumerable<Creature> creatures)

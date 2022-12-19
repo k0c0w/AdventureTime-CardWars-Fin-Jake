@@ -42,7 +42,7 @@ public class Tests
     {
         var response = GameStart();
         
-        Assert.IsTrue(response.Contains(new GameStart()));
+        Assert.IsTrue(response.Contains(new UserDecisionStart() {UserId = 1}));
     }
 
     [Test]
