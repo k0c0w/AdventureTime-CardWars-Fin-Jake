@@ -1,4 +1,4 @@
-﻿using Shared.GameActions;
+using Shared.GameActions;
 using Shared.Decks;
 using Shared.PossibleCards;
 using Microsoft.CSharp.RuntimeBinder;

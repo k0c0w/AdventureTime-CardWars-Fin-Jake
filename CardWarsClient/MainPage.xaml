@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CardWarsClient.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Spacing="25"
+            Padding="30,0"
+            VerticalOptions="Center">
+
+            <Image
+                Source="house.png"
+                HeightRequest="400"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Ждём игроков"
+                SemanticProperties.HeadingLevel="Level1"
+                FontFamily="Comic"
+                FontSize="32"
+                HorizontalOptions="Center" />
+
+            <Button
+                x:Name="ReadyBtn"
+                Text="Готов"
+                FontFamily="Comic"
+                SemanticProperties.Hint="Counts the number of times you click"
+                Clicked="ReadyClicked"
+                HorizontalOptions="Center" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
