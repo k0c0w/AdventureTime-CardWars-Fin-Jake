@@ -5,7 +5,7 @@ namespace GameObjects.Creatures;
 public class CobsLegion : Creature
 {
     public CobsLegion(int line, Player owner, bool heroComeBack=false) 
-        : base(line, owner, LandType.corn_fields, 2, 8, 2)
+        : base(line, owner, LandType.corn_fields, AllCards.cobs_legion, 2, 8, 2)
     {
         if (heroComeBack)
         {

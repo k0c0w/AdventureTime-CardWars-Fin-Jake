@@ -23,6 +23,8 @@ public class Player
     public Creature?[] Creatures { get; }
     
     public Building?[] Buildings { get; }
+    
+    public Stack<AllCards> Discard { get; }
 
     //todo: validate args
     public Player(int userId, Game game)
@@ -31,9 +33,11 @@ public class Player
         Hand = new List<AllCards>();
         Creatures = new Creature[4];
         Buildings = new Building[4];
+        Discard = new Stack<AllCards>(40);
         CurrentGame = game;
         HP = 25;
         EnergyLeft = 2;
+        Id = userId;
     }
 
     public void TakeCard(AllCards card)
@@ -49,6 +53,7 @@ public class Player
         if (creature.SummonCost > EnergyLeft)
             throw new InvalidOperationException("Player does not have enough energy!");
         Hand.RemoveAt(creatureIndex);
+        Creatures[landIndex]?.Destroy();
         Creatures[landIndex] = creature;
         EnergyLeft -= creature.SummonCost;
     }

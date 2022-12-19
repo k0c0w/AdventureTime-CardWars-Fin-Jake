@@ -2,29 +2,29 @@
 
 namespace GameObjects.Creatures;
 
-public class ShyBard : Creature, IFlupable
+public class ShyBard : Creature, IFloopable
 {
-    public ShyBard(int line, Player owner) : base(line, owner, LandType.blue_plains, 2, 5, 1)
+    public ShyBard(int line, Player owner) : base(line, owner, LandType.blue_plains, AllCards.shy_bard, 2, 5, 1)
     { }
 
     public override void ExecuteSkill()
     {
-        if(!IsFlupped()) return;
+        if(!IsFlooped()) return;
         var count = Owner.Creatures.Count(x => x != null);
         //todo: игрок тянет карту здесь в колве count
     }
 
-    public bool CanBeFlupped()
+    public bool CanBeFlooped()
     {
         throw new NotImplementedException();
     }
 
-    public void Flup()
+    public void Floop()
     {
         throw new NotImplementedException();
     }
 
-    public bool IsFlupped()
+    public bool IsFlooped()
     {
         throw new NotImplementedException();
     }

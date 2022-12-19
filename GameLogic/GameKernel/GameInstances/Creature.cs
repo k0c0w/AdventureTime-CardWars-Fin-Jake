@@ -20,7 +20,8 @@ public abstract class Creature : GameObject
     private readonly int _initialDamage;
 
 
-    public Creature(int line, Player owner, LandType land, int cost, int healthPoints, int damage) : base(owner, land, cost)
+    public Creature(int line, Player owner, LandType land, AllCards card, int cost, int healthPoints, int damage) 
+        : base(owner, land, card, cost)
     {
         if (healthPoints <= 0 || damage <= 0)
             throw new ArgumentException($"The {nameof(healthPoints)} or {nameof(damage)} must be > 0.");
@@ -42,6 +43,13 @@ public abstract class Creature : GameObject
     }
 
     public void TakeDamage(int damage) => _cretureHP -= damage;
+
+    public void Destroy()
+    {
+        //todo: special abillities
+        Owner.Discard.Push(Card);
+        Owner.Creatures[Line] = null!;
+    }
     
 
     protected Creature? ReplaceCreature()

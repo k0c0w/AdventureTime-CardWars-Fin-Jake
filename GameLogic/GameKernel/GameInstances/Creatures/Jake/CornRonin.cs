@@ -4,7 +4,8 @@ namespace GameObjects.Creatures;
 
 public class CornRonin : Creature
 {
-    public CornRonin(int line, Player owner) : base(line, owner, LandType.corn_fields, 1, 6, 1)
+    public CornRonin(int line, Player owner) 
+        : base(line, owner, LandType.corn_fields, AllCards.corn_ronin, 1, 6, 1)
     { }
 
     public override void ExecuteSkill() => RegisterBonus(new Bonus {AttackBonus = CountNeighboringCornfields()});

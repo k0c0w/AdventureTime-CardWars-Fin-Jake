@@ -4,7 +4,7 @@ namespace GameObjects.Buildings;
 
 public class SkyCastle : Building
 {
-    public SkyCastle(int line, Player owner) : base(line, owner, LandType.any, 1)
+    public SkyCastle(int line, Player owner) : base(line, owner, LandType.any, AllCards.celestial_castle,1)
     {
     }
 

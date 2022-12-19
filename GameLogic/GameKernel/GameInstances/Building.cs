@@ -5,7 +5,7 @@ namespace GameObjects;
 public abstract class Building : GameObject
 {
     public int Line { get; set; }
-    protected Building(int line, Player owner, LandType land, int cost) : base(owner, land, cost)
+    protected Building(int line, Player owner, LandType land, AllCards card, int cost) : base(owner, land, card, cost)
     {
         Line = line;
     }

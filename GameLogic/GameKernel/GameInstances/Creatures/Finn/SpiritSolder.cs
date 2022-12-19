@@ -4,7 +4,8 @@ namespace GameObjects.Creatures;
 
 public class SpiritSolder : Creature
 {
-    public SpiritSolder(int line, Player owner) : base(line, owner, LandType.blue_plains, 1, 9, 1)
+    public SpiritSolder(int line, Player owner) 
+        : base(line, owner, LandType.blue_plains, AllCards.spirit_solder,1, 9, 1)
     { }
 
     public override void ExecuteSkill()

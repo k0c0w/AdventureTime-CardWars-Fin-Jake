@@ -22,9 +22,9 @@ public class PlayerDecision : IGameState
         return PlayerHasCardInHand(put) && IsValidLine(put);
     }
 
-    private bool IsValidFlupAction(UserFlupCard flup)
+    private bool IsValidFlupAction(UserFlupCard floop)
     {
-        return IsCardOnLine(flup) && flup is IFlupable flupable && flupable.CanBeFlupped();
+        return IsCardOnLine(floop) && floop is IFloopable floopable && floopable.CanBeFlooped();
     }
 
     private bool IsCardOnLine(CardAction action)
@@ -71,6 +71,7 @@ public class PlayerDecision : IGameState
 
     public void ChangeState()
     {
-        throw new NotImplementedException();
+        CurrentGame.GameState = new AttackState(_playerId, CurrentGame);
+        CurrentGame.GameState.Execute(null!);
     }
 }

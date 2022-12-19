@@ -2,9 +2,9 @@
 
 namespace GameObjects.Creatures;
 
-public class CobsWall : Creature
+public class CornWall : Creature
 {
-    public CobsWall(int line, Player owner) : base(line, owner, LandType.corn_fields, 1, 4, 2)
+    public CornWall(int line, Player owner) : base(line, owner, LandType.corn_fields, AllCards.corn_wall,1, 4, 2)
     {
     }
 

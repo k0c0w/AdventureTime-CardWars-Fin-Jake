@@ -4,15 +4,17 @@ namespace GameObjects;
 
 public abstract class GameObject
 {
-    //todo: как индетефицировать сущность в пакете?? 
-    //public Guid SessionInstanceId { get; init; } = Guid.NewGuid() ???
+    //public int GameIndex { get; set; }
+    
     public LandType LandType { get; }
+
+    public AllCards Card { get; }
     
     public Player Owner { get; }
 
     public int SummonCost { get; }
 
-    public GameObject(Player owner, LandType land, int cost)
+    public GameObject(Player owner, LandType land, AllCards card, int cost)
     {
         if (owner == null)
             throw new ArgumentNullException($"The given {nameof(owner)} was null.");
@@ -25,6 +27,7 @@ public abstract class GameObject
         SummonCost = cost;
         Owner = owner;
         LandType = land;
+        Card = card;
     }
 
     //todo: переделать на исполнение action (так как есть карты, которые меняют действие)

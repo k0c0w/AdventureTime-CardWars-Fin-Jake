@@ -4,7 +4,7 @@ namespace GameObjects.Buildings;
 
 public class BloodyFortress : Building
 {
-    public BloodyFortress(int line, Player owner) : base(line, owner, LandType.any, 1)
+    public BloodyFortress(int line, Player owner) : base(line, owner, LandType.any, AllCards.blood_fortress, 1)
     {
     }
 
