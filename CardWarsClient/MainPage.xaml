@@ -25,7 +25,6 @@
                 x:Name="ReadyBtn"
                 Text="Готов"
                 FontFamily="Comic"
-                SemanticProperties.Hint="Counts the number of times you click"
                 Clicked="ReadyClicked"
                 HorizontalOptions="Center" />
 

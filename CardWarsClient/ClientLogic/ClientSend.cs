@@ -36,4 +36,20 @@ public class ClientSend
         var r = PacketEncoder.EncodeGameAction(action);
         SendTCPData(r);
     }
+
+    public static void PutCard(Shared.PossibleCards.AllCards card, int line, int indexInHand)
+    {
+        var action = new Shared.GameActions.UserPutCard(Client.Instance.Id, line, card, indexInHand);
+
+        var r = PacketEncoder.EncodeGameAction(action);
+        SendTCPData(r);
+    }
+
+    public static void EndTurn()
+    {
+        var action = new Shared.GameActions.UserDecisionEnd();
+
+        var r = PacketEncoder.EncodeGameAction(action);
+        SendTCPData(r);
+    }
 }
