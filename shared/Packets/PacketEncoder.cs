@@ -22,6 +22,12 @@ public class PacketEncoder
         }
     }
 
+    private static Packet Encode(UserDecisionStart request, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.UserDecisionStart);
+        return packet;
+    }
+    
     private static Packet Encode(BadRequest request, Packet packet)
     {
         packet.Write((int)GameActionPacket.BadRequest);
@@ -92,6 +98,7 @@ public class PacketEncoder
             GameActionPacket.PossibleDecks => DecodePossibleDecks(packet),
             GameActionPacket.UserChoseDeck => DecodeUserChoseDeck(packet),
             GameActionPacket.UserPutCard => DecodeUserPutCard(packet),
+            GameActionPacket.UserDecisionStart => DecodeUserDecisionStart(packet),
             GameActionPacket.UserDecisionEnd => DecodeUserDecisionEnd(packet),
             GameActionPacket.UserTakeDeck => DecodeUserTakeDeck(packet),
             GameActionPacket.GameEnd => throw new NotImplementedException(),
@@ -125,10 +132,11 @@ public class PacketEncoder
         return new UserPutCard(client, line, card, index);
     }
 
-    private static UserDecisionEnd DecodeUserDecisionEnd(Packet packet)
-    {
-        return new UserDecisionEnd { UserId = packet.ReadInt() };
-    }
+    private static UserDecisionStart DecodeUserDecisionStart(Packet packet) =>
+        new UserDecisionStart { UserId = packet.ReadInt() };
+
+    private static UserDecisionEnd DecodeUserDecisionEnd(Packet packet) =>
+        new UserDecisionEnd { UserId = packet.ReadInt() };
 
     private static UserTakeDeck DecodeUserTakeDeck(Packet packet)
     {

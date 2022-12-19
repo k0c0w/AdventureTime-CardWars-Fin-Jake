@@ -6,7 +6,8 @@ namespace GameObjects;
 //todo: player : Idisposable => ссылки на gameInstance убрать
 public class Player
 {
-    //todo: исправить deck
+    public int EnergyLeft { get; private set; }
+    
     public Deck Deck { get; internal set; }
     
     public int Id { get;}
@@ -32,6 +33,7 @@ public class Player
         Buildings = new Building[4];
         CurrentGame = game;
         HP = 25;
+        EnergyLeft = 2;
     }
 
     public void TakeCard(AllCards card)
@@ -39,18 +41,21 @@ public class Player
         //todo: добавить deck и из нее грабать карту и уведомлять игру здесь 
         Hand.Add(card);
     }
-
-    //todo: метод HasCard чтобы валидировать наличие карты на руке
     
     public void MoveCreatureToLand(int creatureIndex, int landIndex)
     {
         var card = Hand[creatureIndex];
+        var creature = CreatureFactory.Summon(this, card, landIndex);
+        if (creature.SummonCost > EnergyLeft)
+            throw new InvalidOperationException("Player does not have enough energy!");
         Hand.RemoveAt(creatureIndex);
-        Creatures[landIndex] = CreatureFactory.Summon(this, card, landIndex);
+        Creatures[landIndex] = creature;
+        EnergyLeft -= creature.SummonCost;
     }
 
-    //повторяющиеся методы - вынести в интерфейс?
-    
+    public bool HasCardInHand(int index, AllCards card) =>
+        0 <= index && index < Hand.Count && Hand[index] == card;
+
     public int HP { get; private set; }
 
     public void TakeDamage(int damage)
@@ -63,4 +68,6 @@ public class Player
     public int ControlledLands(LandType land) => Lands.Count(x => !x.IsTurnedOver && x.LandType == land);
 
     public bool IsDead => HP <= 0;
+
+    public void ResetEnergy() => EnergyLeft = 2;
 }

@@ -8,10 +8,13 @@ namespace GameKernel;
 
 public class Game
 {
-    public IGameState GameState { get; internal set; }
+    internal int OpponentIdTo(int player) => Players.Keys.First(x => x != player);
+    
+    internal IGameState GameState { get; set; }
 
     internal readonly Dictionary<int, Player> Players;
     internal (DeckTypes, DeckTypes) AllowedDecks { get; }
+    
     internal DecksAndLandsHolder _holder;
 
     internal Dictionary<int, Creature?[]> PlayersCreatures { get; }
@@ -73,8 +76,5 @@ public class Game
     }
 
     internal static GameAction BadRequestAction { get; } = new BadRequest();
-    private IEnumerable<GameAction> BadRequest()
-    {
-        throw new NotImplementedException();
-    }
+    private static IEnumerable<GameAction> BadRequest() => new GameAction[1] { Game.BadRequestAction };
 }

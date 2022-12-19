@@ -1,6 +1,6 @@
 ﻿namespace GameObjects;
 
-public record class Bonus
+public record Bonus
 {
     public int DefenceBonus { get; init; } = 0;
 

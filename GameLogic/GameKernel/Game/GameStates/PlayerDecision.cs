@@ -13,9 +13,6 @@ public class PlayerDecision : IGameState
 
     private readonly int _playerId;
     
-    protected int EnergyLeft = 2;
-
-    
     public Game CurrentGame { get; }
 
     protected bool IsValidUserId(GameAction action) => action.UserId == _playerId;
@@ -41,36 +38,33 @@ public class PlayerDecision : IGameState
     
     private bool PlayerHasCardInHand(UserPutCard putCard)
     {
-        var playerHand = CurrentGame.PlayersHand[1]; 
-        return 0 <= putCard?.IndexInHand && putCard?.IndexInHand < playerHand.Count
-                                         && playerHand[(int)putCard.IndexInHand] == putCard.Card;
+        return CurrentGame.Players[putCard.UserId].HasCardInHand(putCard.IndexInHand, putCard.Card);
     }
 
     public bool IsValidAction(GameAction action)
     {
-        if (action is UserDecisionEnd) return true;
-        return action.UserId == _playerId 
-               && ((action is UserPutCard put && IsValidPutCardAction(put))
-                   || action is UserFlupCard flup && IsValidFlupAction(flup));
+        if (!IsValidUserId(action)) return false;
+        else if (action is UserDecisionEnd) return true;
+        return ((action is UserPutCard put && IsValidPutCardAction(put))
+                || action is UserFlupCard flup && IsValidFlupAction(flup));
     }
 
     public void Execute(GameAction action)
     {
-        if (action.UserId == _playerId && action is UserDecisionEnd)
+        if (action is UserDecisionEnd)
         {
             ChangeState();
             return;
         }
 
-        if (!IsValidAction(action))
+        if (action is UserPutCard put 
+            && CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.IndexInHand, put.IndexInHand))
+        {
+            CurrentGame.RegisterAction(put);
+        }
+        else
         {
             CurrentGame.RegisterAction(Game.BadRequestAction);
-        }
-
-        if (action is UserPutCard put)
-        {
-            CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.IndexInHand, put.IndexInHand);
-            CurrentGame.RegisterAction(put);
         }
         //todo: logic
     }

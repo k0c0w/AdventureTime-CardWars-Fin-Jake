@@ -8,30 +8,26 @@ public class AfterGameStartPlayerDecision : PlayerDecision, IGameState
 
 
     public new bool IsValidAction(GameAction action)
-        => IsValidUserId(action) && action is UserPutCard put && IsValidPutCardAction(put);
+        => IsValidUserId(action) && (action is UserPutCard put && IsValidPutCardAction(put) || action is UserDecisionEnd);
 
     public new void Execute(GameAction action)
     {
-        if (!IsValidAction(action))
+        if (action is UserDecisionEnd)
         {
-            CurrentGame.RegisterAction(Game.BadRequestAction);
+            ChangeState();
             return;
         }
-
+        
         var put = (UserPutCard)action;
         if(CurrentGame.TryPlayCreature(CurrentGame.Players[1], (int)put.IndexInHand!, put.Line))
-        {
-            EnergyLeft -= CurrentGame.PlayersCreatures[1][put.Line]!.SummonCost;
             CurrentGame.RegisterAction(put);
-        }
         else
             CurrentGame.RegisterAction(Game.BadRequestAction);
-        if(EnergyLeft <= 0)
-            ChangeState();
     }
     
     public new void ChangeState()
     {
+        CurrentGame.RegisterAction(new UserDecisionStart {UserId = 2});
         CurrentGame.GameState = new PlayerDecision(2, CurrentGame);
     }
 }
