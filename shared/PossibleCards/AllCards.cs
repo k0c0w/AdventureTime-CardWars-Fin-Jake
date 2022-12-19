@@ -1,4 +1,4 @@
-﻿namespace Shared.PossibleCards;
+namespace Shared.PossibleCards;
 
 public enum AllCards
 {
