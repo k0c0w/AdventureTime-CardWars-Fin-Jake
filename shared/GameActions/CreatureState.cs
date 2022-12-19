@@ -1,6 +1,6 @@
 ﻿namespace Shared.GameActions;
 
-public record CreatureState : GameAction
+public record CreatureState : GameAction, IBothUserInfo
 {
     public int Owner { get; }
 
