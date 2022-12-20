@@ -40,7 +40,7 @@ internal class ServerHandler
         using var packet = new Packet((int)PacketId.GameActionPacket, (int)GameActionPacket.GameStart);
         ServerSend.SendTCPDataToAll(packet);
         ServerSend.SendTCPDataToAll(decks);
-        Console.WriteLine("send");
+        Console.WriteLine("Created new game");
     }
 
     private static Packet GetEncodedDecks(Game gameIsInStartState)
