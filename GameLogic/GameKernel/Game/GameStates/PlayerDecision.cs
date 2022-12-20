@@ -60,7 +60,7 @@ public class PlayerDecision : IGameState
         if (action is UserPutCard put 
             && CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.IndexInHand, put.IndexInHand))
         {
-            CurrentGame.RegisterAction(put);
+            CurrentGame.RegisterAction(put with{ EnergyLeft = CurrentGame.Players[_playerId].EnergyLeft});
         }
         else
         {

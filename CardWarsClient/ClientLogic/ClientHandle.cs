@@ -12,8 +12,6 @@ public class ClientHandle
     public static void MakeHandshake(Packet packet)
     {
         var id = packet.ReadInt();
-        var message = packet.ReadString();
-        Console.WriteLine(message);
         Client.Instance.Id = id;
         ClientSend.WelcomeReceived();
     }
@@ -31,12 +29,9 @@ public class ClientHandle
     public static void Dispatch(Packet packet)
     {
         var action = PacketEncoder.DecodeGameAction(packet);
-        if(action is UserTakeDeck deck)
-        {
-            Handle(deck);
-        }
-        else
-            Handle((dynamic)action);
+        if (action is UserTakeCards e)
+            Handle(e);
+        Handle((dynamic)action);
     }
 
     private static void Handle(PossibleDecks decks)
@@ -55,16 +50,19 @@ public class ClientHandle
         });
     }
 
-    private static void Handle(UserTakeDeck deckInfo)
+    private static void Handle(UserTakeLands deckInfo)
     {
-        var instance = GamePageViewModel.Instance;
+
         if (Client.Instance.Id == deckInfo.UserId)
-        {
-            instance.Player.TakeLands(deckInfo.Lands);
-            instance.Player.TakeInitialHand(deckInfo.CardsFromDeck);
-        }
+            GamePageViewModel.Instance.Player.TakeLands(deckInfo.Lands);
         else
-            instance.Opponent.TakeLands(deckInfo.Lands);
+            GamePageViewModel.Instance.Opponent.TakeLands(deckInfo.Lands);
+    }
+
+    private static void Handle(UserTakeCards takenCards)
+    {
+        if (Client.Instance.Id == takenCards.UserId)
+            GamePageViewModel.Instance.Player.TakeCards(takenCards.Cards);
     }
 
     private static void Handle(UserChoseDeck chose)

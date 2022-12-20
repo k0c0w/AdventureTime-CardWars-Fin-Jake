@@ -28,9 +28,8 @@ public class UserChooseDeck : IGameState
         player.Lands = dnl.Item2;
         CurrentGame.PlayersDeck[choose.UserId] = player.Deck;
         
-        var lands = CurrentGame.Players[choose.UserId].Lands.Select(X => X.LandType).ToArray();
         CurrentGame.RegisterAction(new UserChoseDeck(choose.UserId, player.Deck.DeckType));
-        CurrentGame.RegisterAction(new UserTakeDeck(choose.UserId, TakeFiveCards(choose.UserId), lands));
+        TakeCards(choose);
 
         if (CurrentGame.Players.Values.All(x => x.Deck != null))
             ChangeState();
@@ -42,6 +41,14 @@ public class UserChooseDeck : IGameState
         return Enumerable.Range(0, 5).Select(x => deck.GetCard()).ToArray();
     }
 
+    private void TakeCards(UserChoseDeck choose)
+    {
+        var lands = CurrentGame.Players[choose.UserId].Lands.Select(X => X.LandType).ToArray();
+        CurrentGame.RegisterAction(new UserTakeLands(choose.UserId, lands));
+        CurrentGame.RegisterAction(new UserTakeCards(choose.UserId, TakeFiveCards(choose.UserId), 
+            CurrentGame.PlayersDeck[choose.UserId].CardsLeft));
+    }
+    
     public void ChangeState()
     {
         CurrentGame.RegisterAction(new UserDecisionStart {UserId = 1});

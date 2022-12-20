@@ -44,7 +44,7 @@ namespace CardWarsClient.Models
             }
         }
 
-        public void TakeInitialHand(AllCards[] cards)
+        public void TakeCards(IEnumerable<AllCards> cards)
         {
             foreach (var card in cards)
                 Hand.Add(new CardModel { Name = card });
