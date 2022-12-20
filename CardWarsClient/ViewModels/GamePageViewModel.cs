@@ -10,13 +10,18 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using static System.Collections.Specialized.BitVector32;
 using Shared.PossibleCards;
+using System.ComponentModel;
+using Shared.Decks;
 
 namespace CardWarsClient.ViewModels
 {
     public partial class GamePageViewModel : ObservableObject
     {
+        public static GamePageViewModel Instance { get; set; }
         public ObservableCollection<CardModel> hand { get; set; } = new ObservableCollection<CardModel>();
         public ObservableCollection<LandModel> lands { get; set; } = new ObservableCollection<LandModel>();
+
+        public DeckTypes Deck;
 
         private CardModel _dragged;
         private int _actionsCount;
@@ -32,6 +37,7 @@ namespace CardWarsClient.ViewModels
 
         public GamePageViewModel()
         {
+            Instance = this;
             hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 2, hasDamage = true});
             hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 3, hasDamage = true});
             hand.Add(new CardModel { Name = AllCards.spirit_solder, imagePath = "spirit_solder.png", Cost = 1 });

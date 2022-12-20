@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Media.Animation;
+﻿using CardWarsClient.ViewModels;
+using Microsoft.UI.Xaml.Media.Animation;
 using Shared.Decks;
 using Shared.GameActions;
 using Shared.Packets;
@@ -39,6 +40,10 @@ public class ClientHandle
             var chosen = (DeckTypes)Enum.Parse(typeof(Shared.Decks.DeckTypes), action);
             ClientSend.ChooseDeck(chosen);
         }) ;
+    }
+
+    private static void Handle(UserDecisionStart userDecision)
+    {
     }
 
     private static void Handle(GameAction action)
