@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Shared.Decks;
 
 namespace CardWarsClient.Models
@@ -27,6 +27,5 @@ namespace CardWarsClient.Models
 
         [ObservableProperty]
         public string sourcePath;
-
     }
 }
