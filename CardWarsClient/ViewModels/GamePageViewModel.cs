@@ -21,6 +21,15 @@ namespace CardWarsClient.ViewModels
         public ObservableCollection<CardModel> hand { get; set; } = new ObservableCollection<CardModel>();
         public ObservableCollection<LandModel> lands { get; set; } = new ObservableCollection<LandModel>();
 
+
+
+        [ObservableProperty]
+        public PlayerModel player;
+
+        [ObservableProperty]
+        public PlayerModel opponent;
+
+
         public DeckTypes Deck;
 
         private CardModel _dragged;
