@@ -88,6 +88,7 @@
 	  <PackageReference Include="CommunityToolkit.Mvvm" Version="8.0.0" />
 	</ItemGroup>
 
+
 	<ItemGroup>
 	  <Compile Update="GamePage.xaml.cs">
 	    <DependentUpon>GamePage.xaml</DependentUpon>
