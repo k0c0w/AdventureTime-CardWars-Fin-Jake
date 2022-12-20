@@ -14,13 +14,12 @@ public partial class MainPage : ContentPage
 
     private async void ReadyClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("GamePage");
-        /*var readyPacket = new Packet((int)PacketId.ClientPacket);
+        //await Shell.Current.GoToAsync("GamePage");
+        var readyPacket = new Packet((int)PacketId.ClientPacket);
         isReady = !isReady;
         ClientSend.ReadyChange(isReady);
         
-        ReadyBtn.Text = isReady ? "Не готов" : "Готов";*/
+        ReadyBtn.Text = isReady ? "Не готов" : "Готов";
     }
-
 }
 

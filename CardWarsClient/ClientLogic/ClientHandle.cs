@@ -1,4 +1,5 @@
-﻿using CardWarsClient.ViewModels;
+﻿using CardWarsClient.Models;
+using CardWarsClient.ViewModels;
 using Microsoft.UI.Xaml.Media.Animation;
 using Shared.Decks;
 using Shared.GameActions;
@@ -37,13 +38,23 @@ public class ClientHandle
     {
         MainThread.BeginInvokeOnMainThread(async () => {
             var action = await Shell.Current.DisplayActionSheet("decks", "Отмена", "Удалить", decks.First.ToString(), decks.Second.ToString());
-            var chosen = (DeckTypes)Enum.Parse(typeof(Shared.Decks.DeckTypes), action);
+            var chosen = (DeckTypes)Enum.Parse(typeof(DeckTypes), action);
             ClientSend.ChooseDeck(chosen);
         }) ;
     }
 
     private static void Handle(UserDecisionStart userDecision)
     {
+    }
+
+    private static void Handle(UserChoseDeck chose)
+    {
+        
+        var instance = GamePageViewModel.Instance;
+        if (chose.UserId == Client.Instance.Id)
+            SetDeck(instance.player, chose.DeckType);
+        else
+            SetDeck(instance.Opponent, chose.DeckType);
     }
 
     private static void Handle(GameAction action)
@@ -53,4 +64,6 @@ public class ClientHandle
             await Shell.Current.DisplayAlert("Уведомление", action.ToString(), "ОK");
         });
     }
+
+    private static void SetDeck(PlayerModel player, DeckTypes deck) => player.Deck = deck;
 }

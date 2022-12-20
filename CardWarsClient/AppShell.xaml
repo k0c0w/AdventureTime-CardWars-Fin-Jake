@@ -9,12 +9,12 @@
 
     <ShellContent
         Title="Lobby"
-        ContentTemplate="{DataTemplate local:GamePage}"
+        ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 
     <ShellContent
         Title="Game"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate local:GamePage}"
         Route="GamePage" />
 
 </Shell>

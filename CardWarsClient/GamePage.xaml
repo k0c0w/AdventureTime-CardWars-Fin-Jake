@@ -208,9 +208,10 @@
                 WidthRequest="300">
                 <HorizontalStackLayout>
                     <Image 
-                        Source="jakeavatar.png"
+                        Source="{Binding Opponent.SourcePath}"
                         HeightRequest="100"
-                        WidthRequest="100"/>
+                        WidthRequest="100"
+                        IsVisible="{Binding Opponent.IsVisible}"/>
                     <Label
                         WidthRequest="150"
                         Text="OpponentName"
@@ -244,9 +245,10 @@
                 WidthRequest="300">
                 <HorizontalStackLayout>
                     <Image 
-                        Source="finnavatar.png"
+                        Source="{Binding Player.SourcePath}"
                         HeightRequest="100"
-                        WidthRequest="100"/>
+                        WidthRequest="100"
+                        IsVisible="{Binding Player.IsVisible}"/>
                     <Label
                         TextColor="Black"
                         WidthRequest="150"

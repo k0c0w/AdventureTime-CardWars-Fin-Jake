@@ -8,9 +8,9 @@ namespace CardWarsClient;
 
 public partial class GamePage : ContentPage
 {
-	public GamePage()
+	public GamePage(GamePageViewModel gv)
 	{
 		InitializeComponent();
-		this.BindingContext = new GamePageViewModel();
+		this.BindingContext = gv;
 	}
 }
