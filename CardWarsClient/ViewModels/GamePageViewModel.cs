@@ -47,6 +47,8 @@ namespace CardWarsClient.ViewModels
         public GamePageViewModel()
         {
             Instance = this;
+            player = new PlayerModel {};
+            opponent = new PlayerModel {};
             hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 2, hasDamage = true});
             hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 3, hasDamage = true});
             hand.Add(new CardModel { Name = AllCards.spirit_solder, imagePath = "spirit_solder.png", Cost = 1 });

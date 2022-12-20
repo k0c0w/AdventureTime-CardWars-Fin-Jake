@@ -35,6 +35,7 @@ public class GameActionHandler
     {
         foreach (var action in actions)
         {
+            Console.WriteLine($"applied actions:{action}");
             var packet = PacketEncoder.EncodeGameAction(action);
             if (action is IOneUserInfo)
                 ServerSend.SendTCPData(requestedClient, packet);

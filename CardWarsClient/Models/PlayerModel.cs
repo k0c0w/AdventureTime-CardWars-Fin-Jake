@@ -3,7 +3,8 @@ using Shared.Decks;
 
 namespace CardWarsClient.Models
 {
-    public class PlayerModel : ObservableObject
+    [ObservableObject]
+    public partial class PlayerModel
     {
         private string _source;
 
@@ -18,15 +19,23 @@ namespace CardWarsClient.Models
             get => _hp; 
             set 
             { 
-                _source = string.Format("{0}avatar.png", value.ToString().Replace("Deck", "").ToLower()); 
+                
                 SetProperty(ref _hp, value); 
             } 
         }
 
-        public DeckTypes Deck { get => _deck; set => SetProperty(ref _deck, value); }
+        public DeckTypes Deck
+        {
+            get => _deck; 
+            set
+            {
+                SetProperty(ref _deck, value);
+            }
+        }
 
-        public string SourcePath => _source;
+        [ObservableProperty]
+        public string sourcePath;
 
-        public bool IsVisible => !string.IsNullOrEmpty(_source);
+        //public bool IsVisible => !string.IsNullOrEmpty(_source);
     }
 }
