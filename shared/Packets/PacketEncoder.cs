@@ -25,6 +25,7 @@ public class PacketEncoder
     private static Packet Encode(UserDecisionStart request, Packet packet)
     {
         packet.Write((int)GameActionPacket.UserDecisionStart);
+        packet.Write(request.UserId);
         return packet;
     }
     
@@ -62,7 +63,8 @@ public class PacketEncoder
         packet.Write(request.UserId);
         packet.Write(request.Line);
         packet.Write((int)request.Card);
-        packet.Write((int)request.IndexInHand!);
+        packet.Write(request.IndexInHand);
+        packet.Write(request.EnergyLeft);
         return packet;
     }
 
@@ -76,6 +78,7 @@ public class PacketEncoder
     private static Packet Encode(UserTakeDeck request, Packet packet)
     {
         packet.Write((int)GameActionPacket.UserTakeDeck);
+        packet.Write(request.UserId);
         var cards = request.CardsFromDeck;
         var lands = request.Lands;
         for(var i = 0; i < 5; i++)
@@ -189,7 +192,7 @@ public class PacketEncoder
         var line = packet.ReadInt();
         var card = (AllCards)packet.ReadInt();
         var index = packet.ReadInt();
-        return new UserPutCard(client, line, card, index);
+        return new UserPutCard(client, line, card, index) { EnergyLeft = packet.ReadInt() };
     }
 
     private static UserDecisionStart DecodeUserDecisionStart(Packet packet) =>
