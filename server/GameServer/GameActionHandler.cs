@@ -1,4 +1,4 @@
-﻿using GameKernel;
+using GameKernel;
 using Shared.GameActions;
 using Shared.Packets;
 
@@ -35,7 +35,7 @@ public class GameActionHandler
     {
         foreach (var action in actions)
         {
-            Console.WriteLine($"applied actions:{action}");
+            Console.WriteLine($"Server applied action: {action}");
             var packet = PacketEncoder.EncodeGameAction(action);
             if (action is IOneUserInfo)
                 ServerSend.SendTCPData(requestedClient, packet);

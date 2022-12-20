@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Shared.Decks;
 
 namespace CardWarsClient.Models
@@ -10,32 +10,22 @@ namespace CardWarsClient.Models
 
         private DeckTypes _deck;
 
-        private int _hp = 25;
+        [ObservableProperty]
+        private int hp = 25;
 
         public int Id { get; set; }
 
-        public int HP 
-        { 
-            get => _hp; 
-            set 
-            { 
-                
-                SetProperty(ref _hp, value); 
-            } 
-        }
-
         public DeckTypes Deck
         {
-            get => _deck; 
+            get => _deck;
             set
             {
                 SetProperty(ref _deck, value);
+                SourcePath = string.Format("{0}avatar.png", _deck.ToString().Replace("Deck", "").ToLower());
             }
         }
 
         [ObservableProperty]
         public string sourcePath;
-
-        //public bool IsVisible => !string.IsNullOrEmpty(_source);
     }
 }

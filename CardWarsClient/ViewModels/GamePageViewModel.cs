@@ -47,10 +47,10 @@ namespace CardWarsClient.ViewModels
         public GamePageViewModel()
         {
             Instance = this;
-            player = new PlayerModel {};
-            opponent = new PlayerModel {};
-            hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 2, hasDamage = true});
-            hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 3, hasDamage = true});
+            player = new PlayerModel { };
+            opponent = new PlayerModel { };
+            hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 2, hasDamage = true });
+            hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 3, hasDamage = true });
             hand.Add(new CardModel { Name = AllCards.spirit_solder, imagePath = "spirit_solder.png", Cost = 1 });
             hand.Add(new CardModel { Name = AllCards.spirit_solder, imagePath = "spirit_solder.png", Cost = 1 });
 
@@ -73,7 +73,7 @@ namespace CardWarsClient.ViewModels
         [RelayCommand]
         public void DropCard(int slot)
         {
-            if(_dragged != null && _actionsCount >= _dragged.Cost)
+            if (_dragged != null && _actionsCount >= _dragged.Cost)
             {
                 ClientSend.PutCard(_dragged.Name, slot, hand.IndexOf(_dragged));
 
@@ -85,7 +85,7 @@ namespace CardWarsClient.ViewModels
                 //var _fixedCard = new CardModel { Name=_dragged.Name, Cost= _dragged.Cost, hasDamage = _dragged.hasDamage, imagePath = _dragged.imagePath, isFlupped = _dragged.isFlupped, takenDamage = _dragged.takenDamage };
                 lands[slot] = new LandModel { Id = lands[slot].Id, imagePath = lands[slot].imagePath, bindedCard = _dragged }; // костыль
                 _dragged = null;
-            } 
+            }
             else
             {
                 MainThread.BeginInvokeOnMainThread(async () =>
@@ -100,7 +100,7 @@ namespace CardWarsClient.ViewModels
         {
             ShowingImage = path;
         }
-        
+
         [RelayCommand]
         public void ChangeTurn()
         {

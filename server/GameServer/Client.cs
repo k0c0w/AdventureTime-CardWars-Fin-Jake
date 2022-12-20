@@ -55,7 +55,8 @@ public class Client
             }
             catch (Exception e)
             {
-                 Console.WriteLine($"Error sending data to player {_id} via TCP: {e.ToString()}");
+                Console.WriteLine($"Error sending data to player {_id} via TCP: {e.ToString()}");
+                Disconnect();
             }
         }
 
@@ -78,7 +79,6 @@ public class Client
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error receiving TCP data: {e.ToString()}");
                 Disconnect();
             }
         }
@@ -124,9 +124,16 @@ public class Client
         
         private void Disconnect()
         {
+            if (Server.CurrentGame != null)
+            {
+                //todo: winner
+                Server.CurrentGame = null;
+                Console.WriteLine("Game destroyed");
+            }
             Server.Clients[_id].Player = null;
             Socket.Close();
             Socket = null!;
+            Console.WriteLine($"User {_id} disconnect");
         }
     }
 }
