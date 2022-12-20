@@ -65,8 +65,8 @@
 	  <None Remove="Resources\Images\Cards\GameCards\corn_ronin.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\spirit_solder.png" />
-	  <None Remove="Resources\Images\Cards\Lands\blue_land.png" />
-	  <None Remove="Resources\Images\Cards\Lands\corn_land.png" />
+	  <None Remove="Resources\Images\Cards\Lands\blue_plains.png" />
+	  <None Remove="Resources\Images\Cards\Lands\corn_fields.png" />
 	  <None Remove="Resources\Images\Cards\Lands\reversed_land.png" />
 	  <None Remove="Resources\Images\finnavatar.png" />
 	  <None Remove="Resources\Images\house.png" />
@@ -79,8 +79,8 @@
 	  <MauiImage Include="Resources\Images\Cards\GameCards\corn_ronin.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\spirit_solder.png" />
-	  <MauiImage Include="Resources\Images\Cards\Lands\blue_land.png" />
-	  <MauiImage Include="Resources\Images\Cards\Lands\corn_land.png" />
+	  <MauiImage Include="Resources\Images\Cards\Lands\blue_plains.png" />
+	  <MauiImage Include="Resources\Images\Cards\Lands\corn_fields.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\reversed_land.png" />
 	</ItemGroup>
 

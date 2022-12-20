@@ -18,9 +18,12 @@ namespace CardWarsClient.ViewModels
     public partial class GamePageViewModel : ObservableObject
     {
         public static GamePageViewModel Instance { get; set; }
+
+        #region Observable
         public ObservableCollection<CardModel> hand { get; set; } = new ObservableCollection<CardModel>();
         public ObservableCollection<LandModel> lands { get; set; } = new ObservableCollection<LandModel>();
 
+        public ObservableCollection<LandModel> enemyLands { get; set; } = new ObservableCollection<LandModel>();
 
 
         [ObservableProperty]
@@ -28,12 +31,6 @@ namespace CardWarsClient.ViewModels
 
         [ObservableProperty]
         public PlayerModel opponent;
-
-
-        public DeckTypes Deck;
-
-        private CardModel _dragged;
-        private int _actionsCount;
 
         [ObservableProperty]
         public string showingImage = null;
@@ -44,22 +41,20 @@ namespace CardWarsClient.ViewModels
         [ObservableProperty]
         public string availableActionsPrompt;
 
+        #endregion
+
+        private CardModel _dragged;
+        private int _actionsCount;
+
         public GamePageViewModel()
         {
             Instance = this;
-            player = new PlayerModel { };
-            opponent = new PlayerModel { };
-            hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 2, hasDamage = true });
-            hand.Add(new CardModel { Name = AllCards.corn_ronin, imagePath = "corn_ronin.png", Cost = 1, takenDamage = 3, hasDamage = true });
-            hand.Add(new CardModel { Name = AllCards.spirit_solder, imagePath = "spirit_solder.png", Cost = 1 });
-            hand.Add(new CardModel { Name = AllCards.spirit_solder, imagePath = "spirit_solder.png", Cost = 1 });
-
-            lands.Add(new LandModel { Id = 0, imagePath = "blue_land.png" });
-            lands.Add(new LandModel { Id = 1, imagePath = "blue_land.png" });
-            lands.Add(new LandModel { Id = 2, imagePath = "blue_land.png" });
-            lands.Add(new LandModel { Id = 3, imagePath = "reversed_land.png" });
-
-            ShowingImage = hand[0].imagePath;
+            player = new PlayerModel(handInit: true);
+            opponent = new PlayerModel(4);
+            hand = player.Hand;
+            lands = player.Lands;
+            enemyLands = opponent.Lands;
+            
             AvailableActionsPrompt = "Доступные действия: 2";
             _actionsCount = 2;
         }
@@ -109,5 +104,6 @@ namespace CardWarsClient.ViewModels
             ClientSend.EndTurn();
             //todo: wait for opponent turn and lock hand...
         }
+
     }
 }

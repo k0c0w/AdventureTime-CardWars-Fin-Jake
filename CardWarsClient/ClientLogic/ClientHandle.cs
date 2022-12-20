@@ -31,7 +31,12 @@ public class ClientHandle
     public static void Dispatch(Packet packet)
     {
         var action = PacketEncoder.DecodeGameAction(packet);
-        Handle((dynamic)action);
+        if(action is UserTakeDeck deck)
+        {
+            Handle(deck);
+        }
+        else
+            Handle((dynamic)action);
     }
 
     private static void Handle(PossibleDecks decks)
@@ -50,8 +55,16 @@ public class ClientHandle
         });
     }
 
-    private static void Handle(UserDecisionStart userDecision)
+    private static void Handle(UserTakeDeck deckInfo)
     {
+        var instance = GamePageViewModel.Instance;
+        if (Client.Instance.Id == deckInfo.UserId)
+        {
+            instance.Player.TakeLands(deckInfo.Lands);
+            instance.Player.TakeInitialHand(deckInfo.CardsFromDeck);
+        }
+        else
+            instance.Opponent.TakeLands(deckInfo.Lands);
     }
 
     private static void Handle(UserChoseDeck chose)

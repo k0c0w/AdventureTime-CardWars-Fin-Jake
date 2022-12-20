@@ -10,10 +10,11 @@ using CommunityToolkit.Mvvm.ComponentModel;
 namespace CardWarsClient.Models
 {
     [ObservableObject]
-    public partial class CardModel
+    public partial record class CardModel
     {
-        public AllCards Name { get; set; }
-        public string imagePath { get; set; }
+        private AllCards _card;
+        public AllCards Name { get => _card; set { imagePath = $"{value}.png"; _card = value; } }
+        public string imagePath { get; private set; }
         public int Cost { get; set; }
         public bool isFlupped { get; set; }
 
