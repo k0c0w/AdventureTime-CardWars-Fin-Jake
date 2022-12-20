@@ -148,7 +148,7 @@
                                             DropCommandParameter="{Binding Id}"/>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
-                                            CommandParameter="{Binding bindedCard.imagePath}"/> 
+                                            CommandParameter="{Binding bindedCard.imagePath}"/>
                                     </Frame.GestureRecognizers>
                                 </Frame>
                             </DataTemplate>
@@ -192,7 +192,7 @@
                             <Shadow Brush="Black"
                                 Offset="20,20"
                                 Radius="40"
-                                Opacity="0.8" />    
+                                Opacity="0.8" />
                         </Frame.Shadow>
                     </Frame>
                 </DataTemplate>
@@ -210,8 +210,7 @@
                     <Image 
                         Source="{Binding Opponent.SourcePath}"
                         HeightRequest="100"
-                        WidthRequest="100"
-                        IsVisible="{Binding Opponent.IsVisible}"/>
+                        WidthRequest="100"/>
                     <Label
                         WidthRequest="150"
                         Text="OpponentName"
@@ -247,8 +246,7 @@
                     <Image 
                         Source="{Binding Player.SourcePath}"
                         HeightRequest="100"
-                        WidthRequest="100"
-                        IsVisible="{Binding Player.IsVisible}"/>
+                        WidthRequest="100"/>
                     <Label
                         TextColor="Black"
                         WidthRequest="150"

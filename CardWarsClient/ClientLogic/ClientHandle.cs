@@ -38,9 +38,16 @@ public class ClientHandle
     {
         MainThread.BeginInvokeOnMainThread(async () => {
             var action = await Shell.Current.DisplayActionSheet("decks", "Отмена", "Удалить", decks.First.ToString(), decks.Second.ToString());
-            var chosen = (DeckTypes)Enum.Parse(typeof(DeckTypes), action);
-            ClientSend.ChooseDeck(chosen);
-        }) ;
+            if (action != null)
+            {
+                var chosen = (DeckTypes)Enum.Parse(typeof(DeckTypes), action);
+                ClientSend.ChooseDeck(chosen);
+            }
+            else
+            {
+                Handle(decks);
+            }
+        });
     }
 
     private static void Handle(UserDecisionStart userDecision)
@@ -49,10 +56,10 @@ public class ClientHandle
 
     private static void Handle(UserChoseDeck chose)
     {
-        
+
         var instance = GamePageViewModel.Instance;
         if (chose.UserId == Client.Instance.Id)
-            SetDeck(instance.player, chose.DeckType);
+            SetDeck(instance.Player, chose.DeckType);
         else
             SetDeck(instance.Opponent, chose.DeckType);
     }
@@ -65,5 +72,8 @@ public class ClientHandle
         });
     }
 
-    private static void SetDeck(PlayerModel player, DeckTypes deck) => player.Deck = deck;
+    private static void SetDeck(PlayerModel player, DeckTypes deck)
+    {
+        player.Deck = deck;
+    }
 }
