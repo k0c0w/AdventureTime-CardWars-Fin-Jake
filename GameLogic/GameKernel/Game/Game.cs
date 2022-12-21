@@ -8,6 +8,8 @@ namespace GameKernel;
 
 public class Game
 {
+    public bool IsFinished { get; internal set; }
+    
     internal int OpponentIdTo(int player) => Players.Keys.First(x => x != player);
     
     internal IGameState GameState { get; set; }

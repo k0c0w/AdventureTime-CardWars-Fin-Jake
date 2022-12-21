@@ -3,6 +3,8 @@ using CardWarsClient.ViewModels;
 using Shared.Decks;
 using Shared.GameActions;
 using Shared.Packets;
+using System;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CardWarsClient;
 
@@ -34,7 +36,13 @@ public class ClientHandle
             var action = PacketEncoder.DecodeGameAction(packet);
             Handle((dynamic)action);
         }
-        catch(Exception ex) { }
+        catch(Exception ex) 
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await Shell.Current.DisplayAlert("ошибка", ex.GetType().ToString(), "jr");
+            });
+        }
         
     }
 

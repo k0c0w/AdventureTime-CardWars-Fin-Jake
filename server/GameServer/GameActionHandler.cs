@@ -9,6 +9,11 @@ public class GameActionHandler
     public static void ApplyToGame(int fromClient, Packet packet)
     {
         if(Server.CurrentGame == null) return;
+        if (Server.CurrentGame.IsFinished)
+        {
+            Server.CurrentGame = null;
+            return;
+        }
         try
         {
             ResponseToClients(Server.CurrentGame.ApplyGameActions(GetGameAction(fromClient, packet)), fromClient);

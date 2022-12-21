@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using Shared.GameActions;
 using Shared.Packets;
 
 namespace GameServer;
@@ -126,7 +127,8 @@ public class Client
         {
             if (Server.CurrentGame != null)
             {
-                //todo: winner
+                using var packet = PacketEncoder.EncodeGameAction(new Winner(GetOpponentId()));
+                ServerSend.SendTCPDataToAll(_id, packet);
                 Server.CurrentGame = null;
                 Console.WriteLine("Game destroyed");
             }
@@ -135,5 +137,8 @@ public class Client
             Socket = null!;
             Console.WriteLine($"User {_id} disconnect");
         }
+
+        private int GetOpponentId()
+            => Server.Clients.Values.FirstOrDefault(x => x.Player != null && x.Id != _id)?.Id ?? -1;
     }
 }

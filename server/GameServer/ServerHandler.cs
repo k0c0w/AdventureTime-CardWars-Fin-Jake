@@ -32,8 +32,8 @@ internal class ServerHandler
     
     private static void TryStartGame()
     {
-        if (Server.Clients.Values.Any(x => x.Player == null || !x.Player.IsReady) || Server.CurrentGame != null)
-                return;
+        if (Server.Clients.Values.Any(x => x.Player is not { IsReady: true }) 
+            || Server.CurrentGame is { IsFinished: true }) return;
 
         Server.CurrentGame = new Game(new FinnVSJake(), 1, 2);
         using var decks = GetEncodedDecks(Server.CurrentGame);
