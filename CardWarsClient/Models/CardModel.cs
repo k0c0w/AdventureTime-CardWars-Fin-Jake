@@ -22,4 +22,14 @@ namespace CardWarsClient.Models
    
         public bool hasDamage { get; set; } = false;
     }
+
+    public static class ObservableCollectionExtenssions
+    {
+        public static bool Remove(this System.Collections.ObjectModel.ObservableCollection<CardModel> collection, AllCards card)
+        {
+            var cardModel = collection.FirstOrDefault(x => x.Name == card);
+            if (cardModel == null) return false;
+            return collection.Remove(cardModel);
+        }
+    }
 }

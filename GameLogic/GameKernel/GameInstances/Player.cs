@@ -42,24 +42,24 @@ public class Player
 
     public void TakeCard(AllCards card)
     {
-        //todo: добавить deck и из нее грабать карту и уведомлять игру здесь 
         Hand.Add(card);
     }
     
-    public void MoveCreatureToLand(int creatureIndex, int landIndex)
+    
+    //todo: dispathcing creatures, bildings, spells
+    public void MoveCreatureToLand(AllCards creatureType, int landIndex)
     {
-        var card = Hand[creatureIndex];
+        var card = Hand.First(x => x == creatureType);
         var creature = CreatureFactory.Summon(this, card, landIndex);
         if (creature.SummonCost > EnergyLeft)
             throw new InvalidOperationException("Player does not have enough energy!");
-        Hand.RemoveAt(creatureIndex);
+        Hand.Remove(creatureType);
         Creatures[landIndex]?.Destroy();
         Creatures[landIndex] = creature;
         EnergyLeft -= creature.SummonCost;
     }
 
-    public bool HasCardInHand(int index, AllCards card) =>
-        0 <= index && index < Hand.Count && Hand[index] == card;
+    public bool HasCardInHand(AllCards card) => Hand.Contains(card);
 
     public int HP { get; private set; }
 

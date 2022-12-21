@@ -35,6 +35,7 @@ public class TakeCardsState : IGameState
 
     public void ChangeState()
     {
+        CurrentGame.RegisterAction(new UserDecisionStart {UserId = player});
         CurrentGame.GameState = new PlayerDecision(player, CurrentGame);
     }
 }

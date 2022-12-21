@@ -32,7 +32,6 @@ public class AttackState : IGameState
         else
         {
             var id = CurrentGame.OpponentIdTo(_attacking);
-            CurrentGame.RegisterAction(new UserDecisionStart {UserId = id });
             CurrentGame.GameState = new TakeCardsState(id, CurrentGame);
             CurrentGame.GameState.Execute(new GameAction() {UserId = id});
         }

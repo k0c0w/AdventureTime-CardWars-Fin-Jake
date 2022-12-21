@@ -63,7 +63,6 @@ public class PacketEncoder
         packet.Write(request.UserId);
         packet.Write(request.Line);
         packet.Write((int)request.Card);
-        packet.Write(request.IndexInHand);
         packet.Write(request.EnergyLeft);
         return packet;
     }
@@ -196,8 +195,7 @@ public class PacketEncoder
         var client = packet.ReadInt();
         var line = packet.ReadInt();
         var card = (AllCards)packet.ReadInt();
-        var index = packet.ReadInt();
-        return new UserPutCard(client, line, card, index) { EnergyLeft = packet.ReadInt() };
+        return new UserPutCard(client, line, card) { EnergyLeft = packet.ReadInt() };
     }
 
     private static UserDecisionStart DecodeUserDecisionStart(Packet packet) =>

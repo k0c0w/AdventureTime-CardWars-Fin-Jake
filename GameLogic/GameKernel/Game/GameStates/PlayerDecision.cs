@@ -38,7 +38,7 @@ public class PlayerDecision : IGameState
     
     private bool PlayerHasCardInHand(UserPutCard putCard)
     {
-        return CurrentGame.Players[putCard.UserId].HasCardInHand(putCard.IndexInHand, putCard.Card);
+        return CurrentGame.Players[putCard.UserId].HasCardInHand(putCard.Card);
     }
 
     public bool IsValidAction(GameAction action)
@@ -58,7 +58,7 @@ public class PlayerDecision : IGameState
         }
 
         if (action is UserPutCard put 
-            && CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.IndexInHand, put.IndexInHand))
+            && CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.Card, put.Line))
         {
             CurrentGame.RegisterAction(put with{ EnergyLeft = CurrentGame.Players[_playerId].EnergyLeft});
         }

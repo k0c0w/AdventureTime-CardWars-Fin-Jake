@@ -67,7 +67,7 @@ namespace CardWarsClient.ViewModels
         {
             if (_dragged != null && ActionsCount >= _dragged.Cost)
             {
-                ClientSend.PutCard(_dragged.Name, slot, hand.IndexOf(_dragged));
+                ClientSend.PutCard(_dragged.Name, slot);
 
                 //todo: wait verify from server
 

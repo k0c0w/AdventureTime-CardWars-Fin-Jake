@@ -61,11 +61,11 @@ public class Game
     //todo: ассинхронная операция
     internal void RegisterAction(GameAction action) => _gameActions.Enqueue(action);
 
-    internal bool TryPlayCreature(Player player, int cardIndex, int line = -1)
+    internal bool TryPlayCreature(Player player, AllCards cardType, int line)
     {
         try
         {
-            player.MoveCreatureToLand(cardIndex, line);
+            player.MoveCreatureToLand(cardType, line);
             return true;
         }
         catch (Exception e)

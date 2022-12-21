@@ -71,7 +71,7 @@ public class ClientHandle
         if (Client.Instance.Id == putCard.UserId)
         {
             GamePageViewModel.Instance.Player.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
-            GamePageViewModel.Instance.Player.Hand.RemoveAt(putCard.IndexInHand);
+            GamePageViewModel.Instance.Player.Hand.Remove(putCard.Card);
             GamePageViewModel.Instance.ActionsCount = putCard.EnergyLeft;
             GamePageViewModel.Instance.AvailableActionsPrompt = $"Доступные действия: {putCard.EnergyLeft}";
         }     

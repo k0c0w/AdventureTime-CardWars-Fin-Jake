@@ -19,7 +19,7 @@ public class AfterGameStartPlayerDecision : PlayerDecision, IGameState
         }
         
         var put = (UserPutCard)action;
-        if(CurrentGame.TryPlayCreature(CurrentGame.Players[1], (int)put.IndexInHand!, put.Line))
+        if(CurrentGame.TryPlayCreature(CurrentGame.Players[1], put.Card, put.Line))
             CurrentGame.RegisterAction(put with{ EnergyLeft = CurrentGame.Players[1].EnergyLeft});
         else
             CurrentGame.RegisterAction(Game.BadRequestAction);
@@ -27,7 +27,7 @@ public class AfterGameStartPlayerDecision : PlayerDecision, IGameState
     
     public new void ChangeState()
     {
-        CurrentGame.RegisterAction(new UserDecisionStart {UserId = 2});
-        CurrentGame.GameState = new PlayerDecision(2, CurrentGame);
+        CurrentGame.GameState = new TakeCardsState(2, CurrentGame);
+        CurrentGame.GameState.Execute(new GameAction() {UserId = 2});
     }
 }
