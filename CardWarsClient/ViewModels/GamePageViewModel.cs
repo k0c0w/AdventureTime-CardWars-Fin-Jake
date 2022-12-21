@@ -54,7 +54,6 @@ namespace CardWarsClient.ViewModels
             hand = player.Hand;
             lands = player.Lands;
             enemyLands = opponent.Lands;
-            
         }
 
         [RelayCommand]

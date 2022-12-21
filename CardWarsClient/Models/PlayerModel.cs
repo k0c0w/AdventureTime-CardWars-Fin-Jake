@@ -1,4 +1,4 @@
-﻿using CardWarsClient.ClientLogic.Cards;
+using CardWarsClient.ClientLogic.Cards;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Shared.Decks;
 using Shared.PossibleCards;
@@ -28,7 +28,7 @@ namespace CardWarsClient.Models
 
         [ObservableProperty]
         private int hp = 25;
-
+        
         [ObservableProperty]
         public string sourcePath;
 
