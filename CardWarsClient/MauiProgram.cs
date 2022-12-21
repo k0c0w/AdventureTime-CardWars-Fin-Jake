@@ -19,7 +19,6 @@ public static class MauiProgram
             });
 
         builder.Services.AddSingleton<GamePage>();
-        builder.Services.AddSingleton<GamePageViewModel>();
 
 
         return builder.Build();

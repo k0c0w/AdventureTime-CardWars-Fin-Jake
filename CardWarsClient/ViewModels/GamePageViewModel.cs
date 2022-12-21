@@ -1,23 +1,15 @@
-﻿using CommunityToolkit.Mvvm;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using CardWarsClient.Models;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using static System.Collections.Specialized.BitVector32;
-using Shared.PossibleCards;
-using System.ComponentModel;
-using Shared.Decks;
 
 namespace CardWarsClient.ViewModels
 {
     public partial class GamePageViewModel : ObservableObject
     {
-        public static GamePageViewModel Instance { get; set; }
+        private readonly static Lazy<GamePageViewModel> Singleton = new Lazy<GamePageViewModel>(() => new GamePageViewModel());
+        public static GamePageViewModel Instance => Singleton?.Value;
+
 
         #region Observable
         public ObservableCollection<CardModel> hand { get; set; } = new ObservableCollection<CardModel>();
@@ -48,7 +40,6 @@ namespace CardWarsClient.ViewModels
 
         public GamePageViewModel()
         {
-            Instance = this;
             player = new PlayerModel(handInit: true);
             opponent = new PlayerModel(4);
             hand = player.Hand;
@@ -102,6 +93,5 @@ namespace CardWarsClient.ViewModels
             ClientSend.EndTurn();
             //todo: wait for opponent turn and lock hand...
         }
-
     }
 }

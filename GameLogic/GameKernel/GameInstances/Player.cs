@@ -47,13 +47,12 @@ public class Player
     
     
     //todo: dispathcing creatures, bildings, spells
-    public void MoveCreatureToLand(AllCards creatureType, int landIndex)
+    public void MoveCreatureToLand(AllCards card, int landIndex)
     {
-        var card = Hand.First(x => x == creatureType);
         var creature = CreatureFactory.Summon(this, card, landIndex);
         if (creature.SummonCost > EnergyLeft)
             throw new InvalidOperationException("Player does not have enough energy!");
-        Hand.Remove(creatureType);
+        Hand.Remove(card);
         Creatures[landIndex]?.Destroy();
         Creatures[landIndex] = creature;
         EnergyLeft -= creature.SummonCost;
