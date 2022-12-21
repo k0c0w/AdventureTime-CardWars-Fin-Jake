@@ -35,7 +35,7 @@ public class UserChooseDeck : IGameState
             ChangeState();
     }
 
-    private AllCards[] TakeFiveCards(int userId)
+    private AllCards[] TakeFiveCardsFromDeck(int userId)
     {
         var deck = CurrentGame.PlayersDeck[userId];
         return Enumerable.Range(0, 5).Select(x => deck.GetCard()).ToArray();
@@ -43,9 +43,13 @@ public class UserChooseDeck : IGameState
 
     private void TakeCards(UserChoseDeck choose)
     {
+        var player = CurrentGame.Players[choose.UserId];
+        var cards = TakeFiveCardsFromDeck(choose.UserId);
+        foreach (var card in cards)
+            player.TakeCard(card);
         var lands = CurrentGame.Players[choose.UserId].Lands.Select(X => X.LandType).ToArray();
         CurrentGame.RegisterAction(new UserTakeLands(choose.UserId, lands));
-        CurrentGame.RegisterAction(new UserTakeCards(choose.UserId, TakeFiveCards(choose.UserId), 
+        CurrentGame.RegisterAction(new UserTakeCards(choose.UserId, TakeFiveCardsFromDeck(choose.UserId), 
             CurrentGame.PlayersDeck[choose.UserId].CardsLeft));
     }
     
