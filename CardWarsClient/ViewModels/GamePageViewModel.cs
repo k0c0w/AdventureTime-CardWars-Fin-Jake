@@ -97,10 +97,7 @@ namespace CardWarsClient.ViewModels
         [RelayCommand]
         public void ChangeTurn()
         {
-            IsCurrentPlayerTurn = !IsCurrentPlayerTurn;
-
             ClientSend.EndTurn();
-            //todo: wait for opponent turn and lock hand...
         }
 
     }

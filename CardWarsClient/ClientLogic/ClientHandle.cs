@@ -107,6 +107,28 @@ public class ClientHandle
         }
     }
 
+    private static void Handle(CreatureState state)
+    {
+        if(Client.Instance.Id == state.Owner)
+        {
+            GamePageViewModel.Instance.Player.Lands[state.Line].BindedCard.TakenDamage += state.HPBefore - state.HPAfter;
+            GamePageViewModel.Instance.Player.Lands[state.Line].BindedCard.HasDamage = true;
+            if (state.IsDead)
+            {
+                GamePageViewModel.Instance.Player.Lands[state.Line].BindedCard = null;
+            }
+        }
+        else
+        {
+            GamePageViewModel.Instance.Opponent.Lands[state.Line].BindedCard.TakenDamage += state.HPBefore - state.HPAfter;
+            GamePageViewModel.Instance.Opponent.Lands[state.Line].BindedCard.HasDamage = true;
+            if (state.IsDead)
+            {
+                GamePageViewModel.Instance.Opponent.Lands[state.Line].BindedCard = null;
+            }
+        }
+    }
+
     private static void Handle(UserChoseDeck chose)
     {
 
