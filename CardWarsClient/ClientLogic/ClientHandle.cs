@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Shared.Decks;
 using Shared.GameActions;
 using Shared.Packets;
+using System;
 
 namespace CardWarsClient;
 
@@ -12,8 +13,6 @@ public class ClientHandle
     public static void MakeHandshake(Packet packet)
     {
         var id = packet.ReadInt();
-        var message = packet.ReadString();
-        Console.WriteLine(message);
         Client.Instance.Id = id;
         ClientSend.WelcomeReceived();
     }
@@ -31,7 +30,9 @@ public class ClientHandle
     public static void Dispatch(Packet packet)
     {
         var action = PacketEncoder.DecodeGameAction(packet);
-        Handle((dynamic)action);
+        if (action is UserTakeCards e)
+            Handle(e);
+        else Handle((dynamic)action);
     }
 
     private static void Handle(PossibleDecks decks)
@@ -50,8 +51,52 @@ public class ClientHandle
         });
     }
 
-    private static void Handle(UserDecisionStart userDecision)
+    private static void Handle(UserTakeLands deckInfo)
     {
+
+        if (Client.Instance.Id == deckInfo.UserId)
+            GamePageViewModel.Instance.Player.TakeLands(deckInfo.Lands);
+        else
+            GamePageViewModel.Instance.Opponent.TakeLands(deckInfo.Lands);
+    }
+
+    private static void Handle(UserTakeCards takenCards)
+    {
+        if (Client.Instance.Id == takenCards.UserId)
+            GamePageViewModel.Instance.Player.TakeCards(takenCards.Cards);
+    }
+
+    private static void Handle(UserPutCard putCard)
+    {
+        if (Client.Instance.Id == putCard.UserId)
+        {
+            GamePageViewModel.Instance.Player.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
+            GamePageViewModel.Instance.Player.Hand.RemoveAt(putCard.IndexInHand);
+            GamePageViewModel.Instance.ActionsCount = putCard.EnergyLeft;
+            GamePageViewModel.Instance.AvailableActionsPrompt = $"Доступные действия: {putCard.EnergyLeft}";
+        }     
+        else GamePageViewModel.Instance.Opponent.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
+    }
+
+    private static void Handle(UserDecisionStart decisionStart)
+    {
+        if (Client.Instance.Id == decisionStart.UserId)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                GamePageViewModel.Instance.IsCurrentPlayerTurn = true;
+                GamePageViewModel.Instance.ActionsCount = 2;
+                GamePageViewModel.Instance.AvailableActionsPrompt = "Доступные действия: 2";
+                await Shell.Current.DisplayAlert("Уведомление", "Ваш ход!", "ОK");       
+            });
+        } else
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                GamePageViewModel.Instance.IsCurrentPlayerTurn = false;
+                await Shell.Current.DisplayAlert("Уведомление", "Дождитесь хода соперника!", "ОK");           
+            });
+        }
     }
 
     private static void Handle(UserChoseDeck chose)

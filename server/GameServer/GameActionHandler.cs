@@ -41,6 +41,7 @@ public class GameActionHandler
                 ServerSend.SendTCPData(requestedClient, packet);
             else
                 ServerSend.SendTCPDataToAll(packet);
+            Thread.Sleep(50);
         }
     }
 }

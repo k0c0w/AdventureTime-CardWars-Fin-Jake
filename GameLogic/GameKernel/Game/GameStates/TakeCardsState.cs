@@ -25,7 +25,8 @@ public class TakeCardsState : IGameState
         var deck = CurrentGame.PlayersDeck[action.UserId];
         var card = deck.GetCard();
         CurrentGame.Players[action.UserId].TakeCard(card);
-        CurrentGame.RegisterAction(new UserTakeCard(action.UserId, card, deck.CardsLeft));
+        CurrentGame.Players[action.UserId].ResetEnergy();
+        CurrentGame.RegisterAction(new UserTakeCards(action.UserId, new []{card}, deck.CardsLeft));
         if (!_firstTime)
         {
             ChangeState();

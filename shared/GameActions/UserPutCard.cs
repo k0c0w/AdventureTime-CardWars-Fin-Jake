@@ -8,4 +8,6 @@ public record UserPutCard : CardAction, IBothUserInfo
         => IndexInHand = indexInHand;
     
     public int IndexInHand { get;}
+
+    public int EnergyLeft { get; init; } = 0;
 } 

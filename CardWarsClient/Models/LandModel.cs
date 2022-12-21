@@ -1,13 +1,26 @@
-
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Shared.PossibleCards;
 
 namespace CardWarsClient.Models
 {
-    public class LandModel
+    [ObservableObject]
+    public partial class LandModel
     {
+        public bool IsTurnedOut => ImagePath == reversed;
+
+        public LandType Land { get; set; }
+
+        private static string reversed = "reversed_land.png";
+
         public int Id { get; set; }
 
-        public string imagePath { get; set; }
+        [ObservableProperty]
+        public string imagePath = reversed;
 
-        public CardModel bindedCard { get; set; } //= new CardModel { hasDamage = false, takenDamage = 0 };
+        [ObservableProperty]
+        public CardModel bindedCard;
+
+        public void TurnOut() => ImagePath = IsTurnedOut ? $"{Land}.png" : reversed;
     }
 }

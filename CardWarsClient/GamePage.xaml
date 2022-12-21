@@ -23,79 +23,13 @@
 
                 <HorizontalStackLayout
                     x:Name="enemyTable"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Fill"
-                    Spacing="5"
-                    ZIndex="2">
-                    <Frame
-                        HeightRequest="300"
-                        WidthRequest="200"
-                        Padding="0"
-                        BackgroundColor="Transparent"
-                        BorderColor="Transparent">
-                        <Image
-                            Source="corn_land.png" 
-                            HeightRequest="250"
-                            WidthRequest="175"
-                            Aspect="Fill" 
-                            RotationX="180"
-                            RotationY="180"/>
-                    </Frame>
-                    <Frame
-                        HeightRequest="300"
-                        WidthRequest="200"
-                        Padding="0"
-                        BackgroundColor="Transparent"
-                        BorderColor="Transparent">
-                        <Image
-                            Source="corn_land.png" 
-                            HeightRequest="250"
-                            WidthRequest="175"
-                            Aspect="Fill" 
-                            RotationX="180"
-                            RotationY="180"/>
-                    </Frame>
-                    <Frame
-                        HeightRequest="300"
-                        WidthRequest="200"
-                        Padding="0"
-                        BackgroundColor="Transparent"
-                        BorderColor="Transparent">
-                        <Image
-                            Source="reversed_land.png" 
-                            HeightRequest="250"
-                            WidthRequest="175"
-                            Aspect="Fill" 
-                            RotationX="180"
-                            RotationY="180"/>
-                    </Frame>
-                    <Frame
-                        HeightRequest="300"
-                        WidthRequest="200"
-                        Padding="0"
-                        BackgroundColor="Transparent"
-                        BorderColor="Transparent">
-                        <Image
-                            Source="corn_land.png" 
-                            HeightRequest="250"
-                            WidthRequest="175"
-                            Aspect="Fill" 
-                            RotationX="180"
-                            RotationY="180"/>
-                    </Frame>
-                </HorizontalStackLayout>
-
-
-
-                <HorizontalStackLayout
-                    x:Name="userTable"
                     HorizontalOptions="CenterAndExpand"
                     VerticalOptions="Center"
                     Spacing="5"
                     ZIndex="2">
                     <CollectionView
                         ItemsLayout="HorizontalList"
-                        ItemsSource="{Binding lands}">
+                        ItemsSource="{Binding Opponent.Lands}">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:LandModel">
                                 <Frame
@@ -108,13 +42,86 @@
                                         <Image
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
-                                            Source="{Binding bindedCard.imagePath}"
+                                            Source="{Binding BindedCard.imagePath}"
+                                            HeightRequest="200"
+                                            WidthRequest="133"
+                                            Aspect="Fill"
+                                            ZIndex="5"
+                                            RotationX="180"
+                                            RotationY="180"/>
+                                        <Image
+                                            Source="{Binding ImagePath}"
+                                            HeightRequest="250"
+                                            WidthRequest="175"
+                                            Aspect="Fill"
+                                            ZIndex="4"
+                                            RotationX="180"
+                                            RotationY="180"/>
+                                        <Ellipse
+                                            Fill="Red"
+                                            Stroke="Wheat"
+                                            StrokeThickness="2"
+                                            IsVisible="{Binding BindedCard.hasDamage, FallbackValue=False, Mode=OneWay}"
+                                            WidthRequest="50"
+                                            HeightRequest="50"
+                                            AbsoluteLayout.LayoutBounds="0.5,0.5"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            ZIndex="6"/>
+                                        <Label
+                                            IsVisible="{Binding BindedCard.hasDamage}"
+                                            WidthRequest="50"
+                                            HeightRequest="50"
+                                            FontSize="24"
+                                            HorizontalTextAlignment="Center"
+                                            VerticalTextAlignment="Center"
+                                            Text="{Binding BindedCard.takenDamage}"
+                                            TextColor="White"
+                                            AbsoluteLayout.LayoutBounds="0.5,0.5"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            ZIndex="7"/>
+                                    </AbsoluteLayout>
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
+                                            CommandParameter="{Binding BindedCard.imagePath}"/>
+                                    </Frame.GestureRecognizers>
+                                </Frame>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </HorizontalStackLayout>
+
+
+
+                <HorizontalStackLayout
+                    x:Name="userTable"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="Center"
+                    Spacing="5"
+                    ZIndex="2">
+                    <CollectionView
+                        ItemsLayout="HorizontalList"
+                        ItemsSource="{Binding Player.Lands}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:LandModel">
+                                <Frame
+                                    HeightRequest="300"
+                                    WidthRequest="200"
+                                    Padding="0"
+                                    BackgroundColor="Transparent"
+                                    BorderColor="Transparent">
+                                    <AbsoluteLayout>
+                                        <Image
+                                            AbsoluteLayout.LayoutBounds="0.5,0.5"
+                                            AbsoluteLayout.LayoutFlags="PositionProportional"
+                                            Source="{Binding BindedCard.imagePath}"
                                             HeightRequest="200"
                                             WidthRequest="133"
                                             Aspect="Fill"
                                             ZIndex="5"/>
                                         <Image
-                                            Source="{Binding imagePath}"
+                                            Source="{Binding ImagePath}"
                                             HeightRequest="250"
                                             WidthRequest="175"
                                             Aspect="Fill"
@@ -123,20 +130,20 @@
                                             Fill="Red"
                                             Stroke="Wheat"
                                             StrokeThickness="2"
-                                            IsVisible="{Binding bindedCard.hasDamage, FallbackValue=False, Mode=OneWay}"
+                                            IsVisible="{Binding BindedCard.hasDamage, FallbackValue=False, Mode=OneWay}"
                                             WidthRequest="50"
                                             HeightRequest="50"
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
                                             ZIndex="6"/>
                                         <Label
-                                            IsVisible="{Binding bindedCard.hasDamage}"
+                                            IsVisible="{Binding BindedCard.hasDamage}"
                                             WidthRequest="50"
                                             HeightRequest="50"
                                             FontSize="24"
                                             HorizontalTextAlignment="Center"
                                             VerticalTextAlignment="Center"
-                                            Text="{Binding bindedCard.takenDamage}"
+                                            Text="{Binding BindedCard.takenDamage}"
                                             TextColor="White"
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
@@ -148,7 +155,7 @@
                                             DropCommandParameter="{Binding Id}"/>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
-                                            CommandParameter="{Binding bindedCard.imagePath}"/>
+                                            CommandParameter="{Binding BindedCard.imagePath}"/>
                                     </Frame.GestureRecognizers>
                                 </Frame>
                             </DataTemplate>
@@ -162,7 +169,7 @@
         <CollectionView AbsoluteLayout.LayoutBounds="0.5,1"
                         AbsoluteLayout.LayoutFlags="PositionProportional"
                         VerticalOptions="EndAndExpand"
-                        ItemsSource="{Binding hand}"
+                        ItemsSource="{Binding Player.Hand}"
                         ItemsLayout="HorizontalList"
                         ZIndex="3">
             <CollectionView.ItemTemplate>
