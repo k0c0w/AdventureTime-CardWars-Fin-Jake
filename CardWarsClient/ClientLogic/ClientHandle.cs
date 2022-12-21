@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Media.Animation;
 using Shared.Decks;
 using Shared.GameActions;
 using Shared.Packets;
+using System;
 
 namespace CardWarsClient;
 
@@ -63,6 +64,39 @@ public class ClientHandle
     {
         if (Client.Instance.Id == takenCards.UserId)
             GamePageViewModel.Instance.Player.TakeCards(takenCards.Cards);
+    }
+
+    private static void Handle(UserPutCard putCard)
+    {
+        if (Client.Instance.Id == putCard.UserId)
+        {
+            GamePageViewModel.Instance.Player.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
+            GamePageViewModel.Instance.Player.Hand.RemoveAt(putCard.IndexInHand);
+            GamePageViewModel.Instance.ActionsCount = putCard.EnergyLeft;
+            GamePageViewModel.Instance.AvailableActionsPrompt = $"Доступные действия: {putCard.EnergyLeft}";
+        }     
+        else GamePageViewModel.Instance.Opponent.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
+    }
+
+    private static void Handle(UserDecisionStart decisionStart)
+    {
+        if (Client.Instance.Id == decisionStart.UserId)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                GamePageViewModel.Instance.IsCurrentPlayerTurn = true;
+                GamePageViewModel.Instance.ActionsCount = 2;
+                GamePageViewModel.Instance.AvailableActionsPrompt = "Доступные действия: 2";
+                await Shell.Current.DisplayAlert("Уведомление", "Ваш ход!", "ОK");       
+            });
+        } else
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                GamePageViewModel.Instance.IsCurrentPlayerTurn = false;
+                await Shell.Current.DisplayAlert("Уведомление", "Дождитесь хода соперника!", "ОK");           
+            });
+        }
     }
 
     private static void Handle(UserChoseDeck chose)

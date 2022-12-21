@@ -46,7 +46,9 @@
                                             HeightRequest="200"
                                             WidthRequest="133"
                                             Aspect="Fill"
-                                            ZIndex="5"/>
+                                            ZIndex="5"
+                                            RotationX="180"
+                                            RotationY="180"/>
                                         <Image
                                             Source="{Binding ImagePath}"
                                             HeightRequest="250"
@@ -79,9 +81,6 @@
                                             ZIndex="7"/>
                                     </AbsoluteLayout>
                                     <Frame.GestureRecognizers>
-                                        <DropGestureRecognizer 
-                                            DropCommand="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=DropCardCommand}"
-                                            DropCommandParameter="{Binding Id}"/>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
                                             CommandParameter="{Binding BindedCard.imagePath}"/>

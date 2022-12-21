@@ -44,7 +44,7 @@ namespace CardWarsClient.ViewModels
         #endregion
 
         private CardModel _dragged;
-        private int _actionsCount;
+        public int ActionsCount;
 
         public GamePageViewModel()
         {
@@ -55,8 +55,6 @@ namespace CardWarsClient.ViewModels
             lands = player.Lands;
             enemyLands = opponent.Lands;
             
-            AvailableActionsPrompt = "Доступные действия: 2";
-            _actionsCount = 2;
         }
 
         [RelayCommand]
@@ -68,18 +66,19 @@ namespace CardWarsClient.ViewModels
         [RelayCommand]
         public void DropCard(int slot)
         {
-            if (_dragged != null && _actionsCount >= _dragged.Cost)
+            if (_dragged != null && ActionsCount >= _dragged.Cost)
             {
                 ClientSend.PutCard(_dragged.Name, slot, hand.IndexOf(_dragged));
 
                 //todo: wait verify from server
 
-                hand.Remove(_dragged);
+                /*hand.Remove(_dragged);
                 _actionsCount -= _dragged.Cost;
                 AvailableActionsPrompt = $"Доступные действия: {_actionsCount}";
                 //var _fixedCard = new CardModel { Name=_dragged.Name, Cost= _dragged.Cost, hasDamage = _dragged.hasDamage, imagePath = _dragged.imagePath, isFlupped = _dragged.isFlupped, takenDamage = _dragged.takenDamage };
                 lands[slot] = new LandModel { Id = lands[slot].Id, imagePath = lands[slot].imagePath, bindedCard = _dragged }; // костыль
                 _dragged = null;
+                */
             }
             else
             {
