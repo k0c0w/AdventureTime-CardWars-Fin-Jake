@@ -31,7 +31,7 @@ public class ClientHandle
         var action = PacketEncoder.DecodeGameAction(packet);
         if (action is UserTakeCards e)
             Handle(e);
-        Handle((dynamic)action);
+        else Handle((dynamic)action);
     }
 
     private static void Handle(PossibleDecks decks)
