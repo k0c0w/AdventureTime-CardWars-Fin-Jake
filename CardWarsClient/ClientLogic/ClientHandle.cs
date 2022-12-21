@@ -51,6 +51,14 @@ public class ClientHandle
         });
     }
 
+    private static void Handle(UserTakeDamage damage)
+    {
+        if (Client.Instance.Id == damage.UserId)
+            GamePageViewModel.Instance.Player.Hp -= damage.Damage;
+        else
+            GamePageViewModel.Instance.Opponent.Hp -= damage.Damage;
+    }
+
     private static void Handle(UserTakeLands deckInfo)
     {
 

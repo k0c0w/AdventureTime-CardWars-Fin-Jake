@@ -18,7 +18,7 @@ public class AttackState : IGameState
 
     public void Execute(GameAction action)
     {
-        var creaturesOnLands = CurrentGame.PlayersCreatures[_attacking].Where(x => x != null);
+        var creaturesOnLands = CurrentGame.PlayersCreatures[_attacking].Where(x => x != null && x.IsAttacking);
         RegisterBonuses(creaturesOnLands);
         DamageEnemies(creaturesOnLands);
         ChangeState();
@@ -31,9 +31,8 @@ public class AttackState : IGameState
             CurrentGame.GameState = new WinnerState(CurrentGame);
         else
         {
-            var id = CurrentGame.OpponentIdTo(_attacking);
-            CurrentGame.GameState = new TakeCardsState(id, CurrentGame);
-            CurrentGame.GameState.Execute(new GameAction() {UserId = id});
+            CurrentGame.GameState = new TakeCardsState(opponent, CurrentGame);
+            CurrentGame.GameState.Execute(new GameAction() {UserId = opponent});
         }
     }
 

@@ -5,12 +5,12 @@ namespace GameObjects;
 public abstract class Creature : GameObject
 {
     public int Line { get; set; }
-    
-    public bool IsAttacking{ get; protected set; }
+
+    public bool IsAttacking { get; protected set; } = true;
     
     public bool IsDead => HP < 0;
     
-    public int HP => _cretureHP + _buffDamage;
+    public int HP => _cretureHP + _buffHP;
 
     public int Damage => _initialDamage + _buffDamage;
     
