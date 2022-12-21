@@ -18,8 +18,10 @@ public class AttackState : IGameState
 
     public void Execute(GameAction action)
     {
-        var creaturesOnLands = CurrentGame.PlayersCreatures[_attacking].Where(x => x != null && x.IsAttacking);
+        var creaturesOnLands = CurrentGame.PlayersCreatures[_attacking].Where(x => x is { IsAttacking: true });
         RegisterBonuses(creaturesOnLands);
+        RegisterBonuses(CurrentGame.PlayersCreatures[CurrentGame.OpponentIdTo(_attacking)]
+            .Where(x => x is { IsAttacking: true })!);
         DamageEnemies(creaturesOnLands);
         ChangeState();
     }
