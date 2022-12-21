@@ -71,7 +71,7 @@ namespace GameServer
             };
             var handler = new PacketHandler(GameActionHandler.ApplyToGame);
             var gameActions = PacketHandlers[PacketId.GameActionPacket];
-            for(var action = 0; action <= (int)GameActionPacket.GameEnd; action++)
+            for(var action = 0; action <= (int)GameActionPacket.Winner; action++)
                 gameActions.Add(action, handler);
 
             Console.WriteLine("Initialized packets.");

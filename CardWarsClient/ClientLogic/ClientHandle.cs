@@ -1,15 +1,17 @@
 ﻿using CardWarsClient.Models;
 using CardWarsClient.ViewModels;
-using Microsoft.UI.Xaml.Media.Animation;
 using Shared.Decks;
 using Shared.GameActions;
 using Shared.Packets;
 using System;
+using static System.Collections.Specialized.BitVector32;
 
 namespace CardWarsClient;
 
 public class ClientHandle
 {
+    private static GamePageViewModel ViewModel = GamePageViewModel.Instance;
+
     public static void MakeHandshake(Packet packet)
     {
         var id = packet.ReadInt();
@@ -29,10 +31,19 @@ public class ClientHandle
 
     public static void Dispatch(Packet packet)
     {
-        var action = PacketEncoder.DecodeGameAction(packet);
-        if (action is UserTakeCards e)
-            Handle(e);
-        else Handle((dynamic)action);
+        try
+        {
+            var action = PacketEncoder.DecodeGameAction(packet);
+            Handle((dynamic)action);
+        }
+        catch(Exception ex) 
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await Shell.Current.DisplayAlert("ошибка", ex.GetType().ToString(), "jr");
+            });
+        }
+        
     }
 
     private static void Handle(PossibleDecks decks)
@@ -54,36 +65,36 @@ public class ClientHandle
     private static void Handle(UserTakeDamage damage)
     {
         if (Client.Instance.Id == damage.UserId)
-            GamePageViewModel.Instance.Player.Hp -= damage.Damage;
+            ViewModel.Player.Hp -= damage.Damage;
         else
-            GamePageViewModel.Instance.Opponent.Hp -= damage.Damage;
+            ViewModel.Opponent.Hp -= damage.Damage;
     }
 
     private static void Handle(UserTakeLands deckInfo)
     {
 
         if (Client.Instance.Id == deckInfo.UserId)
-            GamePageViewModel.Instance.Player.TakeLands(deckInfo.Lands);
+            ViewModel.Player.TakeLands(deckInfo.Lands);
         else
-            GamePageViewModel.Instance.Opponent.TakeLands(deckInfo.Lands);
+            ViewModel.Opponent.TakeLands(deckInfo.Lands);
     }
 
     private static void Handle(UserTakeCards takenCards)
     {
         if (Client.Instance.Id == takenCards.UserId)
-            GamePageViewModel.Instance.Player.TakeCards(takenCards.Cards);
+            ViewModel.Player.TakeCards(takenCards.Cards);
     }
 
     private static void Handle(UserPutCard putCard)
     {
         if (Client.Instance.Id == putCard.UserId)
-        {
-            GamePageViewModel.Instance.Player.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
-            GamePageViewModel.Instance.Player.Hand.Remove(putCard.Card);
-            GamePageViewModel.Instance.ActionsCount = putCard.EnergyLeft;
-            GamePageViewModel.Instance.AvailableActionsPrompt = $"Доступные действия: {putCard.EnergyLeft}";
+        {   
+            ViewModel.Player.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
+            ViewModel.Player.Hand.Remove(putCard.Card);
+            ViewModel.ActionsCount = putCard.EnergyLeft;
+            ViewModel.AvailableActionsPrompt = $"Доступные действия: {putCard.EnergyLeft}";
         }     
-        else GamePageViewModel.Instance.Opponent.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
+        else ViewModel.Opponent.Lands[putCard.Line].BindedCard = new CardModel { Name = putCard.Card };
     }
 
     private static void Handle(UserDecisionStart decisionStart)
@@ -92,9 +103,9 @@ public class ClientHandle
         {
             MainThread.BeginInvokeOnMainThread(async () =>
             {
-                GamePageViewModel.Instance.IsCurrentPlayerTurn = true;
-                GamePageViewModel.Instance.ActionsCount = 2;
-                GamePageViewModel.Instance.AvailableActionsPrompt = "Доступные действия: 2";
+                ViewModel.IsCurrentPlayerTurn = true;
+                ViewModel.ActionsCount = 2;
+                ViewModel.AvailableActionsPrompt = "Доступные действия: 2";
                 await Shell.Current.DisplayAlert("Уведомление", "Ваш ход!", "ОK");       
             });
         } else
@@ -132,11 +143,10 @@ public class ClientHandle
     private static void Handle(UserChoseDeck chose)
     {
 
-        var instance = GamePageViewModel.Instance;
         if (chose.UserId == Client.Instance.Id)
-            SetDeck(instance.Player, chose.DeckType);
+            SetDeck(ViewModel.Player, chose.DeckType);
         else
-            SetDeck(instance.Opponent, chose.DeckType);
+            SetDeck(ViewModel.Opponent, chose.DeckType);
     }
 
     private static void Handle(GameAction action)

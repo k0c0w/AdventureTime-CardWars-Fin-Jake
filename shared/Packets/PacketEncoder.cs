@@ -115,6 +115,13 @@ public class PacketEncoder
         packet.Write(request.CardsInDeckLeft);
         return packet;
     }
+
+    private static Packet Encode(Winner winner, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.Winner);
+        packet.Write(winner.UserId);
+        return packet;
+    }
     
 
     public static GameAction DecodeGameAction(Packet packet)
@@ -136,11 +143,17 @@ public class PacketEncoder
             GameActionPacket.UserTakeCards => DecodeUserTakeCards(packet),
             GameActionPacket.UserTakeDamage => DecodeUserTakeDamage(packet),
             GameActionPacket.CreatureState => DecodeCreatureState(packet),
-            GameActionPacket.GameEnd => throw new NotImplementedException(),
+            GameActionPacket.Winner => DecodeWinner(packet),
             _ => throw new InvalidOperationException()
         };
     }
 
+    private static Winner DecodeWinner(Packet packet)
+    {
+        var user = packet.ReadInt();
+        return new Winner(user);
+    }
+    
     private static UserTakeCards DecodeUserTakeCards(Packet packet)
     {
         var user = packet.ReadInt();

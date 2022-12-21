@@ -16,7 +16,6 @@ public enum ClientPacket
 public enum GameActionPacket
 {
     GameStart,
-    Winner,
     BadRequest,
     PossibleDecks,
     UserChoseDeck,
@@ -27,7 +26,7 @@ public enum GameActionPacket
     UserPutCard,
     UserTakeDamage,
     CreatureState,
-    GameEnd,
+    Winner,
 }
 
 public enum PacketId
