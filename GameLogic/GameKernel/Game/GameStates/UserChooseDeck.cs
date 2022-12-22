@@ -44,13 +44,13 @@ public class UserChooseDeck : IGameState
     private void TakeCards(UserChoseDeck choose)
     {
         var player = CurrentGame.Players[choose.UserId];
+        player.Deck.Shuffle();
         var cards = TakeFiveCardsFromDeck(choose.UserId);
         foreach (var card in cards)
             player.TakeCard(card);
         var lands = CurrentGame.Players[choose.UserId].Lands.Select(x => x.LandType).ToArray();
         CurrentGame.RegisterAction(new UserTakeLands(choose.UserId, lands));
-        CurrentGame.RegisterAction(new UserTakeCards(choose.UserId, TakeFiveCardsFromDeck(choose.UserId), 
-            CurrentGame.PlayersDeck[choose.UserId].CardsLeft));
+        CurrentGame.RegisterAction(new UserTakeCards(choose.UserId, cards, CurrentGame.PlayersDeck[choose.UserId].CardsLeft));
     }
     
     public void ChangeState()
