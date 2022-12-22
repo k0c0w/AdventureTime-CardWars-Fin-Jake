@@ -3,7 +3,6 @@ using Shared.PossibleCards;
 
 namespace GameObjects;
 
-//todo: player : Idisposable => ссылки на gameInstance убрать
 public class Player
 {
     public int EnergyLeft { get; private set; }
@@ -26,10 +25,8 @@ public class Player
     
     public Stack<AllCards> Discard { get; }
 
-    //todo: validate args
     public Player(int userId, Game game)
     {
-        //todo: здесь должно быть не GameInstance, а enum карточки
         Hand = new List<AllCards>();
         Creatures = new Creature[4];
         Buildings = new Building[4];
@@ -64,8 +61,6 @@ public class Player
 
     public void TakeDamage(int damage)
     {
-        //todo: уведомить игру
-        //if(damage < 0) throw new ArgumentException();
         HP -= damage;
     }
 

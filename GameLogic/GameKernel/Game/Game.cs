@@ -60,7 +60,6 @@ public class Game
         return actions;
     }
 
-    //todo: ассинхронная операция
     internal void RegisterAction(GameAction action) => _gameActions.Enqueue(action);
 
     internal bool TryPlayCreature(Player player, AllCards cardType, int line)

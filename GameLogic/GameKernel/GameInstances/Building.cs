@@ -13,6 +13,5 @@ public abstract class Building : GameObject
     public void Destroy()
     {
         Owner.Buildings[Line] = null;
-        //todo: уведомить игру о действии
     }
 }
