@@ -43,7 +43,7 @@ public class GameActionHandler
             Console.WriteLine($"Server applied action: {action}");
             var packet = PacketEncoder.EncodeGameAction(action);
             if (action is IOneUserInfo)
-                ServerSend.SendTCPData(requestedClient, packet);
+                ServerSend.SendTCPData(action.UserId == -1 ? requestedClient : action.UserId, packet);
             else
                 ServerSend.SendTCPDataToAll(packet);
             Thread.Sleep(50);
