@@ -42,7 +42,8 @@
                                         <Image
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
-                                            Source="{Binding BindedCard.imagePath}"
+                                            IsVisible="{Binding BindedCard.IsOnField, FallbackValue=False}"
+                                            Source="{Binding BindedCard.ImagePath}"
                                             HeightRequest="200"
                                             WidthRequest="133"
                                             Aspect="Fill"
@@ -61,20 +62,20 @@
                                             Fill="Red"
                                             Stroke="Wheat"
                                             StrokeThickness="2"
-                                            IsVisible="{Binding BindedCard.hasDamage, FallbackValue=False, Mode=OneWay}"
+                                            IsVisible="{Binding BindedCard.HasDamage, FallbackValue=False, Mode=OneWay}"
                                             WidthRequest="50"
                                             HeightRequest="50"
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
                                             ZIndex="6"/>
                                         <Label
-                                            IsVisible="{Binding BindedCard.hasDamage}"
+                                            IsVisible="{Binding BindedCard.HasDamage}"
                                             WidthRequest="50"
                                             HeightRequest="50"
                                             FontSize="24"
                                             HorizontalTextAlignment="Center"
                                             VerticalTextAlignment="Center"
-                                            Text="{Binding BindedCard.takenDamage}"
+                                            Text="{Binding BindedCard.TakenDamage}"
                                             TextColor="White"
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
@@ -83,7 +84,7 @@
                                     <Frame.GestureRecognizers>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
-                                            CommandParameter="{Binding BindedCard.imagePath}"/>
+                                            CommandParameter="{Binding BindedCard.ImagePath}"/>
                                     </Frame.GestureRecognizers>
                                 </Frame>
                             </DataTemplate>
@@ -115,7 +116,8 @@
                                         <Image
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
-                                            Source="{Binding BindedCard.imagePath}"
+                                            IsVisible="{Binding BindedCard.IsOnField, FallbackValue=False}"
+                                            Source="{Binding BindedCard.ImagePath}"
                                             HeightRequest="200"
                                             WidthRequest="133"
                                             Aspect="Fill"
@@ -130,20 +132,20 @@
                                             Fill="Red"
                                             Stroke="Wheat"
                                             StrokeThickness="2"
-                                            IsVisible="{Binding BindedCard.hasDamage, FallbackValue=False, Mode=OneWay}"
+                                            IsVisible="{Binding BindedCard.HasDamage, FallbackValue=False, Mode=OneWay}"
                                             WidthRequest="50"
                                             HeightRequest="50"
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
                                             ZIndex="6"/>
                                         <Label
-                                            IsVisible="{Binding BindedCard.hasDamage}"
+                                            IsVisible="{Binding BindedCard.HasDamage}"
                                             WidthRequest="50"
                                             HeightRequest="50"
                                             FontSize="24"
                                             HorizontalTextAlignment="Center"
                                             VerticalTextAlignment="Center"
-                                            Text="{Binding BindedCard.takenDamage}"
+                                            Text="{Binding BindedCard.TakenDamage}"
                                             TextColor="White"
                                             AbsoluteLayout.LayoutBounds="0.5,0.5"
                                             AbsoluteLayout.LayoutFlags="PositionProportional"
@@ -155,7 +157,7 @@
                                             DropCommandParameter="{Binding Id}"/>
                                         <TapGestureRecognizer
                                             Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
-                                            CommandParameter="{Binding BindedCard.imagePath}"/>
+                                            CommandParameter="{Binding BindedCard.ImagePath}"/>
                                     </Frame.GestureRecognizers>
                                 </Frame>
                             </DataTemplate>
@@ -182,7 +184,7 @@
                             BorderColor="Transparent"
                         Margin="10,0,0,10">
                         <Image
-                            Source="{Binding imagePath}"
+                            Source="{Binding ImagePath}"
                             HeightRequest="250"
                             WidthRequest="175"
                             Aspect="Fill"
@@ -193,7 +195,7 @@
                                             DragStartingCommandParameter="{Binding .}"/>
                             <TapGestureRecognizer
                                 Command="{Binding Source={x:RelativeSource AncestorType={x:Type viewModels:GamePageViewModel}}, Path=ChangePreviewCommand}"
-                                CommandParameter="{Binding imagePath}"/>
+                                CommandParameter="{Binding ImagePath}"/>
                         </Frame.GestureRecognizers>
                         <Frame.Shadow>
                             <Shadow Brush="Black"
