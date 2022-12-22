@@ -9,7 +9,9 @@ public class Deck
 
     public int CardsLeft => _cardsInDeck.Count;
     
-    private readonly Queue<AllCards> _cardsInDeck;
+    private  Queue<AllCards> _cardsInDeck;
+
+    private Random _random = new Random();
     public Deck(DeckTypes deckType, Queue<AllCards> cards)
     {
         if (cards.Count != 40)
@@ -24,8 +26,14 @@ public class Deck
 
     public void Shuffle()
     {
-        //todo:
-        throw new NotImplementedException();
+        var cards = _cardsInDeck.ToArray();
+        for (var n = cards.Length - 1; n > 0; --n)
+        {
+            var k = _random.Next(n+1);
+            (cards[n], cards[k]) = (cards[k], cards[n]);
+        }
+
+        _cardsInDeck = new Queue<AllCards>(cards);
     }
 
     public void ReturnCardToDeck(AllCards card) => _cardsInDeck.Enqueue(card);
