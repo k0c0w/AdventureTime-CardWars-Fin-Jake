@@ -2,6 +2,7 @@ namespace Shared.PossibleCards;
 
 public enum AllCards
 {
+    none,
     shy_bard,
     spirit_solder,
     blood_fortress,
@@ -17,5 +18,4 @@ public enum AllCards
     ghost_of_fields,
     king_of_fields,
     robber_pumpkin,
-    
 }

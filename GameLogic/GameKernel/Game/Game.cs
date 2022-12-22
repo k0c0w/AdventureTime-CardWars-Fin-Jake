@@ -17,7 +17,7 @@ public class Game
     internal readonly Dictionary<int, Player> Players;
     internal (DeckTypes, DeckTypes) AllowedDecks { get; }
     
-    internal DecksAndLandsHolder _holder;
+    internal DecksAndLandsHolder _landsAndDecksHolder;
 
     internal Dictionary<int, Creature?[]> PlayersCreatures { get; }
     
@@ -37,7 +37,7 @@ public class Game
         var player1 = new Player(player1Id, this);
         var player2 = new Player(player2Id, this);
         Players = new Dictionary<int, Player>() { { player1Id, player1 }, { player2Id, player2 } };
-        _holder = LandsFactory.PrepareLandsAndDecks((dynamic)gameSetting);
+        _landsAndDecksHolder = LandsFactory.PrepareLandsAndDecks((dynamic)gameSetting);
         AllowedDecks = gameSetting.Decks;
         PlayersCreatures = new Dictionary<int, Creature?[]>()
             { { player1Id, player1.Creatures }, { player2Id, player2.Creatures } };
@@ -60,7 +60,6 @@ public class Game
         return actions;
     }
 
-    //todo: ассинхронная операция
     internal void RegisterAction(GameAction action) => _gameActions.Enqueue(action);
 
     internal bool TryPlayCreature(Player player, AllCards cardType, int line)

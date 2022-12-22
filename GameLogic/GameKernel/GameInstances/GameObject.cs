@@ -4,8 +4,6 @@ namespace GameObjects;
 
 public abstract class GameObject
 {
-    //public int GameIndex { get; set; }
-    
     public LandType LandType { get; }
 
     public AllCards Card { get; }
@@ -18,7 +16,7 @@ public abstract class GameObject
     {
         if (owner == null)
             throw new ArgumentNullException($"The given {nameof(owner)} was null.");
-        if (cost < 0 || cost > 2)
+        if (cost is < 0 or > 2)
             throw new ArgumentException($"The given {nameof(cost)} is incorrect: 0,1,2 only are allowed.");
 
         if (owner.Lands.Count(x => !x.IsTurnedOver && x.LandType == land) < cost)

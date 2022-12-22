@@ -6,7 +6,6 @@ public class Land
 {
     public bool IsTurnedOver { get; private set; }
 
-    //todo: сообщить игре
     public void TurnOver() => IsTurnedOver = !IsTurnedOver;
     
     public LandType LandType { get; }

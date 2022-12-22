@@ -10,14 +10,14 @@ internal class LandsFactory
     {
         var finn = new Land[4]
         {
-            new Land(LandType.blue_plains), new Land(LandType.blue_plains), 
-            new Land(LandType.blue_plains), new Land(LandType.blue_plains)
+            new (LandType.blue_plains), new (LandType.blue_plains), 
+            new (LandType.blue_plains), new (LandType.blue_plains)
         };
         
         var jake = new Land[4]
         {
-            new Land(LandType.corn_fields), new Land(LandType.corn_fields), 
-            new Land(LandType.corn_fields), new Land(LandType.corn_fields)
+            new (LandType.corn_fields), new (LandType.corn_fields), 
+            new (LandType.corn_fields), new (LandType.corn_fields)
         };
 
         var finnDeck = CreateFinnDeck();
