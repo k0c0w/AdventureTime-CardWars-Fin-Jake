@@ -6,7 +6,7 @@ namespace GameServer;
 
 public class GameActionHandler
 {
-    public static void ApplyToGame(int fromClient, Packet packet)
+    public async static void ApplyToGame(int fromClient, Packet packet)
     {
         if(Server.CurrentGame == null) return;
         if (Server.CurrentGame.IsFinished)
@@ -16,7 +16,7 @@ public class GameActionHandler
         }
         try
         {
-            ResponseToClients(Server.CurrentGame.ApplyGameActions(GetGameAction(fromClient, packet)), fromClient);
+            await ResponseToClientsAsync(Server.CurrentGame.ApplyGameActions(GetGameAction(fromClient, packet)), fromClient);
         }
         catch (Exception e)
         {
@@ -36,17 +36,17 @@ public class GameActionHandler
         return gameAction;
     }
     
-    private static void ResponseToClients(IEnumerable<GameAction> actions, int requestedClient)
+    private static async Task ResponseToClientsAsync(IEnumerable<GameAction> actions, int requestedClient)
     {
         foreach (var action in actions)
         {
             Console.WriteLine($"Server applied action: {action}");
-            var packet = PacketEncoder.EncodeGameAction(action);
+            using var packet = PacketEncoder.EncodeGameAction(action);
             if (action is IOneUserInfo)
                 ServerSend.SendTCPData(action.UserId == -1 ? requestedClient : action.UserId, packet);
             else
                 ServerSend.SendTCPDataToAll(packet);
-            Thread.Sleep(50);
+            await Task.Delay(50);
         }
     }
 }
