@@ -62,9 +62,17 @@
 	  <None Remove="Resources\Images\bg.jpg" />
 	  <None Remove="Resources\Images\Cards\GameCards\archer_dan.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\cobs_legion.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\cool_dog.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\corn_dog.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\corn_knight.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\corn_ronin.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\corn_wall.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\king_of_fields.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\nice_ice_baby.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\pig.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\spirit_solder.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\woadic_chief.png" />
 	  <None Remove="Resources\Images\Cards\Lands\blue_plains.png" />
 	  <None Remove="Resources\Images\Cards\Lands\corn_fields.png" />
 	  <None Remove="Resources\Images\Cards\Lands\reversed_land.png" />
@@ -76,9 +84,17 @@
 	<ItemGroup>
 	  <MauiImage Include="Resources\Images\Cards\GameCards\archer_dan.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\cobs_legion.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\cool_dog.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\corn_dog.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\corn_knight.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\corn_ronin.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\corn_wall.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\king_of_fields.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\nice_ice_baby.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\pig.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\spirit_solder.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\woadic_chief.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\blue_plains.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\corn_fields.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\reversed_land.png" />

@@ -24,7 +24,7 @@ public class Deck
 
     public AllCards GetCard() => _cardsInDeck.Dequeue();
 
-    public void Shuffle()
+    public Deck Shuffle()
     {
         var cards = _cardsInDeck.ToArray();
         for (var n = cards.Length - 1; n > 0; --n)
@@ -34,6 +34,7 @@ public class Deck
         }
 
         _cardsInDeck = new Queue<AllCards>(cards);
+        return this;
     }
 
     public void ReturnCardToDeck(AllCards card) => _cardsInDeck.Enqueue(card);

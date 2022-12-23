@@ -20,9 +20,9 @@ public class AttackState : IGameState
     {
         var creaturesOnLands = CurrentGame.PlayersCreatures[_attacking]
             .Where(x => x is { IsAttacking: true });
-        RegisterBonuses(creaturesOnLands);
         RegisterBonuses(CurrentGame.PlayersCreatures[CurrentGame.OpponentIdTo(_attacking)]
             .Where(x => x is { IsAttacking: true })!);
+        RegisterBonuses(creaturesOnLands);
         DamageEnemies(creaturesOnLands);
         ChangeState();
     }
@@ -39,13 +39,13 @@ public class AttackState : IGameState
         }
     }
 
+    //todo: reseting via attacking (bool creaturesAreAttacking = false)
     private void RegisterBonuses(IEnumerable<Creature> creatures)
     {
         foreach (var creature in creatures)
-        {
             creature.Reset();
+        foreach (var creature in creatures)
             creature.ExecuteSkill();
-        }
     }
 
     private void DamageEnemies(IEnumerable<Creature> attackingCreatures)

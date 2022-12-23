@@ -12,6 +12,6 @@ public class CornWall : Creature
     {
         var contFields = Owner.ControlledLands(LandType.corn_fields) +
                          Owner.Opponent.ControlledLands(LandType.corn_fields);
-        //todo: спешл действие
+        RegisterBonus(new Bonus {DefenceBonus = contFields});
     }
 }

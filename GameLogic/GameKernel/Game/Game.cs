@@ -6,7 +6,7 @@ using GameKernel.GameStates;
 
 namespace GameKernel;
 
-public class Game
+public class Game : IDisposable
 {
     public bool IsFinished { get; internal set; }
     
@@ -78,4 +78,15 @@ public class Game
 
     internal static GameAction BadRequestAction { get; } = new BadRequest();
     private static IEnumerable<GameAction> BadRequest() => new GameAction[1] { Game.BadRequestAction };
+    public void Dispose()
+    {
+        foreach (var key in Players.Keys)
+        {
+            Players[key] = null!;
+            PlayersBuildings[key] = null!;
+            PlayersCreatures[key] = null!;
+            PlayersDeck[key] = null!;
+            PlayersHand[key] = null!;
+        }
+    }
 }

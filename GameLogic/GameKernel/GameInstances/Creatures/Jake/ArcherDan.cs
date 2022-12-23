@@ -10,19 +10,18 @@ public class ArcherDan : Creature, IFloopable
 
     public override void ExecuteSkill()
     {
-        if(!IsFlooped()) return;
+        if(IsFlooped) return;
         Owner.Opponent.Buildings[Line]?.Destroy();
     }
 
-    public bool CanBeFlooped() => true;
+    public bool CanBeFlooped() => !IsFlooped;
 
     public void Floop()
     {
         if (!CanBeFlooped())
             return;
-        //todo: some actions assosiated with flup
-        IsAttacking = !IsAttacking;
+        Owner.Opponent.Buildings[Line]?.Destroy();
+        //todo: Owner.CurrentGame.RegisterAction(new CardFloop());
+        IsFlooped = true;
     }
-
-    public bool IsFlooped() => IsAttacking;
 }
