@@ -68,6 +68,7 @@
 	  <None Remove="Resources\Images\Cards\GameCards\corn_ronin.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\corn_wall.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\king_of_fields.png" />
+	  <None Remove="Resources\Images\Cards\GameCards\nice_ice_baby.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <None Remove="Resources\Images\Cards\GameCards\spirit_solder.png" />
 	  <None Remove="Resources\Images\Cards\Lands\blue_plains.png" />
@@ -87,6 +88,7 @@
 	  <MauiImage Include="Resources\Images\Cards\GameCards\corn_ronin.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\corn_wall.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\king_of_fields.png" />
+	  <MauiImage Include="Resources\Images\Cards\GameCards\nice_ice_baby.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\shy_bard.png" />
 	  <MauiImage Include="Resources\Images\Cards\GameCards\spirit_solder.png" />
 	  <MauiImage Include="Resources\Images\Cards\Lands\blue_plains.png" />

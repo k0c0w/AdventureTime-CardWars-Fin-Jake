@@ -34,7 +34,12 @@ internal class LandsFactory
         var cards = new Queue<AllCards>(40);
         for (var i = 0; i < 40; i++)
         {
-            cards.Enqueue(i % 7 == 2 ? AllCards.cool_dog : AllCards.spirit_solder);
+            if (i % 10 == 4)
+                cards.Enqueue(AllCards.cool_dog);
+            else if(i % 13 == 3)
+                cards.Enqueue(AllCards.spirit_solder);
+            else
+                cards.Enqueue(AllCards.nice_ice_baby);
         }
 
         return new Deck(DeckTypes.FinnDeck, cards).Shuffle();

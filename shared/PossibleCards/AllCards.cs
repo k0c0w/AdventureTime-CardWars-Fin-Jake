@@ -6,8 +6,13 @@ public enum AllCards
     shy_bard,
     spirit_solder,
     cool_dog,
+    woadic_chief,
+    
     blood_fortress,
     celestial_castle,
+    
+    cerebral_bloodstorm,
+    nice_ice_baby,
     
     corn_ronin,
     archer_dan,
