@@ -5,6 +5,7 @@ public enum AllCards
     none,
     shy_bard,
     spirit_solder,
+    cool_dog,
     blood_fortress,
     celestial_castle,
     
