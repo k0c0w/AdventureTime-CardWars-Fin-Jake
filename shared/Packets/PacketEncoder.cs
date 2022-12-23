@@ -38,6 +38,14 @@ public class PacketEncoder
     private static Packet Encode(GameStart request, Packet packet)
     {
         packet.Write((int)GameActionPacket.GameStart);
+        var info = request.FirstPlayerInfo;
+        packet.Write(info.Item1);
+        packet.Write(info.Item2);
+
+        info = request.SecondPlayerInfo;
+        packet.Write(info.Item1);
+        packet.Write(info.Item2);
+        
         return packet;
     }
 
@@ -133,7 +141,7 @@ public class PacketEncoder
         return action switch
         {
             GameActionPacket.BadRequest => BadRequest,
-            GameActionPacket.GameStart => GameStart,
+            GameActionPacket.GameStart => DecodeGameStart(packet),
             GameActionPacket.PossibleDecks => DecodePossibleDecks(packet),
             GameActionPacket.UserChoseDeck => DecodeUserChoseDeck(packet),
             GameActionPacket.UserPutCard => DecodeUserPutCard(packet),
@@ -201,7 +209,20 @@ public class PacketEncoder
     }
     
     private static BadRequest BadRequest { get; } = new BadRequest();
-    private static GameStart GameStart { get; } = new GameStart();
+
+    private static GameStart DecodeGameStart(Packet packet)
+    {
+        var firstId = packet.ReadInt();
+        var username = packet.ReadString();
+        var firstInfo = (firstId, username);
+
+        
+        var secondId = packet.ReadInt();
+        username = packet.ReadString();
+        var secondInfo = (secondId, username);
+
+        return new GameStart { FirstPlayerInfo = firstInfo, SecondPlayerInfo = secondInfo };
+    }
     
     private static UserPutCard DecodeUserPutCard(Packet packet)
     {

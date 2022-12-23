@@ -5,7 +5,6 @@ public enum ServerPacket
     Welcome,
     GoodBye,
     ServerError,
-    AlreadyConnected
 }
 
 public enum ClientPacket

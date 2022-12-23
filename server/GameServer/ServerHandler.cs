@@ -14,8 +14,6 @@ internal class ServerHandler
         var clientIdCheck = packet.ReadInt();
         var username = packet.ReadString();
         var player = new Player(fromClient, username);
-        SendAlreadyConnected(fromClient);
-        SendUsernameToOthers(player, fromClient);
 
         Server.Clients[fromClient].Player = player;
         Console.WriteLine($"{Server.Clients[fromClient].Tcp.Socket.Client.RemoteEndPoint} has successfully connected and is now player {fromClient} (nickname: {username})");
@@ -23,31 +21,7 @@ internal class ServerHandler
         if(fromClient != clientIdCheck)
             Console.WriteLine($"Player {username}(ID: {fromClient} is accusing to have wrong Client ID {clientIdCheck}");
     }
-
-    private static void SendUsernameToOthers(Player player, int except)
-    {
-        using var packet = GetPlayerUsername(player);
-        ServerSend.SendTCPDataToAll(except, packet);
-    }
-
-    private static void SendAlreadyConnected(int toClient)
-    {
-        foreach (var connected in Server.Clients.Values.Where(x => x.Player != null).Select(x => x.Player))
-        {
-            using var packet = GetPlayerUsername(connected!);
-            ServerSend.SendTCPData(toClient, packet);
-        }
-    }
-
-    private static Packet GetPlayerUsername(Player player)
-    {
-        var packet = new Packet();
-        packet.Write((int)PacketId.ServerPacket);
-        packet.Write((int)ServerPacket.AlreadyConnected);
-        packet.Write(player.Username.Length);
-        packet.Write(player.Username);
-        return packet;
-    }
+    
     
     public static void ChangeUserReadiness(int fromClient, Packet packet)
     {
@@ -65,7 +39,13 @@ internal class ServerHandler
 
         Server.CurrentGame = new Game(new FinnVSJake(), 1, 2);
         using var decks = GetEncodedDecks(Server.CurrentGame);
-        using var packet = new Packet((int)PacketId.GameActionPacket, (int)GameActionPacket.GameStart);
+        var first = Server.Clients.First();
+        var second = Server.Clients.Skip(1).First();
+        using var packet = PacketEncoder.EncodeGameAction(new GameStart
+        {
+            FirstPlayerInfo = (first.Value.Id, first.Value.Player.Username),
+            SecondPlayerInfo = (second.Value.Id, second.Value.Player.Username)
+        });
         ServerSend.SendTCPDataToAll(packet);
         ServerSend.SendTCPDataToAll(decks);
         Console.WriteLine("Created new game");
