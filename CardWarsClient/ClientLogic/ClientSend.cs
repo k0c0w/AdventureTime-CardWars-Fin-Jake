@@ -17,7 +17,7 @@ public class ClientSend
         packet.Write((int)ClientPacket.WelcomeReceived);
         packet.Write(Client.Instance.Id);
         //todo: additional info ex Username
-        packet.Write("name" + Client.Instance.Id);
+        packet.Write(Client.Instance.Username);
         SendTCPData(packet);
     }
 

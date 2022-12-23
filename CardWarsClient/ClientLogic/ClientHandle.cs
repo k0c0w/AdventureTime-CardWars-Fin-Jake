@@ -152,6 +152,14 @@ public class ClientHandle
             SetDeck(ViewModel.Opponent, chose.DeckType);
     }
 
+    private static void Handle(BadRequest badRequest)
+    {
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            await Shell.Current.DisplayAlert("Bad Request", "Вы сделали недопустимую операцию!", "ОK");
+        });
+    }
+
     private static void Handle(GameAction action)
     {
         MainThread.BeginInvokeOnMainThread(async () =>

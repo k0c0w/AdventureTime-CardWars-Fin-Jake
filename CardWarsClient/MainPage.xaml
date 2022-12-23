@@ -15,18 +15,33 @@
                 HorizontalOptions="Center" />
 
             <Label
-                Text="Ждём игроков"
+                x:Name="nameText"
+                Text="Введи своё имя"
                 SemanticProperties.HeadingLevel="Level1"
                 FontFamily="Comic"
                 FontSize="32"
                 HorizontalOptions="Center" />
+
+            <Entry 
+                x:Name="entry"
+                Placeholder="name"
+                TextChanged="OnEntryTextChanged"
+                WidthRequest="200"/>
+
+            <Button
+                x:Name="ConnectBtn"
+                Text="Подключиться"
+                FontFamily="Comic"
+                Clicked="ConnectClicked"
+                HorizontalOptions="Center"/>
 
             <Button
                 x:Name="ReadyBtn"
                 Text="Готов"
                 FontFamily="Comic"
                 Clicked="ReadyClicked"
-                HorizontalOptions="Center" />
+                HorizontalOptions="Center"
+                IsVisible="False"/>
 
         </VerticalStackLayout>
     </ScrollView>
