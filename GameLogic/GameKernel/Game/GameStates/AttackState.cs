@@ -31,7 +31,10 @@ public class AttackState : IGameState
     {
         var opponent = CurrentGame.OpponentIdTo(_attacking);
         if (CurrentGame.Players[_attacking].IsDead || CurrentGame.Players[opponent].IsDead)
+        {
             CurrentGame.GameState = new WinnerState(CurrentGame);
+            CurrentGame.GameState.Execute(new GameAction() {UserId = -1});
+        }
         else
         {
             CurrentGame.GameState = new TakeCardsState(opponent, CurrentGame);

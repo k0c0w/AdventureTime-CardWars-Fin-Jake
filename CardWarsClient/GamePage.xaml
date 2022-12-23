@@ -168,8 +168,9 @@
 
             </VerticalStackLayout>
         </StackLayout>
-        <CollectionView AbsoluteLayout.LayoutBounds="0.5,1,0.6,250"
-                        AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
+        <CollectionView AbsoluteLayout.LayoutBounds="0.5,1"
+                        AbsoluteLayout.LayoutFlags="PositionProportional"
+                        MaximumWidthRequest="800"
                         VerticalOptions="EndAndExpand"
                         ItemsSource="{Binding Player.Hand}"
                         ItemsLayout="HorizontalList"
@@ -222,7 +223,7 @@
                         WidthRequest="100"/>
                     <Label
                         WidthRequest="150"
-                        Text="OpponentName"
+                        Text="{Binding Opponent.Name}"
                         FontFamily="Comic"
                         TextColor="Black"
                         FontSize="18"
@@ -259,7 +260,7 @@
                     <Label
                         TextColor="Black"
                         WidthRequest="150"
-                        Text="PlayerName"
+                        Text="{Binding Player.Name}"
                         FontFamily="Comic"
                         FontSize="18"
                         VerticalTextAlignment="Center"

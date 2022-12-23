@@ -47,6 +47,7 @@ internal class ServerHandler
             SecondPlayerInfo = (second.Value.Id, second.Value.Player.Username)
         });
         ServerSend.SendTCPDataToAll(packet);
+        Thread.Sleep(50);
         ServerSend.SendTCPDataToAll(decks);
         Console.WriteLine("Created new game");
     }

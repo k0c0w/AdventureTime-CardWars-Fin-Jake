@@ -173,13 +173,12 @@ public class Client
             {
                 PacketId.GameActionPacket, new Dictionary<int, PacketHandler>()
                 {
-                    { (int)GameActionPacket.GameStart, ClientHandle.SendToGame }, 
                 }
             }
         };
         var multipleDispatch = new PacketHandler(ClientHandle.Dispatch);
         var gameActionHandlers = packetHandlers[PacketId.GameActionPacket];
-        for(var i = 1; i < (int)GameActionPacket.Winner; i++)
+        for(var i = 0; i <= (int)GameActionPacket.Winner; i++)
         {
             gameActionHandlers.Add(i, multipleDispatch);
         }

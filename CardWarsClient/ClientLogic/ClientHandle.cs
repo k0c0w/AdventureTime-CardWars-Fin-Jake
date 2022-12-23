@@ -21,11 +21,7 @@ public class ClientHandle
 
     public static void SendToGame(Packet packet)
     {
-        packet.ReadInt();
-        MainThread.BeginInvokeOnMainThread(async () =>
-        {
-            await Shell.Current.GoToAsync("GamePage");
-        });
+       
         //Client.Instance.IsServerReady = true;
     }
 
@@ -104,13 +100,10 @@ public class ClientHandle
             ViewModel.IsCurrentPlayerTurn = true;
             ViewModel.ActionsCount = 2;
             ViewModel.AvailableActionsPrompt = "Доступные действия: 2";
-            /*MainThread.BeginInvokeOnMainThread(async () =>
+            MainThread.BeginInvokeOnMainThread(async () =>
             {
-                ViewModel.IsCurrentPlayerTurn = true;
-                ViewModel.ActionsCount = 2;
-                ViewModel.AvailableActionsPrompt = "Доступные действия: 2";
                 await Shell.Current.DisplayAlert("Уведомление", "Ваш ход!", "ОK");       
-            });*/
+            });
         } else
         {
             MainThread.BeginInvokeOnMainThread(async () =>
@@ -152,12 +145,54 @@ public class ClientHandle
             SetDeck(ViewModel.Opponent, chose.DeckType);
     }
 
+    private static void Handle(GameStart info)
+    {
+        if (info.FirstPlayerInfo.Item1 == Client.Instance.Id)
+        {
+            ViewModel.Opponent.Name = info.SecondPlayerInfo.Item2;
+        }
+        else
+        {
+            ViewModel.Opponent.Name = info.FirstPlayerInfo.Item2;
+        }
+
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            await Shell.Current.GoToAsync("GamePage");
+        });
+    }
     private static void Handle(BadRequest badRequest)
     {
         MainThread.BeginInvokeOnMainThread(async () =>
         {
             await Shell.Current.DisplayAlert("Bad Request", "Вы сделали недопустимую операцию!", "ОK");
         });
+    }
+
+    private static void Handle(Winner winner)
+    {
+        if(winner.UserId == Client.Instance.Id)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await Shell.Current.DisplayAlert("Победа!", "Вы победили в игре!", "Выйти");
+                Application.Current.Quit();
+            });
+        } else if(winner.UserId == -1)
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await Shell.Current.DisplayAlert("Ничья!", "У обоих игроков закончилось здоровье!", "Выйти");
+                Application.Current.Quit();
+            });
+        } else
+        {
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                await Shell.Current.DisplayAlert("Поражение...!", "Вы проиграли!", "Выйти");
+                Application.Current.Quit();
+            });
+        }
     }
 
     private static void Handle(GameAction action)

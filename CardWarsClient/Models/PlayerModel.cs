@@ -32,6 +32,9 @@ namespace CardWarsClient.Models
         [ObservableProperty]
         public string sourcePath;
 
+        [ObservableProperty]
+        public string name;
+
         public int Id { get; set; }
 
         public DeckTypes Deck

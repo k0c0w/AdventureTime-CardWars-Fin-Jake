@@ -40,7 +40,7 @@ namespace CardWarsClient.ViewModels
 
         public GamePageViewModel()
         {
-            player = new PlayerModel(handInit: true);
+            player = new PlayerModel(handInit: true) { Name = Client.Instance.Username};
             opponent = new PlayerModel(4);
             hand = player.Hand;
             lands = player.Lands;
