@@ -39,13 +39,13 @@ public class AttackState : IGameState
         }
     }
 
+    //todo: reseting via attacking (bool creaturesAreAttacking = false)
     private void RegisterBonuses(IEnumerable<Creature> creatures)
     {
         foreach (var creature in creatures)
-        {
             creature.Reset();
+        foreach (var creature in creatures)
             creature.ExecuteSkill();
-        }
     }
 
     private void DamageEnemies(IEnumerable<Creature> attackingCreatures)
