@@ -11,7 +11,8 @@ public class GameActionHandler
         if(Server.CurrentGame == null) return;
         if (Server.CurrentGame.IsFinished)
         {
-            Server.CurrentGame = null;
+            Server.CurrentGame.Dispose();
+            Server.CurrentGame = null!;
             return;
         }
         try

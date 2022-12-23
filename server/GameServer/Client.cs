@@ -129,6 +129,7 @@ public class Client
             {
                 using var packet = PacketEncoder.EncodeGameAction(new Winner(GetOpponentId()));
                 ServerSend.SendTCPDataToAll(_id, packet);
+                Server.CurrentGame.Dispose();
                 Server.CurrentGame = null;
                 Console.WriteLine("Game destroyed");
             }
