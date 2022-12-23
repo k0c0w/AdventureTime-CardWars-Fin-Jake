@@ -16,6 +16,7 @@ public enum AllCards
     corn_knight,
     cornotaurus,
     corn_worm,
+    corn_dog,
     ghost_of_fields,
     king_of_fields,
     robber_pumpkin,
