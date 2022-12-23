@@ -168,8 +168,8 @@
 
             </VerticalStackLayout>
         </StackLayout>
-        <CollectionView AbsoluteLayout.LayoutBounds="0.5,1"
-                        AbsoluteLayout.LayoutFlags="PositionProportional"
+        <CollectionView AbsoluteLayout.LayoutBounds="0.5,1,0.6,250"
+                        AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"
                         VerticalOptions="EndAndExpand"
                         ItemsSource="{Binding Player.Hand}"
                         ItemsLayout="HorizontalList"

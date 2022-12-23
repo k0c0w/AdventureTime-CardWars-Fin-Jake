@@ -6,16 +6,6 @@ public partial class App : Application
     public App()
 	{
         Client.Instance = r;
-        r.Start();
-        try
-        {
-            r.ConnectToServer();
-        }
-        catch
-        {
-            Application.Current.Quit();
-        }
-
         InitializeComponent();
         MainPage = new AppShell();
 	}

@@ -10,6 +10,7 @@ public class Client
     public string ip = "127.0.0.1";
     public int port = 26950;
     public int Id = 1;
+    public string Username = "Dummy";
     bool isServerReady = false;
     public bool IsServerReady
     {
