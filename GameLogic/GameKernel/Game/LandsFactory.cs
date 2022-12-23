@@ -33,9 +33,11 @@ internal class LandsFactory
     {
         var cards = new Queue<AllCards>(40);
         for (var i = 0; i < 40; i++)
-            cards.Enqueue(AllCards.spirit_solder);
+        {
+            cards.Enqueue(i % 7 == 2 ? AllCards.cool_dog : AllCards.spirit_solder);
+        }
 
-        return new Deck(DeckTypes.FinnDeck, cards);
+        return new Deck(DeckTypes.FinnDeck, cards).Shuffle();
     }
 
     private static Deck CreateJakeDeck()
@@ -44,6 +46,6 @@ internal class LandsFactory
         for (var i = 0; i < 40; i++)
             cards.Enqueue(AllCards.corn_ronin);
 
-        return new Deck(DeckTypes.JakeDeck, cards);
+        return new Deck(DeckTypes.JakeDeck, cards).Shuffle();
     }
 }

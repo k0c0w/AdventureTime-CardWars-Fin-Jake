@@ -5,7 +5,8 @@ namespace GameObjects.Creatures;
 
 public class CoolDog : Creature
 {
-    private readonly PropertyInfo _isAttackingProperty = typeof(Creature).GetProperty("IsAttacking")!;
+    private readonly FieldInfo _isAttackingField =
+        typeof(Creature).GetField("_isAttacking", BindingFlags.NonPublic | BindingFlags.Instance)!;
     
     public CoolDog(int line, Player owner) : base(line, owner, LandType.blue_plains, AllCards.cool_dog, 2, 7, 2)
     {
@@ -15,7 +16,7 @@ public class CoolDog : Creature
     {
         var targets = GetOpponentCreaturesOnNeighborLines();
         foreach (var enemy in targets)
-            _isAttackingProperty.SetValue(enemy, false);
+            _isAttackingField.SetValue(enemy, false);
     }
 
     private IEnumerable<Creature> GetOpponentCreaturesOnNeighborLines()
