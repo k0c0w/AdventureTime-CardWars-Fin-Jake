@@ -10,5 +10,5 @@ public class KingOfFields : Creature
     { }
 
     public override void ExecuteSkill() 
-        => RegisterBonus(new Bonus { AttackBonus = Owner.Creatures.Count(x => x?.LandType == LandType.corn_fields)});
+        => RegisterBonus(new Bonus { AttackBonus = Owner.Creatures.Count(x => x?.LandType == LandType.corn_fields) - 1});
 }

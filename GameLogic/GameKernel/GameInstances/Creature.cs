@@ -35,8 +35,8 @@ public abstract class Creature : GameObject
     public Creature(int line, Player owner, LandType land, AllCards card, int cost, int healthPoints, int damage) 
         : base(owner, land, card, cost)
     {
-        if (healthPoints <= 0 || damage <= 0)
-            throw new ArgumentException($"The {nameof(healthPoints)} or {nameof(damage)} must be > 0.");
+        if (healthPoints < 0 || damage < 0)
+            throw new ArgumentException($"The {nameof(healthPoints)} or {nameof(damage)} must be non negative.");
         _initialDamage = damage;
         _cretureHP = healthPoints;
         //todo: валидировать что действительно там есть создание

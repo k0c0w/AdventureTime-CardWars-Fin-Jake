@@ -13,6 +13,10 @@ public static class CreatureFactory
             AllCards.corn_ronin => new CornRonin(toLine, owner),
             AllCards.spirit_solder => new SpiritSolder(toLine, owner),
             AllCards.cool_dog => new CoolDog(toLine, owner),
+            AllCards.corn_knight => new CornKnight(toLine, owner),
+            AllCards.king_of_fields => new KingOfFields(toLine, owner),
+            AllCards.corn_wall => new CornWall(toLine, owner),
+            AllCards.corn_dog => new CornDog(toLine, owner),
             _ => throw new InvalidOperationException("Can not summon that card"),
         };
     }
