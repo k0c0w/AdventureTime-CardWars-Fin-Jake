@@ -40,6 +40,8 @@ internal class LandsFactory
                 cards.Enqueue(AllCards.spirit_solder);
             else if(i % 5 == 0)
                 cards.Enqueue(AllCards.woadic_chief);
+            else if(i % 7 == 0)
+                cards.Enqueue(AllCards.pig);
             else
                 cards.Enqueue(AllCards.nice_ice_baby);
         }

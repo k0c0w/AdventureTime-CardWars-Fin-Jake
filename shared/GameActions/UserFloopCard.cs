@@ -1,3 +1,3 @@
 ﻿namespace Shared.GameActions;
 
-public record UserFlupCard : CardAction, IBothUserInfo;
+public record UserFloopCard : CardAction, IBothUserInfo;

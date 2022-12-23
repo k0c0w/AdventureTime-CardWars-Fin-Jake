@@ -13,6 +13,7 @@ public enum AllCards
     
     cerebral_bloodstorm,
     nice_ice_baby,
+    pig,
     
     corn_ronin,
     archer_dan,

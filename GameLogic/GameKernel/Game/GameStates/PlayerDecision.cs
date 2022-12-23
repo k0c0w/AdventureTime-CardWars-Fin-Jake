@@ -22,7 +22,7 @@ public class PlayerDecision : IGameState
         return PlayerHasCardInHand(put) && IsValidLine(put);
     }
 
-    private bool IsValidFlupAction(UserFlupCard floop)
+    private bool IsValidFlupAction(UserFloopCard floop)
     {
         return IsCardOnLine(floop) && floop is IFloopable floopable && floopable.CanBeFlooped();
     }
@@ -30,7 +30,7 @@ public class PlayerDecision : IGameState
     private bool IsCardOnLine(CardAction action)
     {
         //todo: добавить остальные типы карт
-        return action is UserFlupCard flup &&
+        return action is UserFloopCard flup &&
                CurrentGame.PlayersCreatures[flup.UserId][flup.Line] != null;
     }
 
@@ -46,7 +46,7 @@ public class PlayerDecision : IGameState
         if (!IsValidUserId(action)) return false;
         else if (action is UserDecisionEnd) return true;
         return ((action is UserPutCard put && IsValidPutCardAction(put))
-                || action is UserFlupCard flup && IsValidFlupAction(flup));
+                || action is UserFloopCard flup && IsValidFlupAction(flup));
     }
 
     public void Execute(GameAction action)

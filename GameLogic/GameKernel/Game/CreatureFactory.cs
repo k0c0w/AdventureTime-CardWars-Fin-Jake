@@ -21,6 +21,7 @@ public static class CreatureFactory
             AllCards.woadic_chief => new WoadicChief(toLine, owner),
             
             AllCards.nice_ice_baby => new NiceIceBaby(toLine, owner),
+            AllCards.pig => new Pig(toLine, owner),
             _ => throw new InvalidOperationException("Can not summon that card"),
         };
     }
