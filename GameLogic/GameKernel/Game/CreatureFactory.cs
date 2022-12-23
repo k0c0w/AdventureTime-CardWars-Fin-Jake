@@ -18,6 +18,7 @@ public static class CreatureFactory
             
             AllCards.spirit_solder => new SpiritSolder(toLine, owner),
             AllCards.cool_dog => new CoolDog(toLine, owner),
+            AllCards.woadic_chief => new WoadicChief(toLine, owner),
             
             AllCards.nice_ice_baby => new NiceIceBaby(toLine, owner),
             _ => throw new InvalidOperationException("Can not summon that card"),
