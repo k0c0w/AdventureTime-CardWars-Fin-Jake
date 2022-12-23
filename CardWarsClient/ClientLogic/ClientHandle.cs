@@ -45,7 +45,7 @@ public class ClientHandle
     private static void Handle(PossibleDecks decks)
     {
         MainThread.BeginInvokeOnMainThread(async () => {
-            var action = await Shell.Current.DisplayActionSheet("decks", "Отмена", "Удалить", decks.First.ToString(), decks.Second.ToString());
+            var action = await Shell.Current.DisplayActionSheet("Выбор колоды", null, null, decks.First.ToString(), decks.Second.ToString());
             if (action != null)
             {
                 var chosen = (DeckTypes)Enum.Parse(typeof(DeckTypes), action);
