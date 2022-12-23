@@ -14,13 +14,41 @@ internal class ServerHandler
         var clientIdCheck = packet.ReadInt();
         var username = packet.ReadString();
         var player = new Player(fromClient, username);
+        SendAlreadyConnected(fromClient);
+        SendUsernameToOthers(player, fromClient);
+
         Server.Clients[fromClient].Player = player;
         Console.WriteLine($"{Server.Clients[fromClient].Tcp.Socket.Client.RemoteEndPoint} has successfully connected and is now player {fromClient} (nickname: {username})");
-
+        
         if(fromClient != clientIdCheck)
             Console.WriteLine($"Player {username}(ID: {fromClient} is accusing to have wrong Client ID {clientIdCheck}");
     }
 
+    private static void SendUsernameToOthers(Player player, int except)
+    {
+        using var packet = GetPlayerUsername(player);
+        ServerSend.SendTCPDataToAll(except, packet);
+    }
+
+    private static void SendAlreadyConnected(int toClient)
+    {
+        foreach (var connected in Server.Clients.Values.Where(x => x.Player != null).Select(x => x.Player))
+        {
+            using var packet = GetPlayerUsername(connected!);
+            ServerSend.SendTCPData(toClient, packet);
+        }
+    }
+
+    private static Packet GetPlayerUsername(Player player)
+    {
+        var packet = new Packet();
+        packet.Write((int)PacketId.ServerPacket);
+        packet.Write((int)ServerPacket.AlreadyConnected);
+        packet.Write(player.Username.Length);
+        packet.Write(player.Username);
+        return packet;
+    }
+    
     public static void ChangeUserReadiness(int fromClient, Packet packet)
     {
         var readiness = packet.ReadBool();

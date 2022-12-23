@@ -4,7 +4,8 @@ public enum ServerPacket
 {
     Welcome,
     GoodBye,
-    ServerError
+    ServerError,
+    AlreadyConnected
 }
 
 public enum ClientPacket
