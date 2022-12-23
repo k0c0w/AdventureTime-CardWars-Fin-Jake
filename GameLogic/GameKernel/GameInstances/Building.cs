@@ -13,5 +13,6 @@ public abstract class Building : GameObject
     public void Destroy()
     {
         Owner.Buildings[Line] = null;
+        //todo: Owner.CurrentGame.RegisterAction(new BuildingDestroyed());
     }
 }

@@ -6,7 +6,18 @@ public abstract class Creature : GameObject
 {
     public int Line { get; set; }
 
-    public bool IsAttacking { get; protected set; } = true;
+    public bool IsAttacking => !IsFlooped;
+
+    private bool _isFlooped;
+    public bool IsFlooped
+    {
+        get => _isFlooped;
+        protected set
+        {
+            if (this is IFloopable)
+                _isFlooped = value;
+        }
+    }
     
     public bool IsDead => HP < 0;
     
@@ -59,9 +70,10 @@ public abstract class Creature : GameObject
         return old;
     }
 
-    public void Reset()
+    public void Reset(bool isOwnerTurn = false)
     {
-        IsAttacking = true;
+        if(isOwnerTurn)
+            IsFlooped = false;
         _buffDamage = 0;
         _buffHP = 0;
     }

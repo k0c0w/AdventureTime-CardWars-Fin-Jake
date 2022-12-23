@@ -13,7 +13,7 @@ public class Player
 
     public Player Opponent => CurrentGame.Players.Values.First(x => x.Id != Id);
     
-    private Game CurrentGame { get; }
+    public Game CurrentGame { get; }
 
     public List<AllCards> Hand { get; }
     
@@ -24,7 +24,7 @@ public class Player
     public Building?[] Buildings { get; }
     
     public Stack<AllCards> Discard { get; }
-
+    
     public Player(int userId, Game game)
     {
         Hand = new List<AllCards>();
