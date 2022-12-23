@@ -101,13 +101,16 @@ public class ClientHandle
     {
         if (Client.Instance.Id == decisionStart.UserId)
         {
-            MainThread.BeginInvokeOnMainThread(async () =>
+            ViewModel.IsCurrentPlayerTurn = true;
+            ViewModel.ActionsCount = 2;
+            ViewModel.AvailableActionsPrompt = "Доступные действия: 2";
+            /*MainThread.BeginInvokeOnMainThread(async () =>
             {
                 ViewModel.IsCurrentPlayerTurn = true;
                 ViewModel.ActionsCount = 2;
                 ViewModel.AvailableActionsPrompt = "Доступные действия: 2";
                 await Shell.Current.DisplayAlert("Уведомление", "Ваш ход!", "ОK");       
-            });
+            });*/
         } else
         {
             MainThread.BeginInvokeOnMainThread(async () =>

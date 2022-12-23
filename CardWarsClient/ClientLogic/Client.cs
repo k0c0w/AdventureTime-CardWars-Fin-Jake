@@ -44,7 +44,6 @@ public class Client
     public class TCP
     {
         public TcpClient socket { get; private set; }
-        private Packet receivedData;
         private NetworkStream stream;
         private byte[] receiveBuffer;
 
@@ -70,13 +69,11 @@ public class Client
             }
 
             stream = socket.GetStream();
-
-            receivedData = new Packet();
             
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
 
-        private void ReceiveCallback(IAsyncResult result)
+        private async void ReceiveCallback(IAsyncResult result)
         {
             try
             {
@@ -89,9 +86,9 @@ public class Client
 
                 var data = new byte[byteLength];
                 Array.Copy(receiveBuffer, data, byteLength);
-                
+
                 //to handle splited packets we dont need always reset packet
-                receivedData.Reset(HandleData(data));
+                Task.Run(() => HandleData(data));
                 
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             }
@@ -117,6 +114,7 @@ public class Client
         private bool HandleData(byte[] data)
         {
             var packetLength = 0;
+            var receivedData = new Packet();
             
             receivedData.SetBytes(data);
 
