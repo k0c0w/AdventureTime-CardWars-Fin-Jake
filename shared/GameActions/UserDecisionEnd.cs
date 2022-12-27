@@ -1,5 +1,5 @@
 ﻿namespace Shared.GameActions;
-public record UserDecisionEnd : GameAction
+public record UserDecisionEnd : GameAction, IBothUserInfo
 {
     
 }

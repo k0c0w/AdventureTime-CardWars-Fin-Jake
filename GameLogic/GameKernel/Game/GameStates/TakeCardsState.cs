@@ -1,4 +1,4 @@
-﻿using Shared.GameActions;
+using Shared.GameActions;
 
 namespace GameKernel.GameStates;
 
@@ -23,9 +23,15 @@ public class TakeCardsState : IGameState
     {
         //todo: выдавать карты другим если необхоимо
         var deck = CurrentGame.PlayersDeck[action.UserId];
-        var card = deck.GetCard();
-        CurrentGame.Players[action.UserId].TakeCard(card);
-        CurrentGame.RegisterAction(new UserTakeCard(action.UserId, card, deck.CardsLeft));
+        if (!deck.IsEmpty)
+        {
+            var card = deck.GetCard();
+            CurrentGame.Players[action.UserId].TakeCard(card);
+            CurrentGame.RegisterAction(new UserTakeCards(action.UserId, new []{card}, deck.CardsLeft));
+        }
+        
+        CurrentGame.Players[action.UserId].ResetEnergy();
+        
         if (!_firstTime)
         {
             ChangeState();
@@ -34,6 +40,7 @@ public class TakeCardsState : IGameState
 
     public void ChangeState()
     {
+        CurrentGame.RegisterAction(new UserDecisionStart {UserId = player});
         CurrentGame.GameState = new PlayerDecision(player, CurrentGame);
     }
 }

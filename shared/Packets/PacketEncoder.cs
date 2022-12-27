@@ -1,4 +1,4 @@
-﻿using Shared.GameActions;
+using Shared.GameActions;
 using Shared.Decks;
 using Shared.PossibleCards;
 using Microsoft.CSharp.RuntimeBinder;
@@ -25,6 +25,7 @@ public class PacketEncoder
     private static Packet Encode(UserDecisionStart request, Packet packet)
     {
         packet.Write((int)GameActionPacket.UserDecisionStart);
+        packet.Write(request.UserId);
         return packet;
     }
     
@@ -37,6 +38,14 @@ public class PacketEncoder
     private static Packet Encode(GameStart request, Packet packet)
     {
         packet.Write((int)GameActionPacket.GameStart);
+        var info = request.FirstPlayerInfo;
+        packet.Write(info.Item1);
+        packet.Write(info.Item2);
+
+        info = request.SecondPlayerInfo;
+        packet.Write(info.Item1);
+        packet.Write(info.Item2);
+        
         return packet;
     }
 
@@ -62,7 +71,7 @@ public class PacketEncoder
         packet.Write(request.UserId);
         packet.Write(request.Line);
         packet.Write((int)request.Card);
-        packet.Write((int)request.IndexInHand!);
+        packet.Write(request.EnergyLeft);
         return packet;
     }
 
@@ -72,14 +81,12 @@ public class PacketEncoder
         packet.Write(request.UserId);
         return packet;
     }
-
-    private static Packet Encode(UserTakeDeck request, Packet packet)
+    
+    private static Packet Encode(UserTakeLands take, Packet packet)
     {
-        packet.Write((int)GameActionPacket.UserTakeDeck);
-        var cards = request.CardsFromDeck;
-        var lands = request.Lands;
-        for(var i = 0; i < 5; i++)
-            packet.Write((int)cards[i]);
+        packet.Write((int)GameActionPacket.UserTakeLands);
+        packet.Write(take.UserId);
+        var lands = take.Lands;
         for(var i = 0; i < 4; i++)
             packet.Write((int)lands[i]);
         return packet;
@@ -105,6 +112,24 @@ public class PacketEncoder
         packet.Write(state.IsFlooped);
         return packet;
     }
+
+    private static Packet Encode(UserTakeCards request, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.UserTakeCards);
+        packet.Write(request.UserId);
+        packet.Write(request.TakenCards);
+        foreach (var card in request.Cards)
+            packet.Write((int)card);
+        packet.Write(request.CardsInDeckLeft);
+        return packet;
+    }
+
+    private static Packet Encode(Winner winner, Packet packet)
+    {
+        packet.Write((int)GameActionPacket.Winner);
+        packet.Write(winner.UserId);
+        return packet;
+    }
     
 
     public static GameAction DecodeGameAction(Packet packet)
@@ -116,20 +141,38 @@ public class PacketEncoder
         return action switch
         {
             GameActionPacket.BadRequest => BadRequest,
-            GameActionPacket.GameStart => GameStart,
+            GameActionPacket.GameStart => DecodeGameStart(packet),
             GameActionPacket.PossibleDecks => DecodePossibleDecks(packet),
             GameActionPacket.UserChoseDeck => DecodeUserChoseDeck(packet),
             GameActionPacket.UserPutCard => DecodeUserPutCard(packet),
             GameActionPacket.UserDecisionStart => DecodeUserDecisionStart(packet),
             GameActionPacket.UserDecisionEnd => DecodeUserDecisionEnd(packet),
-            GameActionPacket.UserTakeDeck => DecodeUserTakeDeck(packet),
+            GameActionPacket.UserTakeLands => DecodeUserTakeLands(packet),
+            GameActionPacket.UserTakeCards => DecodeUserTakeCards(packet),
             GameActionPacket.UserTakeDamage => DecodeUserTakeDamage(packet),
             GameActionPacket.CreatureState => DecodeCreatureState(packet),
-            GameActionPacket.GameEnd => throw new NotImplementedException(),
+            GameActionPacket.Winner => DecodeWinner(packet),
             _ => throw new InvalidOperationException()
         };
     }
 
+    private static Winner DecodeWinner(Packet packet)
+    {
+        var user = packet.ReadInt();
+        return new Winner(user);
+    }
+    
+    private static UserTakeCards DecodeUserTakeCards(Packet packet)
+    {
+        var user = packet.ReadInt();
+        var length = packet.ReadInt();
+        var cards = new AllCards[length];
+        for (var i = 0; i < length; i++)
+            cards[i] = (AllCards)packet.ReadInt();
+        
+        return new UserTakeCards(user, cards, packet.ReadInt());
+    }
+    
     private static UserTakeDamage DecodeUserTakeDamage(Packet packet)
     {
         var user = packet.ReadInt();
@@ -166,15 +209,27 @@ public class PacketEncoder
     }
     
     private static BadRequest BadRequest { get; } = new BadRequest();
-    private static GameStart GameStart { get; } = new GameStart();
+
+    private static GameStart DecodeGameStart(Packet packet)
+    {
+        var firstId = packet.ReadInt();
+        var username = packet.ReadString();
+        var firstInfo = (firstId, username);
+
+        
+        var secondId = packet.ReadInt();
+        username = packet.ReadString();
+        var secondInfo = (secondId, username);
+
+        return new GameStart { FirstPlayerInfo = firstInfo, SecondPlayerInfo = secondInfo };
+    }
     
     private static UserPutCard DecodeUserPutCard(Packet packet)
     {
         var client = packet.ReadInt();
         var line = packet.ReadInt();
         var card = (AllCards)packet.ReadInt();
-        var index = packet.ReadInt();
-        return new UserPutCard(client, line, card, index);
+        return new UserPutCard(client, line, card) { EnergyLeft = packet.ReadInt() };
     }
 
     private static UserDecisionStart DecodeUserDecisionStart(Packet packet) =>
@@ -182,17 +237,15 @@ public class PacketEncoder
 
     private static UserDecisionEnd DecodeUserDecisionEnd(Packet packet) =>
         new UserDecisionEnd { UserId = packet.ReadInt() };
+    
 
-    private static UserTakeDeck DecodeUserTakeDeck(Packet packet)
+    private static UserTakeLands DecodeUserTakeLands(Packet packet)
     {
-        var userId = packet.ReadInt();
-        var hand = new AllCards[5];
+        var user = packet.ReadInt();
         var lands = new LandType[4];
-        for (var i = 0; i < 5; i++)
-            hand[i] = (AllCards)packet.ReadInt();
         for (var i = 0; i < 4; i++)
             lands[i] = (LandType)packet.ReadInt();
 
-        return new UserTakeDeck(userId, hand, lands);
+        return new UserTakeLands(user, lands);
     }
 }

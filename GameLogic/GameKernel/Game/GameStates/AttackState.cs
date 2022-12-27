@@ -1,4 +1,4 @@
-﻿using GameObjects;
+using GameObjects;
 using Shared.GameActions;
 
 namespace GameKernel.GameStates;
@@ -18,7 +18,10 @@ public class AttackState : IGameState
 
     public void Execute(GameAction action)
     {
-        var creaturesOnLands = CurrentGame.PlayersCreatures[_attacking].Where(x => x != null);
+        var creaturesOnLands = CurrentGame.PlayersCreatures[_attacking]
+            .Where(x => x is { IsAttacking: true });
+        RegisterBonuses(CurrentGame.PlayersCreatures[CurrentGame.OpponentIdTo(_attacking)]
+            .Where(x => x is { IsAttacking: true })!);
         RegisterBonuses(creaturesOnLands);
         DamageEnemies(creaturesOnLands);
         ChangeState();
@@ -28,23 +31,24 @@ public class AttackState : IGameState
     {
         var opponent = CurrentGame.OpponentIdTo(_attacking);
         if (CurrentGame.Players[_attacking].IsDead || CurrentGame.Players[opponent].IsDead)
+        {
             CurrentGame.GameState = new WinnerState(CurrentGame);
+            CurrentGame.GameState.Execute(new GameAction() {UserId = -1});
+        }
         else
         {
-            var id = CurrentGame.OpponentIdTo(_attacking);
-            CurrentGame.RegisterAction(new UserDecisionStart {UserId = id });
-            CurrentGame.GameState = new TakeCardsState(id, CurrentGame);
-            CurrentGame.GameState.Execute(new GameAction() {UserId = id});
+            CurrentGame.GameState = new TakeCardsState(opponent, CurrentGame);
+            CurrentGame.GameState.Execute(new GameAction() {UserId = opponent});
         }
     }
 
+    //todo: reseting via attacking (bool creaturesAreAttacking = false)
     private void RegisterBonuses(IEnumerable<Creature> creatures)
     {
         foreach (var creature in creatures)
-        {
             creature.Reset();
+        foreach (var creature in creatures)
             creature.ExecuteSkill();
-        }
     }
 
     private void DamageEnemies(IEnumerable<Creature> attackingCreatures)
