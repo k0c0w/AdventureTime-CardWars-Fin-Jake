@@ -1,6 +1,6 @@
 namespace Shared.GameActions;
 
-public record UserTakeDamage : GameAction
+public record UserTakeDamage : GameAction, IBothUserInfo
 {
     public int Damage { get; }
     

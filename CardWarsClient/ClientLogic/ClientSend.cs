@@ -17,7 +17,7 @@ public class ClientSend
         packet.Write((int)ClientPacket.WelcomeReceived);
         packet.Write(Client.Instance.Id);
         //todo: additional info ex Username
-        packet.Write("name" + Client.Instance.Id);
+        packet.Write(Client.Instance.Username);
         SendTCPData(packet);
     }
 
@@ -37,9 +37,9 @@ public class ClientSend
         SendTCPData(r);
     }
 
-    public static void PutCard(Shared.PossibleCards.AllCards card, int line, int indexInHand)
+    public static void PutCard(Shared.PossibleCards.AllCards card, int line)
     {
-        var action = new Shared.GameActions.UserPutCard(Client.Instance.Id, line, card, indexInHand);
+        var action = new Shared.GameActions.UserPutCard(Client.Instance.Id, line, card);
 
         var r = PacketEncoder.EncodeGameAction(action);
         SendTCPData(r);

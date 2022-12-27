@@ -11,6 +11,6 @@ public partial class GamePage : ContentPage
 	public GamePage()
 	{
 		InitializeComponent();
-		this.BindingContext = new GamePageViewModel();
+		this.BindingContext = GamePageViewModel.Instance;
 	}
 }

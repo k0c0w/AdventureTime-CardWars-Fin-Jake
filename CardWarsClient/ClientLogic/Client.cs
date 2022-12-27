@@ -10,6 +10,7 @@ public class Client
     public string ip = "127.0.0.1";
     public int port = 26950;
     public int Id = 1;
+    public string Username = "Dummy";
     bool isServerReady = false;
     public bool IsServerReady
     {
@@ -44,7 +45,6 @@ public class Client
     public class TCP
     {
         public TcpClient socket { get; private set; }
-        private Packet receivedData;
         private NetworkStream stream;
         private byte[] receiveBuffer;
 
@@ -70,13 +70,11 @@ public class Client
             }
 
             stream = socket.GetStream();
-
-            receivedData = new Packet();
             
             stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
         }
 
-        private void ReceiveCallback(IAsyncResult result)
+        private async void ReceiveCallback(IAsyncResult result)
         {
             try
             {
@@ -89,9 +87,9 @@ public class Client
 
                 var data = new byte[byteLength];
                 Array.Copy(receiveBuffer, data, byteLength);
-                
+
                 //to handle splited packets we dont need always reset packet
-                receivedData.Reset(HandleData(data));
+                Task.Run(() => HandleData(data));
                 
                 stream.BeginRead(receiveBuffer, 0, dataBufferSize, ReceiveCallback, null);
             }
@@ -117,6 +115,7 @@ public class Client
         private bool HandleData(byte[] data)
         {
             var packetLength = 0;
+            var receivedData = new Packet();
             
             receivedData.SetBytes(data);
 
@@ -174,13 +173,12 @@ public class Client
             {
                 PacketId.GameActionPacket, new Dictionary<int, PacketHandler>()
                 {
-                    { (int)GameActionPacket.GameStart, ClientHandle.SendToGame }, 
                 }
             }
         };
         var multipleDispatch = new PacketHandler(ClientHandle.Dispatch);
         var gameActionHandlers = packetHandlers[PacketId.GameActionPacket];
-        for(var i = 1; i < (int)GameActionPacket.GameEnd; i++)
+        for(var i = 0; i <= (int)GameActionPacket.Winner; i++)
         {
             gameActionHandlers.Add(i, multipleDispatch);
         }

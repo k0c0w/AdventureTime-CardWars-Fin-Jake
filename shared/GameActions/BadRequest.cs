@@ -1,5 +1,6 @@
 ﻿namespace Shared.GameActions;
 
-public record class BadRequest : GameAction, IOneUserInfo
+public record BadRequest : GameAction, IOneUserInfo
 {
+    public BadRequest() => UserId = -1;
 }
