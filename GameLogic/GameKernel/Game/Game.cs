@@ -6,8 +6,10 @@ using GameKernel.GameStates;
 
 namespace GameKernel;
 
-public class Game
+public class Game : IDisposable
 {
+    public bool IsFinished { get; internal set; }
+    
     internal int OpponentIdTo(int player) => Players.Keys.First(x => x != player);
     
     internal IGameState GameState { get; set; }
@@ -15,7 +17,7 @@ public class Game
     internal readonly Dictionary<int, Player> Players;
     internal (DeckTypes, DeckTypes) AllowedDecks { get; }
     
-    internal DecksAndLandsHolder _holder;
+    internal DecksAndLandsHolder _landsAndDecksHolder;
 
     internal Dictionary<int, Creature?[]> PlayersCreatures { get; }
     
@@ -35,7 +37,7 @@ public class Game
         var player1 = new Player(player1Id, this);
         var player2 = new Player(player2Id, this);
         Players = new Dictionary<int, Player>() { { player1Id, player1 }, { player2Id, player2 } };
-        _holder = LandsFactory.PrepareLandsAndDecks((dynamic)gameSetting);
+        _landsAndDecksHolder = LandsFactory.PrepareLandsAndDecks((dynamic)gameSetting);
         AllowedDecks = gameSetting.Decks;
         PlayersCreatures = new Dictionary<int, Creature?[]>()
             { { player1Id, player1.Creatures }, { player2Id, player2.Creatures } };
@@ -58,14 +60,13 @@ public class Game
         return actions;
     }
 
-    //todo: ассинхронная операция
     internal void RegisterAction(GameAction action) => _gameActions.Enqueue(action);
 
-    internal bool TryPlayCreature(Player player, int cardIndex, int line = -1)
+    internal bool TryPlayCreature(Player player, AllCards cardType, int line)
     {
         try
         {
-            player.MoveCreatureToLand(cardIndex, line);
+            player.MoveCreatureToLand(cardType, line);
             return true;
         }
         catch (Exception e)
@@ -77,4 +78,15 @@ public class Game
 
     internal static GameAction BadRequestAction { get; } = new BadRequest();
     private static IEnumerable<GameAction> BadRequest() => new GameAction[1] { Game.BadRequestAction };
+    public void Dispose()
+    {
+        foreach (var key in Players.Keys)
+        {
+            Players[key] = null!;
+            PlayersBuildings[key] = null!;
+            PlayersCreatures[key] = null!;
+            PlayersDeck[key] = null!;
+            PlayersHand[key] = null!;
+        }
+    }
 }

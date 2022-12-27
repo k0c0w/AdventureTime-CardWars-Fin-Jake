@@ -4,7 +4,7 @@ public enum ServerPacket
 {
     Welcome,
     GoodBye,
-    ServerError
+    ServerError,
 }
 
 public enum ClientPacket
@@ -16,17 +16,17 @@ public enum ClientPacket
 public enum GameActionPacket
 {
     GameStart,
-    Winner,
     BadRequest,
     PossibleDecks,
     UserChoseDeck,
-    UserTakeDeck,
+    UserTakeLands,
+    UserTakeCards,
     UserDecisionStart,
     UserDecisionEnd,
     UserPutCard,
     UserTakeDamage,
     CreatureState,
-    GameEnd,
+    Winner,
 }
 
 public enum PacketId

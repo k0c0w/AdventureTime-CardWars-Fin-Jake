@@ -1,4 +1,5 @@
-﻿using Shared.PossibleCards;
+using Shared.PossibleCards;
+
 namespace GameObjects.Creatures;
 
 public class ShyBard : Creature, IFloopable

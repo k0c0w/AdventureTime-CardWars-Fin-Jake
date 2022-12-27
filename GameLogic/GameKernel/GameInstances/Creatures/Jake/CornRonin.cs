@@ -1,10 +1,9 @@
-﻿using Shared.PossibleCards;
+using Shared.PossibleCards;
 
 namespace GameObjects.Creatures;
 
 public class CornRonin : Creature
 {
-
     public CornRonin(int line, Player owner) 
         : base(line, owner, LandType.corn_fields, AllCards.corn_ronin, 1, 6, 1)
     { }

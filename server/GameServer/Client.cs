@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using Shared.GameActions;
 using Shared.Packets;
 
 namespace GameServer;
@@ -55,7 +56,8 @@ public class Client
             }
             catch (Exception e)
             {
-                 Console.WriteLine($"Error sending data to player {_id} via TCP: {e.ToString()}");
+                Console.WriteLine($"Error sending data to player {_id} via TCP: {e.ToString()}");
+                Disconnect();
             }
         }
 
@@ -78,7 +80,6 @@ public class Client
             }
             catch (Exception e)
             {
-                Console.WriteLine($"Error receiving TCP data: {e.ToString()}");
                 Disconnect();
             }
         }
@@ -124,9 +125,21 @@ public class Client
         
         private void Disconnect()
         {
+            if (Server.CurrentGame != null)
+            {
+                using var packet = PacketEncoder.EncodeGameAction(new Winner(GetOpponentId()));
+                ServerSend.SendTCPDataToAll(_id, packet);
+                Server.CurrentGame.Dispose();
+                Server.CurrentGame = null;
+                Console.WriteLine("Game destroyed");
+            }
             Server.Clients[_id].Player = null;
             Socket.Close();
             Socket = null!;
+            Console.WriteLine($"User {_id} disconnect");
         }
+
+        private int GetOpponentId()
+            => Server.Clients.Values.FirstOrDefault(x => x.Player != null && x.Id != _id)?.Id ?? -1;
     }
 }

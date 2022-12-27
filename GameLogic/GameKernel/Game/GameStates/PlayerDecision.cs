@@ -22,7 +22,7 @@ public class PlayerDecision : IGameState
         return PlayerHasCardInHand(put) && IsValidLine(put);
     }
 
-    private bool IsValidFlupAction(UserFlupCard floop)
+    private bool IsValidFlupAction(UserFloopCard floop)
     {
         return IsCardOnLine(floop) && floop is IFloopable floopable && floopable.CanBeFlooped();
     }
@@ -30,7 +30,7 @@ public class PlayerDecision : IGameState
     private bool IsCardOnLine(CardAction action)
     {
         //todo: добавить остальные типы карт
-        return action is UserFlupCard flup &&
+        return action is UserFloopCard flup &&
                CurrentGame.PlayersCreatures[flup.UserId][flup.Line] != null;
     }
 
@@ -38,7 +38,7 @@ public class PlayerDecision : IGameState
     
     private bool PlayerHasCardInHand(UserPutCard putCard)
     {
-        return CurrentGame.Players[putCard.UserId].HasCardInHand(putCard.IndexInHand, putCard.Card);
+        return CurrentGame.Players[putCard.UserId].HasCardInHand(putCard.Card);
     }
 
     public bool IsValidAction(GameAction action)
@@ -46,7 +46,7 @@ public class PlayerDecision : IGameState
         if (!IsValidUserId(action)) return false;
         else if (action is UserDecisionEnd) return true;
         return ((action is UserPutCard put && IsValidPutCardAction(put))
-                || action is UserFlupCard flup && IsValidFlupAction(flup));
+                || action is UserFloopCard flup && IsValidFlupAction(flup));
     }
 
     public void Execute(GameAction action)
@@ -58,9 +58,9 @@ public class PlayerDecision : IGameState
         }
 
         if (action is UserPutCard put 
-            && CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.IndexInHand, put.IndexInHand))
+            && CurrentGame.TryPlayCreature(CurrentGame.Players[put.UserId], put.Card, put.Line))
         {
-            CurrentGame.RegisterAction(put);
+            CurrentGame.RegisterAction(put with{ EnergyLeft = CurrentGame.Players[_playerId].EnergyLeft});
         }
         else
         {

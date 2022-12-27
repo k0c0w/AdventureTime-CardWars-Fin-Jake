@@ -14,13 +14,15 @@ internal class ServerHandler
         var clientIdCheck = packet.ReadInt();
         var username = packet.ReadString();
         var player = new Player(fromClient, username);
+
         Server.Clients[fromClient].Player = player;
         Console.WriteLine($"{Server.Clients[fromClient].Tcp.Socket.Client.RemoteEndPoint} has successfully connected and is now player {fromClient} (nickname: {username})");
-
+        
         if(fromClient != clientIdCheck)
             Console.WriteLine($"Player {username}(ID: {fromClient} is accusing to have wrong Client ID {clientIdCheck}");
     }
-
+    
+    
     public static void ChangeUserReadiness(int fromClient, Packet packet)
     {
         var readiness = packet.ReadBool();
@@ -32,15 +34,22 @@ internal class ServerHandler
     
     private static void TryStartGame()
     {
-        if (Server.Clients.Values.Any(x => x.Player == null || !x.Player.IsReady) || Server.CurrentGame != null)
-                return;
+        if (Server.Clients.Values.Any(x => x.Player is not { IsReady: true }) 
+            || Server.CurrentGame is { IsFinished: false }) return;
 
         Server.CurrentGame = new Game(new FinnVSJake(), 1, 2);
         using var decks = GetEncodedDecks(Server.CurrentGame);
-        using var packet = new Packet((int)PacketId.GameActionPacket, (int)GameActionPacket.GameStart);
+        var first = Server.Clients.First();
+        var second = Server.Clients.Skip(1).First();
+        using var packet = PacketEncoder.EncodeGameAction(new GameStart
+        {
+            FirstPlayerInfo = (first.Value.Id, first.Value.Player.Username),
+            SecondPlayerInfo = (second.Value.Id, second.Value.Player.Username)
+        });
         ServerSend.SendTCPDataToAll(packet);
+        Thread.Sleep(50);
         ServerSend.SendTCPDataToAll(decks);
-        Console.WriteLine("send");
+        Console.WriteLine("Created new game");
     }
 
     private static Packet GetEncodedDecks(Game gameIsInStartState)
